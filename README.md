@@ -1,0 +1,8 @@
+# Werewolf
+
+Turn-based web multiplayer role-playing game
+
+## Development stage
+
+This project is still in the very early stages of development.
+In order to allow for major changes, there are no more precise descriptions.
