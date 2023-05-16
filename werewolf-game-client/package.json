@@ -1,7 +1,9 @@
 {
   "name": "werewolf-game-client",
-  "version": "0.1.0",
+  "version": "0.0.1-SNAPSHOT",
+  "homepage": ".",
   "private": true,
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
