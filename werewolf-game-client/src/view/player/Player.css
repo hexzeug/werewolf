@@ -1,0 +1,138 @@
+.Player {
+  width: fit-content;
+  user-select: none;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  transition: transform 0.2s ease;
+  text-align: left;
+  cursor: pointer;
+  /* outline: 2px limegreen dotted; */
+}
+
+.Player:disabled {
+  color: #8e8e8e;
+  cursor: default;
+}
+
+.Player[data-marked='true'] {
+  transform: translate(0, -30%);
+}
+
+.Player__body {
+  background-color: white;
+  width: 100px;
+  height: 100px;
+  border: 1px solid currentColor;
+  position: relative;
+}
+
+.Player:hover:not(:disabled) .Player__body {
+  background-color: #f9f9f9;
+}
+
+.Player:active:not(:disabled) .Player__body {
+  background-color: #eeeeee;
+}
+
+.Player[data-player-state='dead'] .Player__body {
+  background-color: black;
+  color: white;
+}
+
+.Player__body > * {
+  position: absolute;
+}
+
+.Player__body .text {
+  width: 100%;
+  text-align: center;
+}
+
+.Player__body .name {
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.Player__body .role {
+  bottom: 25%;
+  transform: translate(0, 50%);
+}
+
+.Player__body .heart {
+  width: 18px;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.Player__body .heart path {
+  stroke: currentColor;
+}
+
+.Player__body .section-sign {
+  right: 6px;
+  top: 6%;
+  animation: shiver 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes shiver {
+  0% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(5deg);
+  }
+}
+
+.Player__snore {
+  position: relative;
+  z-index: 1;
+  display: none;
+}
+
+.Player[data-player-state='sleeping'] .Player__snore {
+  display: block;
+}
+
+.Player__snore * {
+  position: absolute;
+  top: -1.2em;
+  --animation-speed: 2.5s;
+  --count: 3;
+  opacity: 0;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  animation-duration: var(--animation-speed);
+}
+
+.Player[data-player-state='sleeping'] .Player__snore * {
+  animation-name: snore;
+}
+
+.Player__snore :nth-child(1) {
+  left: 50%;
+}
+
+.Player__snore :nth-child(2) {
+  left: 55%;
+  animation-delay: calc(var(--animation-speed) / var(--count));
+}
+
+.Player__snore :nth-child(3) {
+  left: 48%;
+  animation-delay: calc(var(--animation-speed) / var(--count) * 2);
+}
+
+@keyframes snore {
+  15% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -30px);
+  }
+}

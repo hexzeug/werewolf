@@ -10,13 +10,17 @@ i18n.use(initReactI18next).init({
   resources: {
     de: {
       translation: {
-        'roles.werewolf': 'Werwolf',
-        'roles.villager': 'Dorfbewohner',
-        'roles.witch': 'Hexe',
-        'roles.seer': 'Seherin',
         'roles.cupid': 'Armor',
         'roles.hunter': 'Jäger',
+        'roles.seer': 'Seherin',
+        'roles.villager': 'Dorfbewohner',
+        'roles.werewolf': 'Werwolf',
+        'roles.witch': 'Hexe',
+        'player.alt.in_love': 'verliebt',
+        'player.snore_symbol': 'z',
       },
     },
   },
 });
+
+export default i18n;
