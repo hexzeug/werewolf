@@ -1,4 +1,18 @@
-@import-normalize;
+@import 'normalize.css';
+
+*,
+*:where(::before, ::after) {
+  box-sizing: border-box;
+}
+
+:where(img, picture, svg, video) {
+  display: block;
+  max-width: 100%;
+}
+
+:where(input, textarea, button, select) {
+  font: inherit;
+}
 
 body {
   font-family: 'Inter', sans-serif;
