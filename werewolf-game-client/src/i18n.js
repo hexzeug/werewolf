@@ -17,7 +17,7 @@ i18n.use(initReactI18next).init({
         'roles.werewolf': 'Werwolf',
         'roles.witch': 'Hexe',
         'player.alt.in_love': 'verliebt',
-        'player.snore_symbol': 'z',
+        'player.snore_symbol_3_char': 'zzz',
       },
     },
   },

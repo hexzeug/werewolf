@@ -1,50 +1,88 @@
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as Heart } from './heart.svg';
 import './Player.css';
-import { useState } from 'react';
 
-const Player = () => {
+/* 
+player: {
+  name: String,
+  status: String,
+  role: String | null,
+  marked: boolean,
+  inLove: boolean,
+  accused: boolean,
+  playerTags: Array[String(playername)],
+  disabled: boolean,
+  onClick: Function | null,
+}
+ */
+
+const playerTemplate = {
+  name: 'hexszeug',
+  status: 'sleeping',
+  role: 'werewolf',
+  marked: true,
+  inLove: true,
+  accused: true,
+  playerTags: ['Sishidayako', 'L3ifCraft', 'Ikree'],
+  disabled: false,
+  onClick: () => {
+    alert('you clicked on a player');
+  },
+};
+
+const Player = ({ player }) => {
   const { t } = useTranslation();
-  const [marked, setMarked] = useState(false);
-  const [disabled, setDisabled] = useState(false);
-  window.setDisabled = setDisabled;
-  const tags = ['Sishidayako', 'L3ifCraft', 'Ikree'];
+  player = playerTemplate;
   return (
-    <button
+    <div
       className="Player"
-      data-marked={marked}
-      data-player-state={'sleeping'}
-      disabled={disabled}
-      onClick={() => {
-        setMarked(!marked);
-      }}
+      data-marked={player.marked}
+      data-dead={player.status === 'dead'}
     >
-      <PlayerSnore>{t('player.snore_symbol')}</PlayerSnore>
-      <PlayerTags tags={tags} />
-      <div className="Player__body">
-        <Heart className="Player__heart" alt={t('player.alt.in_love')} />
-        <span className="Player__section-sign">§</span>
-        <span className="Player__name">hexszeug</span>
-        <span className="Player__role">{t('roles.werewolf')}</span>
-      </div>
-    </button>
+      {player.status === 'sleeping' && <PlayerSnore />}
+      <PlayerTags tags={player.playerTags} />
+
+      <button
+        className={`Player__body ${player.onClick ? 'button' : ''}`}
+        disabled={player.disabled}
+        onClick={player.onClick}
+      >
+        {player.inLove && (
+          <Heart className="Player__heart" alt={t('player.alt.in_love')} />
+        )}
+        {player.accused && <span className="Player__section-sign">§</span>}
+
+        <span className="Player__name">{player.name}</span>
+        {player.role !== undefined && (
+          <span className="Player__role">{t(`roles.${player.role}`)}</span>
+        )}
+      </button>
+    </div>
   );
 };
 
 const PlayerTags = ({ tags }) => {
   return (
     <div className="Player__tags">
-      {tags.map((tag) => <span className="Player__tag">{tag}</span>).reverse()}
+      {tags
+        .map((tag) => (
+          <span className="Player__tag" key={tag}>
+            {tag}
+          </span>
+        ))
+        .reverse()}
     </div>
   );
 };
 
-const PlayerSnore = ({ children }) => {
+const PlayerSnore = () => {
+  const { t } = useTranslation();
+  const zzz = t('player.snore_symbol_3_char');
   return (
     <div className="Player__snore">
-      <span>{children}</span>
-      <span>{children}</span>
-      <span>{children}</span>
+      <span>{zzz[0]}</span>
+      <span>{zzz[1]}</span>
+      <span>{zzz[1]}</span>
     </div>
   );
 };

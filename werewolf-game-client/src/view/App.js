@@ -9,7 +9,7 @@ const App = () => {
     <div className="App">
       <div className="player-dev-wrapper">
         {Array.from(Array(count)).map((i) => (
-          <Player key={i} />
+          <Player key={i} player={{}} />
         ))}
       </div>
     </div>

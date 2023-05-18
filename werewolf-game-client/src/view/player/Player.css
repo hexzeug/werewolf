@@ -1,31 +1,10 @@
 .Player {
   width: fit-content;
-  user-select: none;
-  border: none;
   padding: 0;
   background-color: transparent;
   transition: transform 0.2s ease;
-  text-align: left;
-  cursor: pointer;
   position: relative;
   /* outline: 2px limegreen dotted; */
-}
-
-.Player[data-player-state='sleeping'] .Player__snore {
-  display: block;
-}
-
-.Player[data-player-state='dead'] .Player__body {
-  background-color: black;
-  color: white;
-}
-
-.Player:disabled {
-  cursor: default;
-}
-
-.Player:disabled:not([data-player-state='dead']) {
-  color: #8e8e8e;
 }
 
 .Player[data-marked='true'] {
@@ -37,23 +16,35 @@
   width: 100px;
   height: 100px;
   border: 1px solid currentColor;
+  padding: 0;
   position: relative;
+  text-align: left;
 }
 
-.Player:hover:not(:disabled) .Player__body {
+.Player[data-dead='true'] .Player__body {
+  background-color: black;
+  color: white;
+}
+
+.Player__body.button {
+  cursor: pointer;
+}
+
+.Player__body.button:hover:not(:disabled) {
   background-color: #f9f9f9;
 }
 
-.Player:active:not(:disabled) .Player__body {
+.Player__body.button:active:not(:disabled) {
   background-color: #eeeeee;
 }
 
-.Player__body > * {
-  position: absolute;
+.Player__body.button:disabled {
+  color: #8e8e8e;
 }
 
 .Player__name,
 .Player__role {
+  position: absolute;
   width: 100%;
   text-align: center;
 }
@@ -70,6 +61,7 @@
 
 .Player__heart {
   width: 18px;
+  position: absolute;
   top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -79,7 +71,16 @@
   stroke: currentColor;
 }
 
+.Player__body.button:disabled .Player__heart path {
+  fill: currentColor;
+}
+
+.Player[data-dead='true'] .Player__heart path {
+  fill: currentColor;
+}
+
 .Player__section-sign {
+  position: absolute;
   right: 6px;
   top: 6%;
   animation: shiver 0.3s ease-in-out infinite alternate;
@@ -107,6 +108,8 @@
   flex-wrap: wrap-reverse;
   justify-content: left;
   gap: var(--tag-gap);
+
+  user-select: none;
 }
 
 .Player__tag {
@@ -123,7 +126,7 @@
 
 .Player__snore {
   position: relative;
-  display: none;
+  user-select: none;
 }
 
 .Player__snore * {
@@ -132,13 +135,7 @@
   --animation-speed: 2.5s;
   --count: 3;
   opacity: 0;
-  animation-timing-function: ease-out;
-  animation-iteration-count: infinite;
-  animation-duration: var(--animation-speed);
-}
-
-.Player[data-player-state='sleeping'] .Player__snore * {
-  animation-name: snore;
+  animation: snore var(--animation-speed) ease-out infinite;
 }
 
 .Player__snore :nth-child(1) {
