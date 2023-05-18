@@ -8,22 +8,19 @@ const Player = () => {
   const [marked, setMarked] = useState(false);
   const [disabled, setDisabled] = useState(false);
   window.setDisabled = setDisabled;
-  const z = t('player.snore_symbol');
+  const tags = ['Sishidayako', 'L3ifCraft', 'Ikree'];
   return (
     <button
       className="Player"
       data-marked={marked}
-      data-player-state={'awake'}
+      data-player-state={'sleeping'}
       disabled={disabled}
       onClick={() => {
         setMarked(!marked);
       }}
     >
-      <div className="Player__snore">
-        <span>{z}</span>
-        <span>{z}</span>
-        <span>{z}</span>
-      </div>
+      <PlayerSnore>{t('player.snore_symbol')}</PlayerSnore>
+      <PlayerTags tags={tags} />
       <div className="Player__body">
         <Heart className="Player__heart" alt={t('player.alt.in_love')} />
         <span className="Player__section-sign">§</span>
@@ -31,6 +28,24 @@ const Player = () => {
         <span className="Player__role">{t('roles.werewolf')}</span>
       </div>
     </button>
+  );
+};
+
+const PlayerTags = ({ tags }) => {
+  return (
+    <div className="Player__tags">
+      {tags.map((tag) => <span className="Player__tag">{tag}</span>).reverse()}
+    </div>
+  );
+};
+
+const PlayerSnore = ({ children }) => {
+  return (
+    <div className="Player__snore">
+      <span>{children}</span>
+      <span>{children}</span>
+      <span>{children}</span>
+    </div>
   );
 };
 
