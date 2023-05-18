@@ -44,33 +44,34 @@
   position: absolute;
 }
 
-.Player__body .text {
+.Player__name,
+.Player__role {
   width: 100%;
   text-align: center;
 }
 
-.Player__body .name {
+.Player__name {
   top: 50%;
   transform: translate(0, -50%);
 }
 
-.Player__body .role {
+.Player__role {
   bottom: 25%;
   transform: translate(0, 50%);
 }
 
-.Player__body .heart {
+.Player__heart {
   width: 18px;
   top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.Player__body .heart path {
+.Player__heart path {
   stroke: currentColor;
 }
 
-.Player__body .section-sign {
+.Player__section-sign {
   right: 6px;
   top: 6%;
   animation: shiver 0.3s ease-in-out infinite alternate;

@@ -7,6 +7,8 @@ const Player = () => {
   const { t } = useTranslation();
   const [marked, setMarked] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  window.setDisabled = setDisabled;
+  const z = t('player.snore_symbol');
   return (
     <button
       className="Player"
@@ -16,21 +18,17 @@ const Player = () => {
       onClick={() => {
         setMarked(!marked);
       }}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setDisabled(!disabled);
-      }}
     >
       <div className="Player__snore">
-        <span>{t('player.snore_symbol')}</span>
-        <span>{t('player.snore_symbol')}</span>
-        <span>{t('player.snore_symbol')}</span>
+        <span>{z}</span>
+        <span>{z}</span>
+        <span>{z}</span>
       </div>
       <div className="Player__body">
-        <Heart className="heart" alt={t('player.alt.in_love')} />
-        <span className="section-sign">§</span>
-        <span className="name text">hexszeug</span>
-        <span className="role text">{t('roles.werewolf')}</span>
+        <Heart className="Player__heart" alt={t('player.alt.in_love')} />
+        <span className="Player__section-sign">§</span>
+        <span className="Player__name">hexszeug</span>
+        <span className="Player__role">{t('roles.werewolf')}</span>
       </div>
     </button>
   );
