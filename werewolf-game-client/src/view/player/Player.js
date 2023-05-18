@@ -82,7 +82,7 @@ const PlayerSnore = () => {
     <div className="Player__snore">
       <span>{zzz[0]}</span>
       <span>{zzz[1]}</span>
-      <span>{zzz[1]}</span>
+      <span>{zzz[2]}</span>
     </div>
   );
 };
