@@ -1,0 +1,14 @@
+.Spinner {
+  width: 1em;
+  height: 1em;
+  border: 0.2em solid;
+  border-color: currentColor currentColor currentColor transparent;
+  border-radius: 18px;
+  animation: spinner 1s infinite linear;
+}
+
+@keyframes spinner {
+  100% {
+    transform: rotate(360deg);
+  }
+}

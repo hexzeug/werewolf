@@ -7,7 +7,7 @@
   /* outline: 2px limegreen dotted; */
 }
 
-.Player[data-marked='true'] {
+.Player[data-marked] {
   transform: translate(0, -30%);
 }
 
@@ -18,10 +18,12 @@
   border: 1px solid currentColor;
   padding: 0;
   position: relative;
-  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.Player[data-dead='true'] .Player__body {
+.Player__body[data-dead] {
   background-color: black;
   color: white;
 }
@@ -46,17 +48,17 @@
 .Player__role {
   position: absolute;
   width: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
 }
 
 .Player__name {
   top: 50%;
-  transform: translate(0, -50%);
 }
 
 .Player__role {
-  bottom: 25%;
-  transform: translate(0, 50%);
+  top: 75%;
 }
 
 .Player__heart {
@@ -71,11 +73,7 @@
   stroke: currentColor;
 }
 
-.Player__body.button:disabled .Player__heart path {
-  fill: currentColor;
-}
-
-.Player[data-dead='true'] .Player__heart path {
+.Player__body:is(.button:disabled, [data-dead]) .Player__heart path {
   fill: currentColor;
 }
 

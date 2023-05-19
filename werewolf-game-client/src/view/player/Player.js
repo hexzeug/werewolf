@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { usePlayerMap } from '../../model/player';
 import { ReactComponent as Heart } from './heart.svg';
 import './Player.css';
+import Spinner from '../spinner/Spinner';
 
 /* 
 player: {
@@ -20,29 +21,36 @@ player: {
 const Player = ({ playerId }) => {
   const { t } = useTranslation();
   const player = usePlayerMap()[playerId];
+  const {
+    name,
+    status,
+    role,
+    marked,
+    inLove,
+    accused,
+    playerTags,
+    disabled,
+    onClick,
+  } = player ?? {};
+  const isDead = status === 'dead';
+  const isButton = (onClick || disabled) && !isDead;
   return (
-    <div
-      className="Player"
-      data-marked={player.marked}
-      data-dead={player.status === 'dead'}
-    >
-      {player.status === 'sleeping' && <PlayerSnore />}
-      <PlayerTags tags={player.playerTags} />
-
+    <div className="Player" data-marked={marked || null}>
+      {status === 'sleeping' && <PlayerSnore />}
+      {playerTags && <PlayerTags tags={playerTags} />}
       <button
-        className={`Player__body ${player.onClick ? 'button' : ''}`}
-        disabled={player.disabled}
-        onClick={player.onClick}
+        className={`Player__body ${isButton ? 'button' : ''}`}
+        disabled={isButton ? disabled : null}
+        onClick={isButton ? onClick : null}
+        data-dead={isDead || null}
       >
-        {player.inLove && (
+        {inLove && (
           <Heart className="Player__heart" alt={t('player.alt.in_love')} />
         )}
-        {player.accused && <span className="Player__section-sign">§</span>}
-
-        <span className="Player__name">{player.name}</span>
-        {player.role && (
-          <span className="Player__role">{t(`roles.${player.role}`)}</span>
-        )}
+        {accused && <span className="Player__section-sign">§</span>}
+        <span className="Player__name">{name}</span>
+        {!player && <Spinner />}
+        {role && <span className="Player__role">{t(`roles.${role}`)}</span>}
       </button>
     </div>
   );
