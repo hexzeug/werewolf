@@ -6,7 +6,7 @@ const model = {
     playerIds: new Set(),
     playerMap: new Set(),
   },
-  playerIds: ['abc2', 'abc3', 'abc1'],
+  playerIds: ['abc1', 'abc3', 'abc2'],
   playerMap: {
     abc1: {
       name: 'hexszeug',
