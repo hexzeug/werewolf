@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { usePlayerMap } from '../../model/player';
 import { ReactComponent as Heart } from './heart.svg';
 import './Player.css';
 
@@ -6,33 +7,19 @@ import './Player.css';
 player: {
   name: String,
   status: String,
-  role: String | null,
-  marked: boolean,
-  inLove: boolean,
-  accused: boolean,
-  playerTags: Array[String(playername)],
-  disabled: boolean,
-  onClick: Function | null,
+  role?: String,
+  marked?: boolean,
+  inLove?: boolean,
+  accused?: boolean,
+  playerTags?: Array[String(playername)],
+  disabled?: boolean,
+  onClick?: Function,
 }
  */
 
-const playerTemplate = {
-  name: 'hexszeug',
-  status: 'sleeping',
-  role: 'werewolf',
-  marked: true,
-  inLove: true,
-  accused: true,
-  playerTags: ['Sishidayako', 'L3ifCraft', 'Ikree'],
-  disabled: false,
-  onClick: () => {
-    alert('you clicked on a player');
-  },
-};
-
-const Player = ({ player }) => {
+const Player = ({ playerId }) => {
   const { t } = useTranslation();
-  player = playerTemplate;
+  const player = usePlayerMap()[playerId];
   return (
     <div
       className="Player"
@@ -53,7 +40,7 @@ const Player = ({ player }) => {
         {player.accused && <span className="Player__section-sign">§</span>}
 
         <span className="Player__name">{player.name}</span>
-        {player.role !== undefined && (
+        {player.role && (
           <span className="Player__role">{t(`roles.${player.role}`)}</span>
         )}
       </button>
@@ -62,12 +49,13 @@ const Player = ({ player }) => {
 };
 
 const PlayerTags = ({ tags }) => {
+  const playerMap = usePlayerMap();
   return (
     <div className="Player__tags">
       {tags
-        .map((tag) => (
-          <span className="Player__tag" key={tag}>
-            {tag}
+        .map((playerId) => (
+          <span className="Player__tag" key={playerId}>
+            {playerMap[playerId].name}
           </span>
         ))
         .reverse()}

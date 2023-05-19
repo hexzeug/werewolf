@@ -1,15 +1,14 @@
-import { useState } from 'react';
+import { usePlayerIds } from '../model/player';
 import './App.css';
 import Player from './player/Player';
 
 const App = () => {
-  const [count, setCount] = useState(6);
-  window.setCount = setCount;
+  const playerIds = usePlayerIds();
   return (
     <div className="App">
       <div className="player-dev-wrapper">
-        {Array.from(Array(count)).map((i) => (
-          <Player key={i} player={{}} />
+        {playerIds.map((playerId) => (
+          <Player key={playerId} playerId={playerId} />
         ))}
       </div>
     </div>
