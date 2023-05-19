@@ -67,6 +67,8 @@ export const usePlayerMap = () => {
   return playerMap;
 };
 
+export const usePlayer = (playerId) => usePlayerMap()[playerId];
+
 export const usePlayerIds = () => {
   const [playerIds, setPlayerIds] = useState(model.playerIds);
   useEffect(() => {

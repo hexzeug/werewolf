@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { usePlayerMap } from '../../model/player';
+import { usePlayer, usePlayerMap } from '../../model/player';
 import { ReactComponent as Heart } from './heart.svg';
 import './Player.css';
 import Spinner from '../spinner/Spinner';
@@ -20,7 +20,7 @@ player: {
 
 const Player = ({ playerId }) => {
   const { t } = useTranslation();
-  const player = usePlayerMap()[playerId];
+  const player = usePlayer(playerId);
   const {
     name,
     status,
