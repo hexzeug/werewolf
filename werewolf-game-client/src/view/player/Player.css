@@ -2,13 +2,23 @@
   width: fit-content;
   padding: 0;
   background-color: transparent;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease-out;
   position: relative;
   /* outline: 2px limegreen dotted; */
 }
 
 .Player[data-marked] {
   transform: translate(0, -30%);
+}
+
+.OwnPlayer {
+  display: flex;
+  justify-content: center;
+  padding-top: 70px;
+}
+
+.OwnPlayer .Player[data-marked] {
+  transform: none;
 }
 
 .Player__body {
@@ -23,31 +33,22 @@
   justify-content: center;
 }
 
+.OwnPlayer .Player__body {
+  width: 540px;
+  height: 120px;
+  border-bottom-color: transparent;
+}
+
 .Player__body[data-dead] {
   background-color: black;
   color: white;
-}
-
-.Player__body.button {
-  cursor: pointer;
-}
-
-.Player__body.button:hover:not(:disabled) {
-  background-color: #f9f9f9;
-}
-
-.Player__body.button:active:not(:disabled) {
-  background-color: #eeeeee;
-}
-
-.Player__body.button:disabled {
-  color: #8e8e8e;
 }
 
 .Player__name,
 .Player__role {
   position: absolute;
   width: 100%;
+  overflow-wrap: break-word;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;

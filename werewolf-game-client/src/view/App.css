@@ -1,7 +1,12 @@
-.player-dev-wrapper {
-  display: grid;
-  grid-auto-flow: column;
-  gap: 2rem;
+.dev-placeholder {
+  height: 200px;
+}
+
+.App__player-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: center;
-  margin-top: 15rem;
+  padding-block: 70px;
 }
