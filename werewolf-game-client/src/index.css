@@ -20,6 +20,10 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+.button {
+  user-select: none;
+}
+
 .button:not(:disabled) {
   cursor: pointer;
 }

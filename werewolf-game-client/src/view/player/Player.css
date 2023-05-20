@@ -4,6 +4,7 @@
   background-color: transparent;
   transition: transform 0.2s ease-out;
   position: relative;
+  user-select: none;
   /* outline: 2px limegreen dotted; */
 }
 
@@ -110,8 +111,6 @@
   flex-wrap: wrap-reverse;
   justify-content: left;
   gap: var(--tag-gap);
-
-  user-select: none;
 }
 
 .Player__tag {
@@ -128,7 +127,6 @@
 
 .Player__snore {
   position: relative;
-  user-select: none;
 }
 
 .Player__snore * {
