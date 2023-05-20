@@ -13,6 +13,7 @@
 
 :where(input, textarea, button, select) {
   font: inherit;
+  color: inherit;
 }
 
 /* Global styles */
@@ -22,6 +23,8 @@ body {
 
 .button {
   user-select: none;
+  border: solid 1px currentColor;
+  background-color: white;
 }
 
 .button:not(:disabled) {

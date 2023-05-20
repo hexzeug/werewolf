@@ -1,5 +1,6 @@
 import { usePlayerIds } from '../model/player';
 import './App.css';
+import Chat from './chat/Chat';
 import Narrator from './narrator/Narrator';
 import Player, { OwnPlayer } from './player/Player';
 
@@ -13,6 +14,7 @@ const App = () => {
           <Player key={playerId} playerId={playerId} />
         ))}
       </div>
+      <Chat />
       <OwnPlayer playerId={playerIds[0]} />
     </div>
   );
