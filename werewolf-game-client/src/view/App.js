@@ -8,7 +8,6 @@ const App = () => {
   return (
     <div className="App">
       <Narrator />
-      <div className="dev-placeholder" />
       <div className="App__player-container">
         {playerIds.slice(1).map((playerId) => (
           <Player key={playerId} playerId={playerId} />

@@ -10,6 +10,7 @@ i18n.use(initReactI18next).init({
   resources: {
     de: {
       translation: {
+        'narrator.werewolves.awake': 'Die Werwölfe erwachen.',
         'roles.cupid': 'Armor',
         'roles.hunter': 'Jäger',
         'roles.seer': 'Seherin',

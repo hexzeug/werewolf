@@ -48,10 +48,13 @@
 .Player__role {
   position: absolute;
   width: 100%;
-  overflow-wrap: break-word;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  overflow-wrap: break-word;
   text-align: center;
+  font-size: 0.9rem;
+  font-weight: 300;
 }
 
 .Player__name {

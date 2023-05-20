@@ -1,3 +1,10 @@
 .Narrator {
-  position: absolute;
+  margin-block: 5rem;
+}
+
+.Narrator__text {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 200;
+  letter-spacing: 0.1ch;
 }

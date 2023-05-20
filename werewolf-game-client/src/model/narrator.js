@@ -1,34 +1,52 @@
 import { useEffect, useRef, useState } from 'react';
+import i18n from '../i18n';
 
 const model = {
   hooks: new Set(),
 };
 
 export const narrate = async (text) => {
-  const blendoffs = [];
-  model.hooks.forEach(({ ref }) =>
-    blendoffs.push(
-      ref.current.animate([{ opacity: 1 }, { opacity: 0 }], 1000).finished
-    )
-  );
-  await Promise.all(blendoffs);
-  model.hooks.forEach(({ setText }) => setText(text));
-  const blendins = [];
-  model.hooks.forEach(({ ref }) =>
-    blendins.push(
-      ref.current.animate([{ opacity: 0 }, { opacity: 1 }], 1000).finished
-    )
-  );
-  await Promise.all(blendins);
+  const promises = [];
+  model.hooks.forEach((hook) => {
+    promises.push(animate(hook, text));
+  });
+  await Promise.all(promises);
 };
-window.narrate = narrate;
 
-export const useNarrator = () => {
+const animate = async (hook, text) => {
+  try {
+    await hook.ref.current?.animate(
+      [{ opacity: 1 }, { opacity: 0 }],
+      hook.fadeOut * 1000
+    ).finished;
+  } catch (e) {
+    // animation was canceled
+    if (!(e instanceof DOMException)) throw e;
+  }
+  hook.setText(text);
+  try {
+    await hook.ref.current?.animate(
+      [{ opacity: 0 }, { opacity: 1 }],
+      hook.fadeIn * 1000
+    ).finished;
+  } catch (e) {
+    // animation was canceled
+    if (!(e instanceof DOMException)) throw e;
+  }
+};
+
+// debug / development
+window.narrate = narrate;
+setTimeout(async () => {
+  await narrate(i18n.t('narrator.werewolves.awake'));
+}, 500);
+
+export const useNarrator = (fadeOut, fadeIn) => {
   const [text, setText] = useState(null);
   const ref = useRef(null);
   useEffect(() => {
-    model.hooks.add({ ref, setText });
-    return () => model.hooks.delete({ ref, setText });
-  }, []);
+    model.hooks.add({ ref, setText, fadeOut, fadeIn });
+    return () => model.hooks.delete({ ref, setText, fadeOut, fadeIn });
+  }, [fadeOut, fadeIn]);
   return [text, ref];
 };
