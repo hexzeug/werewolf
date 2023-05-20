@@ -19,6 +19,8 @@ i18n.use(initReactI18next).init({
         'roles.witch': 'Hexe',
         'player.alt.in_love': 'verliebt',
         'player.snore_symbol_3_char': 'zzz',
+        'chat.input.placeholder': 'Hier schreiben...',
+        'chat.input.send': 'Senden',
       },
     },
   },

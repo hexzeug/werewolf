@@ -1,52 +1,86 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePlayer, usePlayerIds } from '../../model/player';
 import './Chat.css';
 import { useChat } from '../../model/chat';
+import { useTranslation } from 'react-i18next';
 
 const Chat = () => {
+  const { t } = useTranslation();
   const [messages, sendMessage] = useChat();
-  const scrollContainer = useRef({ scrollHeight: 0, clientHeight: 0 });
-  const scrollBottom = useRef(null);
-  const oldScrollTopMax = useRef(0);
+  // scrolling on new message
+  const refScrollContainer = useRef(null);
+  const refScrollBottom = useRef(null);
+  const oldScrollTopMax = useRef(null);
+  const scrollTimeout = useRef(null);
+  const resetScrollTimeout = () => {
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+    scrollTimeout.current = setTimeout(() => {
+      scrollTimeout.current = null;
+    }, 100);
+  };
+  const handleScroll = useCallback(() => {
+    if (scrollTimeout.current) {
+      resetScrollTimeout();
+    }
+  }, []);
   useEffect(() => {
-    const container = scrollContainer.current;
-    if (container.scrollTop >= oldScrollTopMax.current) {
-      scrollBottom.current.scrollIntoView({
+    const container = refScrollContainer.current;
+    if (
+      !oldScrollTopMax.current ||
+      scrollTimeout.current ||
+      container.scrollTop >= oldScrollTopMax.current
+    ) {
+      refScrollBottom.current.scrollIntoView({
         block: 'start',
         behavior: 'smooth',
       });
+      resetScrollTimeout();
     }
     oldScrollTopMax.current = container.scrollHeight - container.clientHeight;
   }, [messages]);
-  const [scrollTop, setScrollTop] = useState(0);
+  // send messages
+  const [inputMsg, setInputMsg] = useState('');
+  const handleInputChange = useCallback((e) => setInputMsg(e.target.value), []);
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (inputMsg.length > 0 && !inputMsg.match(/^\s+$/)) {
+        sendMessage(inputMsg);
+      }
+      setInputMsg('');
+    },
+    [inputMsg, sendMessage]
+  );
   return (
     <div className="Chat">
       <div
         className="Chat__scroll-container"
-        ref={scrollContainer}
-        onScroll={() => {
-          setScrollTop(scrollContainer.current.scrollTop);
-        }}
+        ref={refScrollContainer}
+        onScroll={handleScroll}
       >
         <div className="Chat__body">
           {messages.map((message, i) => (
             <ChatMessage message={message} key={i} />
           ))}
         </div>
-        <div className="Chat__scroll-bottom" ref={scrollBottom} />
+        <div className="Chat__scroll-bottom" ref={refScrollBottom} />
       </div>
       <hr />
-      <div className="Chat__form">
-        <button className="button" onClick={() => sendMessage('test')}>
-          Send
+      <form className="Chat__form" onSubmit={handleSubmit}>
+        <input
+          className="Chat__input"
+          type="text"
+          value={inputMsg}
+          onChange={handleInputChange}
+          placeholder={t('chat.input.placeholder')}
+          autoComplete="off"
+        />
+        <button type="submit" className="Chat__submit button">
+          {t('chat.input.send')}
         </button>
-        <span>
-          {' '}
-          scrollTop: {scrollTop}, scrollTopMax (calculated):{' '}
-          {scrollContainer.current.scrollHeight -
-            scrollContainer.current.clientHeight}
-        </span>
-      </div>
+      </form>
     </div>
   );
 };

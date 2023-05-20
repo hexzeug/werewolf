@@ -35,14 +35,6 @@
   gap: 0.5rem;
 }
 
-.Chat hr {
-  width: 100%;
-  height: 1px;
-  background-color: currentColor;
-  margin: 0;
-  border: none;
-}
-
 .Chat__message {
   --backgroundColor: white;
   background-color: var(--backgroundColor);
@@ -96,4 +88,26 @@
 .Chat__message__author {
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+.Chat hr {
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  margin: 0;
+  border: none;
+}
+
+.Chat__form {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: right;
+}
+
+.Chat__input {
+  width: 100%;
+  background-color: white;
+  border: solid currentColor 1px;
+  padding: 0.2rem 0.4rem;
+  font-weight: 500;
 }
