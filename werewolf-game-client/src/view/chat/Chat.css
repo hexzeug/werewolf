@@ -11,9 +11,50 @@
   gap: 1rem;
 }
 
+.Chat__main-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.Chat__scroll-down {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  aspect-ratio: 1;
+}
+
+.Chat__scroll-down::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20%;
+  aspect-ratio: 1;
+  border: solid black;
+  border-width: 80%;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  transform: translate(-50%, -75%) rotate(45deg);
+}
+
+.Chat__scroll-down[data-new-messages]::before {
+  content: '';
+  background-color: currentColor;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  aspect-ratio: 1;
+  border-radius: 100%;
+}
+
 .Chat__scroll-container {
   overflow-x: clip;
   overflow-y: auto;
+  scroll-behavior: smooth;
+  max-height: 100%;
 
   scrollbar-width: none;
   -ms-overflow-style: none;
