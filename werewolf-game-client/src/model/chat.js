@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 const model = {
   messages: [
@@ -13,8 +13,17 @@ export const receiveMessage = (message) => {
   model.messages = produce(model.messages, (messages) => {
     messages.push(message);
   });
-  model.hooks.forEach((hook) => hook.setMessages(model.messages));
+  model.hooks.forEach((hook) => hook(model.messages));
 };
+
+export const subscribe = (onStoreChange) => {
+  model.hooks.add(onStoreChange);
+  return () => {
+    model.hooks.delete(onStoreChange);
+  };
+};
+
+export const getSnapshot = () => model.messages;
 
 // debug / developement
 const sendMessage = (text) => {
@@ -22,10 +31,6 @@ const sendMessage = (text) => {
 };
 
 export const useChat = () => {
-  const [messages, setMessages] = useState(model.messages);
-  useEffect(() => {
-    model.hooks.add({ setMessages });
-    return () => model.hooks.delete({ setMessages });
-  }, []);
+  const messages = useSyncExternalStore(subscribe, getSnapshot);
   return [messages, sendMessage];
 };
