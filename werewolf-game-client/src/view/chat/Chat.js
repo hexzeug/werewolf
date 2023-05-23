@@ -9,25 +9,44 @@ const TIMEOUT_MS = 100;
 const Chat = () => {
   const { t } = useTranslation();
   const [messages, sendMessage] = useChat();
-  const [atBottomState, setAtBottomState] = useState(true);
-  const atBottomRef = useRef(atBottomState);
-  const [newMessages, setNewMessages] = useState(false);
-  const setAtBottom = useCallback((newState) => {
+  // isScrolledToBottom is true if
+  //  a) the chat is already scrolled to the bottom or
+  //  b) the chat is currently in the animation of scrolling to the bottom.
+  // It is stored in a state and a ref simultaneously.
+  // It must only be updated by calling setIsScrolledToBottom() in order
+  // to keep the state and the ref value synchronized.
+  const [isScrolledToBottomState, setIsScrolledToBottomState] = useState(true);
+  const isScrolledToBottomRef = useRef(isScrolledToBottomState);
+  const [areUnreadMessages, setAreUnreadMessages] = useState(false);
+  const setIsScrolledToBottom = useCallback((newState) => {
     if (newState) {
-      setNewMessages(false);
+      setAreUnreadMessages(false);
     }
-    atBottomRef.current = newState;
-    setAtBottomState(newState);
+    isScrolledToBottomRef.current = newState;
+    setIsScrolledToBottomState(newState);
   }, []);
-  const refScrollContainer = useRef(null);
-  const scrollTimeout = useRef(null);
+
+  const scrollContainer = useRef(null);
+  const calculateScrollTopMax = useCallback(() => {
+    return (
+      scrollContainer.current.scrollHeight -
+      scrollContainer.current.clientHeight
+    );
+  }, []);
   const recalculateAtBottom = useCallback(() => {
-    const scrollTopMax =
-      refScrollContainer.current.scrollHeight -
-      refScrollContainer.current.clientHeight;
-    const scrollTop = refScrollContainer.current.scrollTop;
-    setAtBottom(scrollTop >= scrollTopMax);
-  }, [setAtBottom]);
+    setIsScrolledToBottom(
+      scrollContainer.current.scrollTop >= calculateScrollTopMax()
+    );
+  }, [setIsScrolledToBottom, calculateScrollTopMax]);
+  // scrollTimeout is used to track scrolling animations started
+  // by scrollToBottom() and enable isScrolledToBottom to already be
+  // true while the animation is still running. To do this a timeout
+  // is started with a call to scrollToBottom() and each time a scroll
+  // event is fired by the browser it is reset. When is finishes running
+  // without being reset we assume the scroll animation ended.
+  // Nevertheless we need to recalculate if we are at the bottom, as
+  // the user might have scrolled up again before the timeout finished.
+  const scrollTimeout = useRef(null);
   const resetScrollTimeout = useCallback(() => {
     if (scrollTimeout.current) {
       clearTimeout(scrollTimeout.current);
@@ -37,17 +56,16 @@ const Chat = () => {
       recalculateAtBottom();
     }, TIMEOUT_MS);
   }, [recalculateAtBottom]);
+
   const scrollToBottom = useCallback(() => {
-    const scrollTopMax =
-      refScrollContainer.current.scrollHeight -
-      refScrollContainer.current.clientHeight;
-    refScrollContainer.current.scroll({
-      top: scrollTopMax,
+    scrollContainer.current.scroll({
+      top: calculateScrollTopMax(),
       behavior: 'smooth',
     });
     resetScrollTimeout();
-    setAtBottom(true);
-  }, [resetScrollTimeout, setAtBottom]);
+    setIsScrolledToBottom(true);
+  }, [resetScrollTimeout, setIsScrolledToBottom, calculateScrollTopMax]);
+  // event handler for scroll event
   const handleScroll = useCallback(() => {
     if (scrollTimeout.current) {
       resetScrollTimeout();
@@ -55,11 +73,12 @@ const Chat = () => {
       recalculateAtBottom();
     }
   }, [resetScrollTimeout, recalculateAtBottom]);
+  // event handler for new messages
   useEffect(() => {
-    if (atBottomRef.current) {
+    if (isScrolledToBottomRef.current) {
       scrollToBottom();
     } else {
-      setNewMessages(true);
+      setAreUnreadMessages(true);
     }
   }, [messages, scrollToBottom]);
   // send messages
@@ -80,7 +99,7 @@ const Chat = () => {
       <div className="Chat__main-container">
         <div
           className="Chat__scroll-container"
-          ref={refScrollContainer}
+          ref={scrollContainer}
           onScroll={handleScroll}
         >
           <div className="Chat__body">
@@ -89,10 +108,10 @@ const Chat = () => {
             ))}
           </div>
         </div>
-        {!atBottomState && (
+        {!isScrolledToBottomState && (
           <button
             className="Chat__scroll-down button"
-            data-new-messages={newMessages || null}
+            data-new-messages={areUnreadMessages || null}
             onClick={scrollToBottom}
           />
         )}
