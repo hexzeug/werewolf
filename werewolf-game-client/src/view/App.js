@@ -1,6 +1,6 @@
 import { usePlayerIds } from '../model/player';
 import './App.css';
-import Interaction from './interaction/Interaction';
+import Question from './question/Question';
 import Chat from './chat/Chat';
 import Narrator from './narrator/Narrator';
 import Player, { OwnPlayer } from './player/Player';
@@ -18,7 +18,7 @@ const App = () => {
         ))}
       </div>
       <Chat />
-      <Interaction
+      <Question
         question={t('witch.healing.question')}
         options={[
           {

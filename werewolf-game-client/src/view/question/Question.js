@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import './Interaction.css';
+import './Question.css';
 
-const Interaction = ({ question, options }) => {
+const Question = ({ question, options }) => {
   const { t } = useTranslation();
   return (
     <div className="Interaction">
@@ -24,4 +24,4 @@ const Interaction = ({ question, options }) => {
   );
 };
 
-export default Interaction;
+export default Question;
