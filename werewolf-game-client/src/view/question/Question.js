@@ -7,18 +7,20 @@ const Question = ({ question, options }) => {
     <div className="Question">
       <p className="Question__text">
         {t(question)}
-        {options.map((option, i) => (
-          <span className="Question__options">
-            {i === 0 ? ' ' : ' / '}
-            <button
-              className="Question__option"
-              key={i}
-              onClick={option.action}
-            >
-              {t(option.text)}
-            </button>
-          </span>
-        ))}
+        <span className="Question__options">
+          {options.map((option, i) => (
+            <>
+              {i === 0 ? ' ' : ' / '}
+              <button
+                key={i}
+                className="Question__option"
+                onClick={option.action}
+              >
+                {t(option.text)}
+              </button>
+            </>
+          ))}
+        </span>
       </p>
     </div>
   );

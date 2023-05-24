@@ -37,7 +37,13 @@ const Player = ({ playerId }) => {
   return (
     <div className="Player" data-marked={marked || null}>
       {status === 'sleeping' && <PlayerSnore />}
-      {playerTags && <PlayerTags tags={playerTags} />}
+      {playerTags && (
+        <div className="Player__tags">
+          {playerTags.map((playerId) => (
+            <PlayerTag key={playerId} playerId={playerId} />
+          ))}
+        </div>
+      )}
       <button
         className={`Player__body ${isButton ? 'button' : ''}`}
         disabled={isButton ? disabled : null}
@@ -56,19 +62,9 @@ const Player = ({ playerId }) => {
   );
 };
 
-const PlayerTags = ({ tags }) => {
-  const playerMap = usePlayerMap();
-  return (
-    <div className="Player__tags">
-      {tags
-        .map((playerId) => (
-          <span className="Player__tag" key={playerId}>
-            {playerMap[playerId].name}
-          </span>
-        ))
-        .reverse()}
-    </div>
-  );
+const PlayerTag = ({ playerId }) => {
+  const player = usePlayer(playerId);
+  return <span className="Player__tag">{player.name}</span>;
 };
 
 const PlayerSnore = () => {

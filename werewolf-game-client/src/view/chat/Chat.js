@@ -104,7 +104,7 @@ const Chat = () => {
         >
           <div className="Chat__body">
             {messages.map((message, i) => (
-              <ChatMessage message={message} key={i} />
+              <ChatMessage key={i} message={message} />
             ))}
           </div>
         </div>
