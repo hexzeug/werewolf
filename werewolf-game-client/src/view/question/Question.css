@@ -1,14 +1,14 @@
-.Interaction__text {
+.Question__text {
   max-width: 70ch;
   margin-inline: auto;
   text-align: center;
 }
 
-.Interaction__options {
+.Question__options {
   user-select: none;
 }
 
-.Interaction__option {
+.Question__option {
   border: none;
   padding: 0;
   margin: 0;
@@ -16,10 +16,10 @@
   cursor: pointer;
 }
 
-.Interaction__option:hover {
+.Question__option:hover {
   text-decoration: underline;
 }
 
-.Interaction__option:active {
+.Question__option:active {
   opacity: 0.7;
 }

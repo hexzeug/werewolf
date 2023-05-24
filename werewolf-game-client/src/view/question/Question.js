@@ -4,14 +4,14 @@ import './Question.css';
 const Question = ({ question, options }) => {
   const { t } = useTranslation();
   return (
-    <div className="Interaction">
-      <p className="Interaction__text">
+    <div className="Question">
+      <p className="Question__text">
         {t(question)}
         {options.map((option, i) => (
-          <span className="Interaction__options">
+          <span className="Question__options">
             {i === 0 ? ' ' : ' / '}
             <button
-              className="Interaction__option"
+              className="Question__option"
               key={i}
               onClick={option.action}
             >
