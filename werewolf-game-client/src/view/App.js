@@ -1,13 +1,10 @@
 import { usePlayerIds } from '../model/player';
 import './App.css';
-import Question from './question/Question';
-import Chat from './chat/Chat';
+import Interaction from './interaction/Interaction';
 import Narrator from './narrator/Narrator';
 import Player, { OwnPlayer } from './player/Player';
-import { useTranslation } from 'react-i18next';
 
 const App = () => {
-  const { t } = useTranslation();
   const playerIds = usePlayerIds();
   return (
     <div className="App">
@@ -17,24 +14,7 @@ const App = () => {
           <Player key={playerId} playerId={playerId} />
         ))}
       </div>
-      <Chat />
-      <Question
-        question={t('witch.healing.question')}
-        options={[
-          {
-            text: t('witch.healing.answer.yes'),
-            action: () => {
-              alert('yes');
-            },
-          },
-          {
-            text: t('witch.healing.answer.no'),
-            action: () => {
-              alert('no');
-            },
-          },
-        ]}
-      />
+      <Interaction />
       <OwnPlayer playerId={playerIds[0]} />
     </div>
   );

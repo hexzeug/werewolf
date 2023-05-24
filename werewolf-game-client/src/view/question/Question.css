@@ -16,8 +16,9 @@
   cursor: pointer;
 }
 
-.Question__option:hover {
+.Question__option:is(:hover, :focus) {
   text-decoration: underline;
+  outline: none;
 }
 
 .Question__option:active {
