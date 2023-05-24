@@ -12,16 +12,6 @@
   transform: translate(0, -30%);
 }
 
-.OwnPlayer {
-  display: flex;
-  justify-content: center;
-  padding-top: 70px;
-}
-
-.OwnPlayer .Player[data-marked] {
-  transform: none;
-}
-
 .Player__body {
   background-color: white;
   width: 100px;
@@ -32,12 +22,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.OwnPlayer .Player__body {
-  width: 540px;
-  height: 120px;
-  border-bottom-color: transparent;
 }
 
 .Player__body[data-dead] {

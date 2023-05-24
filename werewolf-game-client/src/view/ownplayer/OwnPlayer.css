@@ -1,0 +1,15 @@
+.OwnPlayer {
+  display: flex;
+  justify-content: center;
+  padding-top: 70px;
+}
+
+.OwnPlayer .Player[data-marked] {
+  transform: none;
+}
+
+.OwnPlayer .Player__body {
+  width: 540px;
+  height: 120px;
+  border-bottom-color: transparent;
+}

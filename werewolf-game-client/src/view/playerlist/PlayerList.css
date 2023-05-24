@@ -1,0 +1,8 @@
+.PlayerList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding-block: 70px;
+}

@@ -83,10 +83,4 @@ const PlayerSnore = () => {
   );
 };
 
-export const OwnPlayer = ({ playerId }) => (
-  <div className="OwnPlayer">
-    <Player playerId={playerId} />
-  </div>
-);
-
 export default Player;
