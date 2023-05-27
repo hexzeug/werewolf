@@ -34,6 +34,17 @@ const Player = ({ playerId }) => {
   } = player ?? {};
   const isDead = status === 'dead';
   const isButton = (onClick || disabled) && !isDead;
+  const bodyContent = (
+    <>
+      {inLove && (
+        <Heart className="Player__heart" title={t('player.alt.in_love')} />
+      )}
+      {accused && <span className="Player__section-sign">§</span>}
+      <span className="Player__name">{name}</span>
+      {!player && <Spinner />}
+      {role && <span className="Player__role">{t(`roles.${role}`)}</span>}
+    </>
+  );
   return (
     <div className="Player" data-marked={marked || null}>
       {status === 'sleeping' && <PlayerSnore />}
@@ -44,20 +55,20 @@ const Player = ({ playerId }) => {
           ))}
         </div>
       )}
-      <button
-        className={`Player__body ${isButton ? 'button' : ''}`}
-        disabled={isButton ? disabled : null}
-        onClick={isButton ? onClick : null}
-        data-dead={isDead || null}
-      >
-        {inLove && (
-          <Heart className="Player__heart" alt={t('player.alt.in_love')} />
-        )}
-        {accused && <span className="Player__section-sign">§</span>}
-        <span className="Player__name">{name}</span>
-        {!player && <Spinner />}
-        {role && <span className="Player__role">{t(`roles.${role}`)}</span>}
-      </button>
+      {isButton ? (
+        <button
+          className="Player__body button"
+          disabled={disabled}
+          onClick={onClick}
+          data-dead={isDead || null}
+        >
+          {bodyContent}
+        </button>
+      ) : (
+        <div className="Player__body" data-dead={isDead || null}>
+          {bodyContent}
+        </div>
+      )}
     </div>
   );
 };
@@ -71,7 +82,7 @@ const PlayerSnore = () => {
   const { t } = useTranslation();
   const zzz = t('player.snore_symbol_3_char');
   return (
-    <div className="Player__snore">
+    <div className="Player__snore" data-testid="snore">
       <span>{zzz[0]}</span>
       <span>{zzz[1]}</span>
       <span>{zzz[2]}</span>
