@@ -1,8 +1,11 @@
 .PlayerList {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
-  padding-block: 70px;
+  margin-inline: 20px;
+}
+
+.PlayerList > * {
+  flex-basis: 100px;
 }

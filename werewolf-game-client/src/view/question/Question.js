@@ -9,16 +9,12 @@ const Question = ({ question, options }) => {
         {t(question)}
         <span className="Question__options">
           {options.map((option, i) => (
-            <>
+            <span key={i}>
               {i === 0 ? ' ' : ' / '}
-              <button
-                key={i}
-                className="Question__option"
-                onClick={option.action}
-              >
+              <button className="Question__option" onClick={option.action}>
                 {t(option.text)}
               </button>
-            </>
+            </span>
           ))}
         </span>
       </p>

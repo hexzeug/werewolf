@@ -1,15 +1,13 @@
 .OwnPlayer {
-  display: flex;
-  justify-content: center;
-  padding-top: 70px;
+  max-width: 540px;
+  margin-inline: auto;
 }
 
-.OwnPlayer .Player[data-marked] {
-  transform: none;
-}
-
-.OwnPlayer .Player__body {
-  width: 540px;
+.OwnPlayer > .Player {
   height: 120px;
   border-bottom-color: transparent;
+}
+
+.OwnPlayer > .Player[data-marked] {
+  transform: none;
 }

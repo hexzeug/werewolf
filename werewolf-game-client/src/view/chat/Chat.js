@@ -57,14 +57,17 @@ const Chat = () => {
     }, TIMEOUT_MS);
   }, [recalculateAtBottom]);
 
-  const scrollToBottom = useCallback(() => {
-    scrollContainer.current.scroll({
-      top: calculateScrollTopMax(),
-      behavior: 'smooth',
-    });
-    resetScrollTimeout();
-    setIsScrolledToBottom(true);
-  }, [resetScrollTimeout, setIsScrolledToBottom, calculateScrollTopMax]);
+  const scrollToBottom = useCallback(
+    (smooth = true) => {
+      scrollContainer.current.scroll({
+        top: calculateScrollTopMax(),
+        behavior: smooth ? 'smooth' : 'instant',
+      });
+      resetScrollTimeout();
+      setIsScrolledToBottom(true);
+    },
+    [resetScrollTimeout, setIsScrolledToBottom, calculateScrollTopMax]
+  );
   // event handler for scroll event
   const handleScroll = useCallback(() => {
     if (scrollTimeout.current) {
@@ -73,6 +76,18 @@ const Chat = () => {
       recalculateAtBottom();
     }
   }, [resetScrollTimeout, recalculateAtBottom]);
+  // event handler for resize event
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      if (isScrolledToBottomRef.current) {
+        scrollToBottom(false);
+      }
+    });
+    resizeObserver.observe(scrollContainer.current);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [scrollToBottom]);
   // event handler for new messages
   useEffect(() => {
     if (isScrolledToBottomRef.current) {

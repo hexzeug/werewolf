@@ -7,10 +7,18 @@ import PlayerList from './playerlist/PlayerList';
 const App = () => {
   return (
     <div className="App">
-      <Narrator />
-      <PlayerList />
-      <Interaction />
-      <OwnPlayer />
+      <div className="App__element">
+        <Narrator />
+      </div>
+      <div className="App__element">
+        <PlayerList />
+      </div>
+      <div className="App__element">
+        <Interaction />
+      </div>
+      <div className="App__element">
+        <OwnPlayer />
+      </div>
     </div>
   );
 };

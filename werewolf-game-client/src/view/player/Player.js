@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { usePlayer, usePlayerMap } from '../../model/player';
+import { usePlayer } from '../../model/player';
 import { ReactComponent as Heart } from './heart.svg';
 import './Player.css';
 import Spinner from '../spinner/Spinner';

@@ -1,11 +1,12 @@
 .Player {
-  width: fit-content;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-top: 50px;
   padding: 0;
   background-color: transparent;
   transition: transform 0.2s ease-out;
   position: relative;
   user-select: none;
-  /* outline: 2px limegreen dotted; */
 }
 
 .Player[data-marked] {
@@ -14,8 +15,8 @@
 
 .Player__body {
   background-color: white;
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   border: 1px solid currentColor;
   padding: 0;
   position: relative;
@@ -113,7 +114,7 @@
   position: relative;
 }
 
-.Player__snore * {
+.Player__snore > * {
   position: absolute;
   top: -1.2em;
   --animation-speed: 2.5s;
@@ -122,16 +123,16 @@
   animation: snore var(--animation-speed) ease-out infinite;
 }
 
-.Player__snore :nth-child(1) {
+.Player__snore > :nth-child(1) {
   left: 50%;
 }
 
-.Player__snore :nth-child(2) {
+.Player__snore > :nth-child(2) {
   left: 55%;
   animation-delay: calc(var(--animation-speed) / var(--count));
 }
 
-.Player__snore :nth-child(3) {
+.Player__snore > :nth-child(3) {
   left: 48%;
   animation-delay: calc(var(--animation-speed) / var(--count) * 2);
 }
