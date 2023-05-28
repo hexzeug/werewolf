@@ -33,7 +33,7 @@ const Chat = () => {
       scrollContainer.current.clientHeight
     );
   }, []);
-  const recalculateAtBottom = useCallback(() => {
+  const recalculateIsScrolledToBottom = useCallback(() => {
     setIsScrolledToBottom(
       scrollContainer.current.scrollTop >= calculateScrollTopMax()
     );
@@ -53,9 +53,9 @@ const Chat = () => {
     }
     scrollTimeout.current = setTimeout(() => {
       scrollTimeout.current = null;
-      recalculateAtBottom();
+      recalculateIsScrolledToBottom();
     }, TIMEOUT_MS);
-  }, [recalculateAtBottom]);
+  }, [recalculateIsScrolledToBottom]);
 
   const scrollToBottom = useCallback(
     (smooth = true) => {
@@ -63,7 +63,9 @@ const Chat = () => {
         top: calculateScrollTopMax(),
         behavior: smooth ? 'smooth' : 'instant',
       });
-      resetScrollTimeout();
+      if (smooth) {
+        resetScrollTimeout();
+      }
       setIsScrolledToBottom(true);
     },
     [resetScrollTimeout, setIsScrolledToBottom, calculateScrollTopMax]
@@ -73,9 +75,9 @@ const Chat = () => {
     if (scrollTimeout.current) {
       resetScrollTimeout();
     } else {
-      recalculateAtBottom();
+      recalculateIsScrolledToBottom();
     }
-  }, [resetScrollTimeout, recalculateAtBottom]);
+  }, [resetScrollTimeout, recalculateIsScrolledToBottom]);
   // event handler for resize event
   useEffect(() => {
     const resizeObserver = new ResizeObserver(() => {
@@ -116,6 +118,7 @@ const Chat = () => {
           className="Chat__scroll-container"
           ref={scrollContainer}
           onScroll={handleScroll}
+          data-testid="scroll-container"
         >
           <div className="Chat__body">
             {messages.map((message, i) => (
@@ -128,6 +131,7 @@ const Chat = () => {
             className="Chat__scroll-down button"
             data-new-messages={areUnreadMessages || null}
             onClick={scrollToBottom}
+            data-testid="scroll-down-button"
           />
         )}
       </div>
