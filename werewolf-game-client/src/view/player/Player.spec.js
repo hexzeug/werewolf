@@ -1,7 +1,6 @@
 import {
   render,
   screen,
-  cleanup,
   fireEvent,
   queryByAttribute,
 } from '@testing-library/react';
@@ -9,8 +8,6 @@ import Player from './Player';
 import { usePlayer } from '../../model/player';
 
 jest.mock('../../model/player');
-
-afterAll(cleanup);
 
 describe('player component', () => {
   it('should render empty without throwing', () => {
