@@ -15,6 +15,11 @@ jest.mock('../../model/chat');
 jest.mock('../../model/player');
 jest.useFakeTimers();
 
+const resizeObserver = {
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+};
 let mockMessages = [];
 beforeEach(() => {
   jest.clearAllTimers();
@@ -25,11 +30,7 @@ beforeEach(() => {
   usePlayer.mockImplementation((playerId) => ({ name: `${playerId}-name` }));
   usePlayerIds.mockReturnValue(['test-own-id', 'test-id']);
 
-  global.ResizeObserver = jest.fn().mockImplementation(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn(),
-  }));
+  global.ResizeObserver = jest.fn().mockReturnValue(resizeObserver);
   global.HTMLElement.prototype.scroll = jest.fn();
 });
 
@@ -205,6 +206,21 @@ describe('chat scrolling behavior', () => {
     expect(screen.getByTestId('scroll-down-button')).not.toHaveAttribute(
       'data-new-messages'
     );
+  });
+
+  it('should scroll on resize', () => {
+    const { scroll } = setupScrollAPIMock();
+    setupChat();
+    expect(global.ResizeObserver).toBeCalledTimes(1);
+    expect(resizeObserver.observe).toBeCalledTimes(1);
+    expect(resizeObserver.observe).toBeCalledWith(
+      screen.getByTestId('scroll-container')
+    );
+    expect(scroll).toBeCalledTimes(1);
+    global.ResizeObserver.mock.calls[0][0]();
+    expect(global.ResizeObserver).toBeCalledTimes(1);
+    expect(resizeObserver.observe).toBeCalledTimes(1);
+    expect(scroll).toBeCalledTimes(2);
   });
 });
 
