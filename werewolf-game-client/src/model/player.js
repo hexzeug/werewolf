@@ -98,7 +98,3 @@ export const usePlayer = (playerId) =>
   useSyncExternalStore(subscribePlayer(playerId), getSnapshotPlayer(playerId));
 export const usePlayerIds = () =>
   useSyncExternalStore(subscribeList, getSnapshotList);
-
-window.setPlayers = setPlayers;
-window.setPlayerOrder = setPlayerOrder;
-window.hooks = () => hooks;
