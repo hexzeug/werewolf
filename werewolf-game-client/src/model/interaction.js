@@ -18,7 +18,7 @@ interaction: {
   chat?: boolean,
 }
 */
-const storage = {
+const store = {
   interaction: {},
 };
 
@@ -26,14 +26,14 @@ const storage = {
 
 export const updateInteraction = (fn) => {
   setInteraction(
-    produce(storage.interaction, (interaction) => {
+    produce(store.interaction, (interaction) => {
       fn(interaction);
     })
   );
 };
 
 export const setInteraction = (interaction) => {
-  storage.interaction = interaction;
+  store.interaction = interaction;
 };
 
 // Subscription
@@ -47,7 +47,7 @@ const subscribe = (onStoreChange) => {
   };
 };
 
-const getSnapshot = () => storage.interaction;
+const getSnapshot = () => store.interaction;
 
 export const useInteraction = () => {
   return useSyncExternalStore(subscribe, getSnapshot);

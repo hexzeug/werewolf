@@ -9,7 +9,7 @@ message: {
   author: String,
 }
 */
-const storage = {
+const store = {
   messages: [],
 };
 
@@ -21,10 +21,10 @@ const sendMessage = (text) => {
 // Mutation
 
 export const receiveMessage = (message) => {
-  storage.messages = produce(storage.messages, (messages) => {
+  store.messages = produce(store.messages, (messages) => {
     messages.push(message);
   });
-  hooks.forEach((hook) => hook(storage.messages));
+  hooks.forEach((hook) => hook(store.messages));
 };
 
 // Subscription
@@ -38,7 +38,7 @@ const subscribe = (onStoreChange) => {
   };
 };
 
-const getSnapshot = () => storage.messages;
+const getSnapshot = () => store.messages;
 
 export const useChat = () => {
   const messages = useSyncExternalStore(subscribe, getSnapshot);

@@ -8,7 +8,7 @@ narration: {
   data?: Object, (translate interpolation data)
 }
 */
-const storage = {
+const store = {
   narration: {},
 };
 
@@ -49,7 +49,7 @@ const animate = async (hook, narration) => {
 const hooks = new Set();
 
 export const useNarrator = (fadeOut, fadeIn) => {
-  const [narration, setNarration] = useState(storage.narration);
+  const [narration, setNarration] = useState(store.narration);
   const ref = useRef(null);
   useEffect(() => {
     hooks.add({ ref, setNarration, fadeOut, fadeIn });

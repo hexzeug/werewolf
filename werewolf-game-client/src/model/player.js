@@ -16,7 +16,7 @@ player: {
   onClick?: Function,
 }
  */
-const storage = {
+const store = {
   playerOrder: [],
   players: {},
 };
@@ -24,7 +24,7 @@ const storage = {
 // Mutation
 
 export const setPlayerOrder = (playerOrder) => {
-  storage.playerOrder = playerOrder;
+  store.playerOrder = playerOrder;
   hooks.forEach((hook) => {
     if (hook.type === 'list') {
       hook.onStoreChange();
@@ -34,14 +34,14 @@ export const setPlayerOrder = (playerOrder) => {
 
 export const updatePlayers = (fn) =>
   setPlayers(
-    ...produceWithPatches(storage.players, (playerMap) => fn(playerMap))
+    ...produceWithPatches(store.players, (playerMap) => fn(playerMap))
   );
 
 export const setPlayers = (players, patches = undefined) => {
   if (!patches) {
-    [, patches] = produceWithPatches(storage.players, () => players);
+    [, patches] = produceWithPatches(store.players, () => players);
   }
-  storage.players = players;
+  store.players = players;
   const playersChanged = new Set();
   patches.forEach((patch) => {
     playersChanged.add(patch.path[0]);
@@ -74,7 +74,7 @@ const subscribePlayer = (playerId) => {
 const getSnapshotPlayerCache = {};
 const getSnapshotPlayer = (playerId) => {
   if (!getSnapshotPlayerCache[playerId]) {
-    getSnapshotPlayerCache[playerId] = () => storage.players[playerId];
+    getSnapshotPlayerCache[playerId] = () => store.players[playerId];
   }
   return getSnapshotPlayerCache[playerId];
 };
@@ -87,7 +87,7 @@ const subscribeList = (onStoreChange) => {
   };
 };
 
-const getSnapshotList = () => storage.playerOrder;
+const getSnapshotList = () => store.playerOrder;
 
 export const usePlayer = (playerId) =>
   useSyncExternalStore(subscribePlayer(playerId), getSnapshotPlayer(playerId));
