@@ -1,48 +1,53 @@
 import { produce } from 'immer';
 import { useSyncExternalStore } from 'react';
 
-const model = {
-  interaction: {
-    chat: true,
-    question: { text: 'witch.healing.question' },
-    options: [
-      {
-        text: 'witch.healing.answer.yes',
-        action: () => {
-          alert('yes');
-        },
-      },
-      {
-        text: 'witch.healing.answer.no',
-        action: () => {
-          alert('no');
-        },
-      },
-    ],
+// Storage
+
+/*
+interaction: {
+  question?: {
+    text: String, (translate key)
+    data?: Object, (translate interpolation data)
   },
-  hooks: new Set(),
+  options?: [
+    {
+      text: String, (translate key)
+      data?: Object, (translate interpolation data)
+    }
+  ],
+  chat?: boolean,
+}
+*/
+const storage = {
+  interaction: {},
 };
+
+// Mutation
 
 export const updateInteraction = (fn) => {
   setInteraction(
-    produce(model.interaction, (interaction) => {
+    produce(storage.interaction, (interaction) => {
       fn(interaction);
     })
   );
 };
 
 export const setInteraction = (interaction) => {
-  model.interaction = interaction;
+  storage.interaction = interaction;
 };
 
+// Subscription
+
+const hooks = new Set();
+
 const subscribe = (onStoreChange) => {
-  model.hooks.add(onStoreChange);
+  hooks.add(onStoreChange);
   return () => {
-    model.hooks.delete(onStoreChange);
+    hooks.delete(onStoreChange);
   };
 };
 
-const getSnapshot = () => model.interaction;
+const getSnapshot = () => storage.interaction;
 
 export const useInteraction = () => {
   return useSyncExternalStore(subscribe, getSnapshot);

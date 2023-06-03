@@ -1,15 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 
-const model = {
-  hooks: new Set(),
-  narration: {
-    text: 'narrator.generic.sunset',
-  },
+// Storage
+
+/*
+narration: {
+  text?: String, (translate key)
+  data?: Object, (translate interpolation data)
+}
+*/
+const storage = {
+  narration: {},
 };
+
+// Trigger
 
 export const narrate = async (text, data) => {
   const promises = [];
-  model.hooks.forEach((hook) => {
+  hooks.forEach((hook) => {
     promises.push(animate(hook, { text, data }));
   });
   await Promise.all(promises);
@@ -37,12 +44,16 @@ const animate = async (hook, narration) => {
   }
 };
 
+// Subscription
+
+const hooks = new Set();
+
 export const useNarrator = (fadeOut, fadeIn) => {
-  const [narration, setNarration] = useState(model.narration);
+  const [narration, setNarration] = useState(storage.narration);
   const ref = useRef(null);
   useEffect(() => {
-    model.hooks.add({ ref, setNarration, fadeOut, fadeIn });
-    return () => model.hooks.delete({ ref, setNarration, fadeOut, fadeIn });
+    hooks.add({ ref, setNarration, fadeOut, fadeIn });
+    return () => hooks.delete({ ref, setNarration, fadeOut, fadeIn });
   }, [fadeOut, fadeIn]);
   return [narration, ref];
 };
