@@ -75,7 +75,7 @@ const Player = ({ playerId }) => {
 
 const PlayerTag = ({ playerId }) => {
   const player = usePlayer(playerId);
-  return <span className="Player__tag">{player.name}</span>;
+  return <span className="Player__tag">{player?.name}</span>;
 };
 
 const PlayerSnore = () => {

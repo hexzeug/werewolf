@@ -5,7 +5,7 @@ import {
   queryByAttribute,
 } from '@testing-library/react';
 import Player from './Player';
-import { usePlayer } from '../../model/player';
+import { usePlayer, usePlayerIds } from '../../model/player';
 
 jest.mock('../../model/player');
 
@@ -145,6 +145,11 @@ describe('player component', () => {
 });
 
 describe('player tags', () => {
+  it('should render empty without throwing', () => {
+    usePlayer.mockReturnValueOnce({ playerTags: ['test-id'] });
+    render(<Player />);
+  });
+
   it('should render player name', () => {
     usePlayer
       .mockReturnValueOnce({ playerTags: ['test-id'] })
