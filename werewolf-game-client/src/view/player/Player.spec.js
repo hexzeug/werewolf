@@ -5,7 +5,7 @@ import {
   queryByAttribute,
 } from '@testing-library/react';
 import Player from './Player';
-import { usePlayer, usePlayerIds } from '../../model/player';
+import { usePlayer } from '../../model/player';
 
 jest.mock('../../model/player');
 
