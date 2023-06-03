@@ -25,8 +25,11 @@ const store = {
 
 export const setPlayerOrder = (playerOrder) => {
   store.playerOrder = playerOrder;
+  const playersChanged = new Set(playerOrder);
   hooks.forEach((hook) => {
     if (hook.type === 'list') {
+      hook.onStoreChange();
+    } else if (hook.type === 'player' && playersChanged.has(hook.playerId)) {
       hook.onStoreChange();
     }
   });
@@ -38,14 +41,16 @@ export const updatePlayers = (fn) =>
   );
 
 export const setPlayers = (players, patches = undefined) => {
-  if (!patches) {
-    [, patches] = produceWithPatches(store.players, () => players);
+  const playersChanged = new Set();
+  if (patches) {
+    patches.forEach((patch) => {
+      playersChanged.add(patch.path[0]);
+    });
+  } else {
+    Object.keys(store.players).forEach((id) => playersChanged.add(id));
+    Object.keys(players).forEach((id) => playersChanged.add(id));
   }
   store.players = players;
-  const playersChanged = new Set();
-  patches.forEach((patch) => {
-    playersChanged.add(patch.path[0]);
-  });
   hooks.forEach((hook) => {
     if (hook.type === 'player' && playersChanged.has(hook.playerId)) {
       hook.onStoreChange();
@@ -93,3 +98,7 @@ export const usePlayer = (playerId) =>
   useSyncExternalStore(subscribePlayer(playerId), getSnapshotPlayer(playerId));
 export const usePlayerIds = () =>
   useSyncExternalStore(subscribeList, getSnapshotList);
+
+window.setPlayers = setPlayers;
+window.setPlayerOrder = setPlayerOrder;
+window.hooks = () => hooks;
