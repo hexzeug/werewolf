@@ -1,20 +1,16 @@
-import { useSyncExternalStore } from 'react';
 import Question from '../question/Question';
 import './Interaction.css';
 import Chat from '../chat/Chat';
-import { getSnapshot, subscribe } from '../../model/interaction';
+import { useInteraction } from '../../model/interaction';
 
 const Interaction = () => {
-  const interaction = useSyncExternalStore(subscribe, getSnapshot);
+  const { question, options, chat } = useInteraction();
   return (
     <div className="Interaction">
       <div className="Interaction__element">
-        <Question
-          question={interaction.question}
-          options={interaction.options}
-        />
+        {question && <Question question={question} options={options} />}
       </div>
-      <div className="Interaction__element">{interaction.chat && <Chat />}</div>
+      <div className="Interaction__element">{chat && <Chat />}</div>
     </div>
   );
 };

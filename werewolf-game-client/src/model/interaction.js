@@ -1,4 +1,5 @@
 import { produce } from 'immer';
+import { useSyncExternalStore } from 'react';
 
 const model = {
   interaction: {
@@ -34,11 +35,15 @@ export const setInteraction = (interaction) => {
   model.interaction = interaction;
 };
 
-export const subscribe = (onStoreChange) => {
+const subscribe = (onStoreChange) => {
   model.hooks.add(onStoreChange);
   return () => {
     model.hooks.delete(onStoreChange);
   };
 };
 
-export const getSnapshot = () => model.interaction;
+const getSnapshot = () => model.interaction;
+
+export const useInteraction = () => {
+  return useSyncExternalStore(subscribe, getSnapshot);
+};
