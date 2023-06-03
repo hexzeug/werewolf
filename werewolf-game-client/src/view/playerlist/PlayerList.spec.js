@@ -8,13 +8,13 @@ jest.mock('../player/Player');
 
 describe('player list component', () => {
   it('should render all players in correct order except first one', () => {
-    const ids = ['abc', 'def', 'ghi', 'jkl', 'mno'];
-    usePlayerIds.mockReturnValue(ids);
+    usePlayerIds.mockReturnValue(['abc', 'def', 'ghi', 'jkl', 'mno']);
     render(<PlayerList />);
-    expect(Player).toBeCalledTimes(ids.length - 1);
-    Player.mock.calls.forEach((args, i) => {
-      const { playerId } = args[0];
-      expect(playerId).toBe(ids[i + 1]);
-    });
+    expect(Player).toBeCalledTimes(4);
+    // not using toHaveBeenNthCalledWith as it requires to expect all arguments
+    expect(Player.mock.calls[0][0].playerId).toBe('def');
+    expect(Player.mock.calls[1][0].playerId).toBe('ghi');
+    expect(Player.mock.calls[2][0].playerId).toBe('jkl');
+    expect(Player.mock.calls[3][0].playerId).toBe('mno');
   });
 });
