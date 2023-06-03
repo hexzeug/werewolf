@@ -37,7 +37,7 @@ const Player = ({ playerId }) => {
   const bodyContent = (
     <>
       {inLove && (
-        <Heart className="Player__heart" title={t('player.alt.in_love')} />
+        <Heart className="Player__heart" title={t('player.alt.inLove')} />
       )}
       {accused && <span className="Player__section-sign">§</span>}
       <span className="Player__name">{name}</span>
@@ -80,7 +80,7 @@ const PlayerTag = ({ playerId }) => {
 
 const PlayerSnore = () => {
   const { t } = useTranslation();
-  const zzz = t('player.snore_symbol_3_char');
+  const zzz = t('player.snoreSymbol3Char');
   return (
     <div className="Player__snore" data-testid="snore">
       <span>{zzz[0]}</span>

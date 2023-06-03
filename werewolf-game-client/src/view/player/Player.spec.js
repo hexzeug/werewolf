@@ -89,9 +89,9 @@ describe('player component', () => {
       .mockReturnValueOnce({ inLove: false })
       .mockReturnValueOnce({ inLove: true });
     const { rerender } = render(<Player />);
-    expect(screen.queryByTitle('player.alt.in_love')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('player.alt.inLove')).not.toBeInTheDocument();
     rerender(<Player />);
-    expect(screen.getByTitle('player.alt.in_love')).toBeInTheDocument();
+    expect(screen.getByTitle('player.alt.inLove')).toBeInTheDocument();
   });
 
   it('should display accusation', () => {
