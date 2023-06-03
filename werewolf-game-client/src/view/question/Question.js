@@ -6,13 +6,13 @@ const Question = ({ question, options }) => {
   return (
     <div className="Question">
       <p className="Question__text">
-        {t(question)}
+        {t(question.text, question.data)}
         <span className="Question__options">
           {options.map((option, i) => (
             <span key={i}>
               {i === 0 ? ' ' : ' / '}
               <button className="Question__option" onClick={option.action}>
-                {t(option.text)}
+                {t(option.text, option.data)}
               </button>
             </span>
           ))}

@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react';
 const model = {
   interaction: {
     chat: true,
-    question: 'witch.healing.question',
+    question: { text: 'witch.healing.question' },
     options: [
       {
         text: 'witch.healing.answer.yes',
