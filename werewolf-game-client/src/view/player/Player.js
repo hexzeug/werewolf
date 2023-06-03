@@ -4,20 +4,6 @@ import { ReactComponent as Heart } from './heart.svg';
 import './Player.css';
 import Spinner from '../spinner/Spinner';
 
-/* 
-player: {
-  name: String,
-  status: String,
-  role?: String,
-  marked?: boolean,
-  inLove?: boolean,
-  accused?: boolean,
-  playerTags?: Array[String(playername)],
-  disabled?: boolean,
-  onClick?: Function,
-}
- */
-
 const Player = ({ playerId }) => {
   const { t } = useTranslation();
   const player = usePlayer(playerId);

@@ -1,81 +1,95 @@
-import { produce } from 'immer';
-import { useEffect, useState } from 'react';
+import { produceWithPatches } from 'immer';
+import { useSyncExternalStore } from 'react';
 
-const model = {
-  hooks: {
-    playerIds: new Set(),
-    playerMap: new Set(),
-  },
-  playerIds: ['abc1', 'abc3', 'abc2'],
-  playerMap: {
-    abc1: {
-      name: 'hexszeug',
-      status: 'dead',
-      role: 'werewolf',
-      marked: false,
-      inLove: true,
-      accused: false,
-      playerTags: [],
-      disabled: false,
-      onClick: null,
-    },
-    abc2: {
-      name: 'Sishidayako',
-      status: 'sleeping',
-      role: null,
-      marked: true,
-      inLove: false,
-      accused: true,
-      playerTags: ['abc3', 'abc1'],
-      disabled: false,
-      onClick: () => {
-        updatePlayerMap((p) => {
-          p.abc2.marked = !p.abc2.marked;
-        });
-      },
-    },
-    abc3: {
-      name: 'Ikree',
-      status: 'awake',
-      role: 'villager',
-      marked: false,
-      inLove: false,
-      accused: true,
-      playerTags: ['abc2'],
-      disabled: false,
-      onClick: null,
-    },
-  },
+// Storage
+
+/* 
+player: {
+  name: String,
+  status: String,
+  role?: String,
+  marked?: boolean,
+  inLove?: boolean,
+  accused?: boolean,
+  playerTags?: Array, (player ids)
+  disabled?: boolean,
+  onClick?: Function,
+}
+ */
+const storage = {
+  playerOrder: [],
+  players: {},
 };
 
-export const updatePlayerMap = (fn) =>
-  setPlayerMap(produce(model.playerMap, (playerMap) => fn(playerMap)));
+// Mutation
 
-export const setPlayerMap = (players) => {
-  model.playerMap = players;
-  model.hooks.playerMap.forEach((hook) => hook(players));
+export const setPlayerOrder = (playerOrder) => {
+  storage.playerOrder = playerOrder;
+  hooks.forEach((hook) => {
+    if (hook.type === 'list') {
+      hook.onStoreChange();
+    }
+  });
 };
 
-export const usePlayerMap = () => {
-  const [playerMap, setPlayerMap] = useState(model.playerMap);
-  useEffect(() => {
-    model.hooks.playerMap.add(setPlayerMap);
-    return () => {
-      model.hooks.playerMap.delete(setPlayerMap);
+export const updatePlayers = (fn) =>
+  setPlayers(
+    ...produceWithPatches(storage.players, (playerMap) => fn(playerMap))
+  );
+
+export const setPlayers = (players, patches = undefined) => {
+  if (!patches) {
+    [, patches] = produceWithPatches(storage.players, () => players);
+  }
+  storage.players = players;
+  const playersChanged = new Set();
+  patches.forEach((patch) => {
+    playersChanged.add(patch.path[0]);
+  });
+  hooks.forEach((hook) => {
+    if (hook.type === 'player' && playersChanged.has(hook.playerId)) {
+      hook.onStoreChange();
+    }
+  });
+};
+
+// Subscription
+
+const hooks = new Set();
+
+const subscribePlayerCache = {};
+const subscribePlayer = (playerId) => {
+  if (!subscribePlayerCache[playerId]) {
+    subscribePlayerCache[playerId] = (onStoreChange) => {
+      const hook = { type: 'player', playerId, onStoreChange };
+      hooks.add(hook);
+      return () => {
+        hooks.delete(hook);
+      };
     };
-  }, []);
-  return playerMap;
+  }
+  return subscribePlayerCache[playerId];
 };
 
-export const usePlayer = (playerId) => usePlayerMap()[playerId];
-
-export const usePlayerIds = () => {
-  const [playerIds, setPlayerIds] = useState(model.playerIds);
-  useEffect(() => {
-    model.hooks.playerIds.add(setPlayerIds);
-    return () => {
-      model.hooks.playerIds.delete(setPlayerIds);
-    };
-  }, []);
-  return playerIds;
+const getSnapshotPlayerCache = {};
+const getSnapshotPlayer = (playerId) => {
+  if (!getSnapshotPlayerCache[playerId]) {
+    getSnapshotPlayerCache[playerId] = () => storage.players[playerId];
+  }
+  return getSnapshotPlayerCache[playerId];
 };
+
+const subscribeList = (onStoreChange) => {
+  const hook = { type: 'list', onStoreChange };
+  hooks.add(hook);
+  return () => {
+    hooks.delete(hook);
+  };
+};
+
+const getSnapshotList = () => storage.playerOrder;
+
+export const usePlayer = (playerId) =>
+  useSyncExternalStore(subscribePlayer(playerId), getSnapshotPlayer(playerId));
+export const usePlayerIds = () =>
+  useSyncExternalStore(subscribeList, getSnapshotList);
