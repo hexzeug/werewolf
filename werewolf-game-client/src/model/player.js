@@ -25,11 +25,8 @@ const store = {
 
 export const setPlayerOrder = (playerOrder) => {
   store.playerOrder = playerOrder;
-  const playersChanged = new Set(playerOrder);
   hooks.forEach((hook) => {
     if (hook.type === 'list') {
-      hook.onStoreChange();
-    } else if (hook.type === 'player' && playersChanged.has(hook.playerId)) {
       hook.onStoreChange();
     }
   });
