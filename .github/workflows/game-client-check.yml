@@ -1,9 +1,10 @@
-name: Werewolf Game Client Checks
+name: checks
+run-name: Werewolf Game Client Checks
 
 on:
   pull_request:
     paths:
-      - /werewolf-game-client/
+      - 'werewolf-game-client/**'
 
 defaults:
   run:
