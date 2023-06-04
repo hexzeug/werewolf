@@ -13,7 +13,7 @@ const store = {
   messages: [],
 };
 
-// debug / developement
+// debug / development
 const sendMessage = (text) => {
   receiveMessage({ text, author: 'abc1' });
 };
