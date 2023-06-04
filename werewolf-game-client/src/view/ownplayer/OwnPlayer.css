@@ -1,0 +1,13 @@
+.OwnPlayer {
+  max-width: 540px;
+  margin-inline: auto;
+}
+
+.OwnPlayer > .Player {
+  height: 120px;
+  border-bottom-color: transparent;
+}
+
+.OwnPlayer > .Player[data-marked] {
+  transform: none;
+}

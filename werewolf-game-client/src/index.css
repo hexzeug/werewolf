@@ -1,0 +1,45 @@
+/* CSS reset */
+@import 'normalize.css';
+
+*,
+*:where(::before, ::after) {
+  box-sizing: border-box;
+}
+
+:where(img, picture, svg, video) {
+  display: block;
+  max-width: 100%;
+}
+
+:where(input, textarea, button, select) {
+  font: inherit;
+  color: inherit;
+}
+
+/* Global styles */
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+.button {
+  user-select: none;
+  border: solid 1px currentColor;
+  background-color: white;
+}
+
+.button:not(:disabled) {
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #f9f9f9;
+}
+
+.button:active:not(:disabled) {
+  background-color: #eeeeee;
+}
+
+.button:disabled {
+  color: #8e8e8e;
+}

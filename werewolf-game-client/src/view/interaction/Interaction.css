@@ -1,0 +1,23 @@
+.Interaction {
+  max-width: 540px;
+  height: 100%;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.Interaction__element {
+  flex-shrink: 0;
+}
+
+.Interaction__element:first-child {
+  flex-grow: 1;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.Interaction__element:last-child {
+  height: 200px; /* effectively a min-height due to flex-grow */
+  flex-grow: 10;
+}
