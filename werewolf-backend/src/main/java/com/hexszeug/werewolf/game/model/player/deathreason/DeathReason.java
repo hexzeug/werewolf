@@ -1,23 +1,26 @@
 package com.hexszeug.werewolf.game.model.player.deathreason;
 
 /**
- * Represents the reason for a player's death.
+ * Enumeration representing the different reasons for a player's death in a werewolf game.
  */
 public enum DeathReason {
     /**
-     * Player was declared guilty by the court and executed.
+     * The player was executed by a vote during the accusation phase.
      */
     EXECUTED,
+
     /**
-     * Player died because they were in the couple and the other player in the couple died.
+     * The player died of a broken heart due to being separated from their lover.
      */
     HEARTBREAK,
+
     /**
-     * Player died during night thus the exact death reason is hidden.
+     * The player died during the night phase.
      */
     NIGHT,
+
     /**
-     * Player was shot by a hunter.
+     * The player was shot by the Hunter upon their death.
      */
     SHOT,
 }

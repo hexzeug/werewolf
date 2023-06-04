@@ -45,7 +45,7 @@ public class VillageImpl implements Village {
     }
 
     @Override
-    public <T> void set(String key, T value) {
+    public void set(String key, Object value) {
         customProps.put(key, value);
     }
 

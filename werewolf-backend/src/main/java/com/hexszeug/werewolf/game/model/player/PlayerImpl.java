@@ -26,7 +26,7 @@ public class PlayerImpl implements Player {
     private final Map<String, Object> customProps = new HashMap<>();
 
     @Override
-    public <T> void set(String key, T value) {
+    public void set(String key, Object value) {
         customProps.put(key, value);
     }
 
