@@ -1,6 +1,12 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+i18n.on('languageChanged', (lng) => {
+  document.title = i18n.t('document.title');
+  document.documentElement.setAttribute('lang', lng);
+  document.documentElement.setAttribute('dir', i18n.dir());
+});
+
 i18n.use(initReactI18next).init({
   debug: true,
   lng: 'de',
@@ -10,6 +16,7 @@ i18n.use(initReactI18next).init({
   resources: {
     de: {
       translation: {
+        'document.title': 'Werwolf Game Client',
         'narrator.generic.sunset': 'Das Dorf schläft ein.',
         'narrator.werewolves.awake': 'Die Werwölfe erwachen.',
         'roles.cupid': 'Armor',
