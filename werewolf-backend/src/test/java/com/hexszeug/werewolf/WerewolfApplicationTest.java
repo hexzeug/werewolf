@@ -4,10 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WerewolfApplicationTests {
+class WerewolfApplicationTest {
 
 	@Test
-	void contextLoads() {
+	void startsWithoutCrashing() {
+		// given
+
+		// when
+		WerewolfApplication.main(new String[0]);
+
+		// then
 	}
 
 }
