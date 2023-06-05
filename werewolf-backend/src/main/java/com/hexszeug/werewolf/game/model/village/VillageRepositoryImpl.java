@@ -18,4 +18,8 @@ public class VillageRepositoryImpl implements VillageRepository {
     public void addVillage(Village village) {
         villageMap.put(village.getVillageId(), village);
     }
+
+    public void removeVillage(Village village) {
+        villageMap.remove(village.getVillageId());
+    }
 }
