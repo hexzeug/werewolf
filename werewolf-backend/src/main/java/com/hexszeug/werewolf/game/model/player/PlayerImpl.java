@@ -18,9 +18,9 @@ public class PlayerImpl implements Player {
     private final String villageId;
     private final String name;
     private final Role role;
-    private boolean alive;
+    private boolean alive = true;
     private DeathReason deathReason;
-    private int deathIGTime;
+    private int deathIGTime = -1;
 
     @Getter(AccessLevel.NONE)
     private final Map<String, Object> customProps = new HashMap<>();
