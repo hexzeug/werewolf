@@ -1,12 +1,10 @@
 package com.hexszeug.werewolf.launcher.alpha;
 
-import com.hexszeug.werewolf.game.model.authorization.AuthorizationRepositoryImpl;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.PlayerImpl;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.VillageImpl;
-import com.hexszeug.werewolf.game.model.village.VillageRepositoryImpl;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -16,8 +14,8 @@ import java.security.SecureRandom;
 import java.util.*;
 
 @RequiredArgsConstructor
-@Service
 @Log4j2
+@Service
 public class GameCreationServiceImpl implements GameCreationService {
     private static final int PLAYERS_MIN = 1;
     private static final int PLAYERS_MAX = 18;
@@ -42,11 +40,19 @@ public class GameCreationServiceImpl implements GameCreationService {
             Role.VILLAGER
     );
 
-    private final AuthorizationRepositoryImpl authorizationRepository;
-    private final VillageRepositoryImpl villageRepository;
+    private final MutableAuthorizationRepository authorizationRepository;
+    private final MutableVillageRepository villageRepository;
 
     @Override
     public void createGame(int playerCount) {
+        if (authorizationRepository == null) {
+            log.warn("AuthorizationRepositoryImpl is not in application context. Skipping game creation.");
+            return;
+        }
+        if (villageRepository == null) {
+            log.warn("VillageRepositoryImpl is not in application context. Skipping game creation.");
+            return;
+        }
         if (playerCount < PLAYERS_MIN || playerCount > PLAYERS_MAX) {
             throw new IllegalArgumentException(String.format(
                     "playerCount must lie between %s and %s.",
@@ -108,9 +114,7 @@ public class GameCreationServiceImpl implements GameCreationService {
                 role
         );
         switch (role) {
-            case SEER -> {
-                player.set("seerHistory", new ArrayList<>());
-            }
+            case SEER -> player.set("seerHistory", new ArrayList<>());
             case WITCH -> {
                 player.set("healPotion", true);
                 player.set("poisonPotion", true);
@@ -119,206 +123,23 @@ public class GameCreationServiceImpl implements GameCreationService {
         return player;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static final List<String> PLAYER_NAMES = List.of(
-            "bapi",
-            "beqa",
-            "bewo",
-            "bido",
-            "bize",
-            "bojo",
-            "bomp",
-            "bova",
-            "bram",
-            "brax",
-            "brix",
-            "ceju",
-            "cend",
-            "cleg",
-            "coyo",
-            "crob",
-            "cufa",
-            "cupo",
-            "cuya",
-            "dexu",
-            "dorj",
-            "doxo",
-            "dram",
-            "dren",
-            "drez",
-            "drip",
-            "dron",
-            "drox",
-            "drup",
-            "dupo",
-            "fage",
-            "fend",
-            "feza",
-            "firk",
-            "fiwo",
-            "fizu",
-            "foku",
-            "fowp",
-            "frax",
-            "friz",
-            "froj",
-            "froz",
-            "fuja",
-            "gawe",
-            "glip",
-            "glix",
-            "goka",
-            "grev",
-            "grom",
-            "grum",
-            "gupo",
-            "gwen",
-            "hazo",
-            "hefu",
-            "hend",
-            "homp",
-            "hybe",
-            "jalk",
-            "jeld",
-            "jert",
-            "jorb",
-            "jore",
-            "jove",
-            "jowp",
-            "jurm",
-            "juxo",
-            "kapi",
-            "klax",
-            "klip",
-            "klow",
-            "kodi",
-            "korp",
-            "krax",
-            "kuca",
-            "kuja",
-            "kuno",
-            "kurl",
-            "kuxi",
-            "lebo",
-            "liva",
-            "lopu",
-            "lupa",
-            "mava",
-            "milk",
-            "mirk",
-            "mixa",
-            "moxe",
-            "mudo",
-            "muxa",
-            "muxi",
-            "nabe",
-            "naji",
-            "nemo",
-            "nepa",
-            "nift",
-            "nolt",
-            "nuxe",
-            "pako",
-            "pema",
-            "peyo",
-            "pibl",
-            "pima",
-            "pixa",
-            "pleb",
-            "plom",
-            "plux",
-            "polt",
-            "poya",
-            "puxa",
-            "qaza",
-            "qexo",
-            "qize",
-            "qosi",
-            "quak",
-            "quax",
-            "quay",
-            "quaz",
-            "quik",
-            "quix",
-            "quna",
-            "reja",
-            "riza",
-            "rogu",
-            "roto",
-            "sake",
-            "saxi",
-            "scop",
-            "shox",
-            "skaw",
-            "skiz",
-            "skop",
-            "skow",
-            "slux",
-            "sner",
-            "snox",
-            "soma",
-            "soya",
-            "suco",
-            "suge",
-            "swip",
-            "swiz",
-            "swum",
-            "tano",
-            "thry",
-            "trix",
-            "tuxe",
-            "tuxi",
-            "twiz",
-            "twor",
-            "vaju",
-            "vapa",
-            "veck",
-            "vekt",
-            "vend",
-            "vent",
-            "venz",
-            "vept",
-            "vick",
-            "vigo",
-            "vimp",
-            "vixt",
-            "viza",
-            "vond",
-            "vone",
-            "vorg",
-            "vujo",
-            "vurl",
-            "vuta",
-            "vuxo",
-            "waje",
-            "welp",
-            "wifa",
-            "wima",
-            "wimp",
-            "worp",
-            "wovi",
-            "wurn",
-            "wuzu",
-            "xabe",
-            "xade",
-            "xamp",
-            "xift",
-            "xina",
-            "xode",
-            "xuth",
-            "yado",
-            "yorb",
-            "yorp",
-            "yozz",
-            "yump",
-            "zema",
-            "zern",
-            "zeya",
-            "zimp",
-            "zint",
-            "zoma",
-            "zomp",
-            "zopa",
-            "zovo",
-            "zuxo"
+            "bapi", "beqa", "bewo", "bido", "bize", "bojo", "bomp", "bova", "bram", "brax", "brix", "ceju",
+            "cend", "cleg", "coyo", "crob", "cufa", "cupo", "cuya", "dexu", "dorj", "doxo", "dram", "dren", "drez",
+            "drip", "dron", "drox", "drup", "dupo", "fage", "fend", "feza", "firk", "fiwo", "fizu", "foku", "fowp",
+            "frax", "friz", "froj", "froz", "fuja", "gawe", "glip", "glix", "goka", "grev", "grom", "grum", "gupo",
+            "gwen", "hazo", "hefu", "hend", "homp", "hybe", "jalk", "jeld", "jert", "jorb", "jore", "jove", "jowp",
+            "jurm", "juxo", "kapi", "klax", "klip", "klow", "kodi", "korp", "krax", "kuca", "kuja", "kuno", "kurl",
+            "kuxi", "lebo", "liva", "lopu", "lupa", "mava", "milk", "mirk", "mixa", "moxe", "mudo", "muxa", "muxi",
+            "nabe", "naji", "nemo", "nepa", "nift", "nolt", "nuxe", "pako", "pema", "peyo", "pibl", "pima", "pixa",
+            "pleb", "plom", "plux", "polt", "poya", "puxa", "qaza", "qexo", "qize", "qosi", "quak", "quax", "quay",
+            "quaz", "quik", "quix", "quna", "reja", "riza", "rogu", "roto", "sake", "saxi", "scop", "shox", "skaw",
+            "skiz", "skop", "skow", "slux", "sner", "snox", "soma", "soya", "suco", "suge", "swip", "swiz", "swum",
+            "tano", "thry", "trix", "tuxe", "tuxi", "twiz", "twor", "vaju", "vapa", "veck", "vekt", "vend", "vent",
+            "venz", "vept", "vick", "vigo", "vimp", "vixt", "viza", "vond", "vone", "vorg", "vujo", "vurl", "vuta",
+            "vuxo", "waje", "welp", "wifa", "wima", "wimp", "worp", "wovi", "wurn", "wuzu", "xabe", "xade", "xamp",
+            "xift", "xina", "xode", "xuth", "yado", "yorb", "yorp", "yozz", "yump", "zema", "zern", "zeya", "zimp",
+            "zint", "zoma", "zomp", "zopa", "zovo", "zuxo"
     );
 }
