@@ -3,6 +3,7 @@ package com.hexszeug.werewolf.game.model.authorization;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.VillageRepository;
+import com.hexszeug.werewolf.launcher.alpha.MutableAuthorizationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Repository
-public class AuthorizationRepositoryImpl implements AuthorizationRepository {
+public class AuthorizationRepositoryImpl implements AuthorizationRepository, MutableAuthorizationRepository {
     private final VillageRepository villageRepository;
     private final Map<String, PlayerLocation> authTokenPlayerLocationMap = new HashMap<>();
 

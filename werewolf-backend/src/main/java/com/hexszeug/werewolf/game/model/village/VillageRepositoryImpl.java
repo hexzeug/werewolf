@@ -1,12 +1,13 @@
 package com.hexszeug.werewolf.game.model.village;
 
+import com.hexszeug.werewolf.launcher.alpha.MutableVillageRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class VillageRepositoryImpl implements VillageRepository {
+public class VillageRepositoryImpl implements VillageRepository, MutableVillageRepository {
     private final Map<String, Village> villageMap = new HashMap<>();
 
     @Override
