@@ -6,19 +6,26 @@ import com.hexszeug.werewolf.game.events.connections.DisconnectingEvent;
 import com.hexszeug.werewolf.game.model.player.Player;
 import lombok.*;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.concurrent.ScheduledFuture;
 
 import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.event;
 
 @RequiredArgsConstructor
 public class ConnectionImpl implements Connection {
+    private final static Duration HEARTBEAT_DELAY = Duration.ofSeconds(10);
+
     private final ApplicationEventPublisher eventPublisher;
+    private final TaskScheduler taskScheduler;
 
     @Getter
     private final Player player;
     private SseEmitter sseEmitter;
+    private ScheduledFuture<?> heartbeatTask;
     private int messageId = 0;
     @Getter
     private boolean completed = false;
@@ -31,7 +38,9 @@ public class ConnectionImpl implements Connection {
             sseEmitter.onCompletion(() -> internalCompleteAfterResponseCommitted(null));
             sseEmitter.onError(this::internalCompleteAfterResponseCommitted);
         }
-        //TODO initialize heartbeat mechanism
+        heartbeatTask = taskScheduler.scheduleWithFixedDelay(this::sendHeartbeat, HEARTBEAT_DELAY);
+        // note that this will never fail immediately as the SseEmitter queues all messages
+        // to send them after it is initialized by being returned from this method
         send(event().reconnectTime(0));
         eventPublisher.publishEvent(new ConnectedEventImpl());
         return sseEmitter;
@@ -48,6 +57,14 @@ public class ConnectionImpl implements Connection {
     public void completeWithError(Throwable ex) {
         // not using SseEmitter's completeWithError as dispatch into the app server is unwanted
         internalCompleteBeforeResponseCommitted(ex);
+    }
+
+    private void sendHeartbeat() {
+        if (isCompleted()) {
+            heartbeatTask.cancel(true);
+        } else {
+            internalSend(event().comment(""), false);
+        }
     }
 
     private void internalSend(SseEmitter.SseEventBuilder eventBuilder, boolean addId) {

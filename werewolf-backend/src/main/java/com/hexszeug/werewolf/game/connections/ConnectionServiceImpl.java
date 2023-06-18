@@ -5,6 +5,7 @@ import com.hexszeug.werewolf.game.model.player.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -17,6 +18,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.e
 @RequiredArgsConstructor
 public class ConnectionServiceImpl implements ConnectionService {
     private final ApplicationEventPublisher eventPublisher;
+    private final TaskScheduler taskScheduler;
 
     private final Map<Player, Connection> connections = new HashMap<>();
 
@@ -26,7 +28,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         if (oldConnection != null && !oldConnection.isCompleted()) {
             oldConnection.completeWithError(new ConnectedFromOtherLocationException(oldConnection));
         }
-        Connection connection = new ConnectionImpl(eventPublisher, player);
+        Connection connection = new ConnectionImpl(eventPublisher, taskScheduler, player);
         connections.put(player, connection);
         return connection.initialize();
     }
