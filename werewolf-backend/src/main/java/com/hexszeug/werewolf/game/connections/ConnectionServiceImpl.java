@@ -28,7 +28,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         if (oldConnection != null && !oldConnection.isCompleted()) {
             oldConnection.completeWithError(new ConnectedFromOtherLocationException(oldConnection));
         }
-        Connection connection = new ConnectionImpl(eventPublisher, taskScheduler, player);
+        ConnectionImpl connection = new ConnectionImpl(eventPublisher, taskScheduler, player);
         connections.put(player, connection);
         return connection.initialize();
     }
