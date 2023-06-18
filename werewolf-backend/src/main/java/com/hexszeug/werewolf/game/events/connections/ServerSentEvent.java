@@ -15,5 +15,5 @@ public interface ServerSentEvent<P> {
 
     default boolean isTarget(Player player) {
         return true;
-    };
+    }
 }

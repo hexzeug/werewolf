@@ -7,9 +7,11 @@ import com.hexszeug.werewolf.game.model.player.Player;
 import lombok.*;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.concurrent.ScheduledFuture;
 
@@ -60,7 +62,7 @@ public class ConnectionImpl implements Connection {
     }
 
     private void sendHeartbeat() {
-        if (isCompleted()) {
+        if (completed) {
             heartbeatTask.cancel(true);
         } else {
             internalSend(event().comment(""), false);
@@ -82,11 +84,17 @@ public class ConnectionImpl implements Connection {
             try {
                 sseEmitter.send(eventBuilder);
             } catch (IOException ex) {
-                // when send fails response is already committed
+                // when send fails response should already be committed
                 internalCompleteAfterResponseCommitted(ex);
             } catch (IllegalStateException ex) {
-                // when send fails response is already committed
-                internalCompleteAfterResponseCommitted(ex);
+                try {
+                    // this is a hacky workaround for a bug in the ResponseBodyEmitter
+                    // https://github.com/spring-projects/spring-framework/issues/30687
+                    // which preserves memory leaks
+                    Field sendFailed = ResponseBodyEmitter.class.getDeclaredField("sendFailed");
+                    sendFailed.setAccessible(true);
+                    sendFailed.setBoolean(sseEmitter, false);
+                } catch (NoSuchFieldException | IllegalAccessException ignore) {}
                 throw ex;
             }
         }
