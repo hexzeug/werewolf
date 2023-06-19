@@ -1,9 +1,11 @@
 package com.hexszeug.werewolf.game.model.village.phase;
 
+import com.hexszeug.werewolf.utils.SerializeToLowercaseEnum;
+
 /**
  * Enumeration representing the different phases in a werewolf game.
  */
-public enum Phase {
+public enum Phase implements SerializeToLowercaseEnum {
     /**
      * The initial phase when the game starts.
      */

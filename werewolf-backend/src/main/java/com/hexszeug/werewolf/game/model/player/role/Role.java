@@ -1,9 +1,11 @@
 package com.hexszeug.werewolf.game.model.player.role;
 
+import com.hexszeug.werewolf.utils.SerializeToLowercaseEnum;
+
 /**
  * Enumeration representing the different roles a player can have in a werewolf game.
  */
-public enum Role {
+public enum Role implements SerializeToLowercaseEnum {
     /**
      * The role of the Cupid, who can select two players to fall in love.
      */
