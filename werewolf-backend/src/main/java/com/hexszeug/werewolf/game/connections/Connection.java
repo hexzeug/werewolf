@@ -53,7 +53,12 @@ public interface Connection {
      *     {@link com.hexszeug.werewolf.game.events.connections.DisconnectingEvent DisconnectingEvent}
      *     is published in addition to the {@code DisconnectedEvent}
      *     which is published after the connection closed.
+     *     The {@code DisconnectingEvent} will trigger an event handler in {@link ConnectionService} which
+     *     serializes the error using {@link ServerSentError.Data} and sends it to the client before
+     *     the connection is closed.
      * </p>
+     * @see ServerSentError
+     * @see ConnectionService#disconnect(Player, Throwable)
      *
      * @param ex the exception serialized and send to the client
      */

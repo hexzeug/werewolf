@@ -33,6 +33,12 @@ public interface ConnectionService {
     /**
      * Disconnects the player using {@link Connection#completeWithError(Throwable)}.
      * Does nothing if the player is not connected.
+     * <p>
+     *     The cause will be send to the player in advance making use of the
+     *     {@link com.hexszeug.werewolf.game.events.connections.DisconnectingEvent DisconnectingEvent}.
+     *     If the exception implements {@link ServerSentError} the serialization will contain more detail.
+     * </p>
+     * @see ServerSentError
      * @param player the player
      * @param cause the exception passed to the connection as a reason to close the connection
      */
