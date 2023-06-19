@@ -31,7 +31,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     public SseEmitter connect(Player player) {
         Connection oldConnection = connections.get(player);
         if (oldConnection != null && !oldConnection.isCompleted()) {
-            oldConnection.completeWithError(new ConnectedFromOtherLocationException(oldConnection));
+            oldConnection.completeWithError(new ConnectedFromOtherLocationException());
         }
         ConnectionImpl connection = new ConnectionImpl(eventPublisher, taskScheduler, player);
         connections.put(player, connection);

@@ -1,29 +1,13 @@
 package com.hexszeug.werewolf.game.connections;
 
-import lombok.Getter;
+import com.hexszeug.werewolf.game.model.player.Player;
+import lombok.experimental.StandardException;
 
-public class ConnectedFromOtherLocationException extends Exception implements ServerSentError {
-
-    @Getter
-    private final Connection connection;
-
-    public ConnectedFromOtherLocationException(Connection connection) {
-        super();
-        this.connection = connection;
-    }
-
-    public ConnectedFromOtherLocationException(Connection connection, String message) {
-        super(message);
-        this.connection = connection;
-    }
-
-    public ConnectedFromOtherLocationException(Connection connection, Throwable cause) {
-        super(cause);
-        this.connection = connection;
-    }
-
-    public ConnectedFromOtherLocationException(Connection connection, String message, Throwable cause) {
-        super(message, cause);
-        this.connection = connection;
-    }
-}
+/**
+ * If a player establishes a {@link Connection} but there already exists another connection to them,
+ * the old connection is closed by passing an instance of this exception
+ * to {@link Connection#completeWithError(Throwable)}.
+ * @see ConnectionService#connect(Player)
+ */
+@StandardException
+public class ConnectedFromOtherLocationException extends Exception implements ServerSentError {}
