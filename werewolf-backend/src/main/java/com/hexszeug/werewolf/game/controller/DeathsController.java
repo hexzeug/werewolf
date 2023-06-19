@@ -15,6 +15,26 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class DeathsController {
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <p>
+     *     none
+     * </p>
+     * <p>
+     *     <b>Response:</b>
+     * </p>
+     * <pre>
+     * {
+     *     {@code <player id>}: {
+     *         role: {@link Role}
+     *         reason: {@link DeathReason}
+     *         igtime: {@code int} (in-game time at death)
+     *     }
+     *     ...
+     * }
+     * </pre>
+     */
     @GetMapping("/deaths")
     public Map<String, DeathInfo> handleDeaths(Village village) {
         return village
@@ -25,13 +45,6 @@ public class DeathsController {
                         Player::getPlayerId,
                         p -> new DeathInfo(p.getRole(), p.getDeathReason(), p.getDeathIGTime())
                 ));
-    }
-
-    @GetMapping("/deaths/test")
-    public void test(Player player) {
-        player.setAlive(false);
-        player.setDeathReason(DeathReason.NIGHT);
-        player.setDeathIGTime(3);
     }
 
     @Value
