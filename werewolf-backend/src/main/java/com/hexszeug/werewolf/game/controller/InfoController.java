@@ -16,6 +16,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class InfoController {
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <p>
+     * none
+     * </p><p>
+     * <b>Response:</b>
+     * <pre>
+     * {
+     *     previousPhase: {@link Phase}
+     *     currentPhase: {@link Phase}
+     *     sinceTimestamp: {@code long} (the timestamp since when the current phase is active)
+     *     igtime: {@code int} (current in-game time)
+     * }
+     * </pre>
+     * </p>
+     */
     @GetMapping("/narrator")
     public NarrationInfo handleNarrator(Village village) {
         List<PhaseHistoryElement> phaseHistory = village.getPhaseHistory();
@@ -30,42 +47,78 @@ public class InfoController {
         );
     }
 
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <p>
+     * none
+     * </p><p>
+     * <b>Response:</b>
+     * <pre>
+     * {
+     *     {@code <own player id>}: {
+     *         role: {@link Role}
+     *     }
+     * }
+     * </pre>
+     * </p>
+     */
     @GetMapping("/me")
-    public PrivatePlayerInfo handleMe(Player player) {
-        return new PrivatePlayerInfo(player.getPlayerId(), player.getRole());
+    public Map<String, PrivatePlayerInfo> handleMe(Player player) {
+        return Map.of(player.getPlayerId(), new PrivatePlayerInfo(player.getRole()));
     }
 
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <p>
+     * none
+     * </p><p>
+     * <b>Response:</b>
+     * <pre>
+     * {
+     *     ids: [ (consistent order)
+     *         {@link String} (player id)
+     *         ...
+     *     ]
+     *     players: {
+     *         {@code <player id>}: {
+     *             name: {@link String}
+     *         }
+     *         ...
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * */
     @GetMapping("/players")
     public PlayersInfo handlePlayers(Player player, Village village) {
-        List<Player> playerList = village.getPlayerList();
-        int startIndex = playerList.indexOf(player);
-        List<String> playerIdList = village
-                .getPlayerList()
-                .stream()
-                .map(Player::getPlayerId)
-                .collect(Collectors.toList());
-        // rotates the list so the requesting player's id is at index 0
-        Collections.rotate(playerIdList, -startIndex);
-        Map<String, PublicPlayerInfo> players = playerList
-                .stream()
-                .collect(Collectors.toMap(
-                        Player::getPlayerId,
-                        p -> new PublicPlayerInfo(p.getName())
-                ));
-        return new PlayersInfo(playerIdList, players);
+        return new PlayersInfo(
+                village
+                        .getPlayerList()
+                        .stream()
+                        .map(Player::getPlayerId)
+                        .toList(),
+                village
+                        .getPlayerList()
+                        .stream()
+                        .collect(Collectors.toMap(
+                                Player::getPlayerId,
+                                p -> new PublicPlayerInfo(p.getName())
+                        ))
+        );
     }
 
     @Value
     private static class NarrationInfo {
         Phase previousPhase;
         Phase currentPhase;
-        long since;
+        long sinceTimestamp;
         int igtime;
     }
 
     @Value
     private static class PrivatePlayerInfo {
-        String id;
         Role role;
     }
 
