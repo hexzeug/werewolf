@@ -1,4 +1,4 @@
-package com.hexszeug.werewolf.game.controller.authorization;
+package com.hexszeug.werewolf.game.controller.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

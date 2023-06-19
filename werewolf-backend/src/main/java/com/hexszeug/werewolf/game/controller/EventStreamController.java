@@ -1,4 +1,4 @@
-package com.hexszeug.werewolf.game.controller.sse;
+package com.hexszeug.werewolf.game.controller;
 
 import com.hexszeug.werewolf.game.connections.ConnectionService;
 import com.hexszeug.werewolf.game.model.player.Player;

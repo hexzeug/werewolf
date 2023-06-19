@@ -1,5 +1,6 @@
-package com.hexszeug.werewolf.game.controller.authorization;
+package com.hexszeug.werewolf.game.controller;
 
+import com.hexszeug.werewolf.game.controller.exceptions.AuthorizationException;
 import com.hexszeug.werewolf.game.model.authorization.AuthorizationRepository;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.village.Village;
