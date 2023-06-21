@@ -24,7 +24,7 @@ public class AuthorizationRepositoryImpl implements AuthorizationRepository, Mut
         if (playerLocation == null) return null;
         Village village = villageRepository.getByVillageId(playerLocation.getVillageId());
         if (village == null) return null;
-        return village.getByPlayerId(playerLocation.getPlayerId());
+        return village.getPlayerById(playerLocation.getPlayerId());
     }
 
     public void addAuthorization(String authToken, String villageId, String playerId) {

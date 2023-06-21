@@ -38,6 +38,12 @@ public class VillageImpl implements Village {
     }
 
     @Override
+    public Phase getCurrentPhase() {
+        if (phaseHistory.isEmpty()) return null;
+        return phaseHistory.get(phaseHistory.size() - 1).getPhase();
+    }
+
+    @Override
     public void pushPhaseHistoryElement(PhaseHistoryElement phaseHistoryElement) {
         if (phaseHistoryElement != null) {
             phaseHistory.add(phaseHistoryElement);
@@ -61,7 +67,7 @@ public class VillageImpl implements Village {
     }
 
     @Override
-    public Player getByPlayerId(String playerId) {
+    public Player getPlayerById(String playerId) {
         if (playerId == null) return null;
         for (Player player : playerList) {
             if (playerId.equals(player.getPlayerId())) {

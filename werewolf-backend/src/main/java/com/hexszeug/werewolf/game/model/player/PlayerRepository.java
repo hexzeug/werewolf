@@ -13,7 +13,7 @@ public interface PlayerRepository {
      * @param playerId the ID of the player to retrieve.
      * @return the player with the specified player ID, or {@code null} if not found.
      */
-    Player getByPlayerId(String playerId);
+    Player getPlayerById(String playerId);
 
     /**
      * Returns a list of all players in the repository.
