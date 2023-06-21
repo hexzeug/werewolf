@@ -1,13 +1,15 @@
 package com.hexszeug.werewolf.game.controller;
 
+import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
 import com.hexszeug.werewolf.game.controller.exceptions.NoCoupleException;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.hexszeug.werewolf.game.model.village.phase.Phase;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -52,5 +54,31 @@ public class CupidController {
             throw new ForbiddenException("The couple must be dead or you must be either in the couple or the cupid.");
         }
         return List.of(member1, member2);
+    }
+
+    @PostMapping(value = "/couple", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void handlePostCouple(@RequestBody List<String> coupleIds, Player player, Village village) {
+        if (player.getRole() != Role.CUPID) {
+            throw new ForbiddenException("You must be the cupid.");
+        }
+        if (village.getCurrentPhase() != Phase.CUPID) {
+            throw new ForbiddenException("Only available in the cupid phase.");
+        }
+        if (coupleIds.size() != 2) {
+            throw new BadRequestException("Couple array must contain 2 elements not " + coupleIds.size() + ".");
+        }
+        Player player1 = village.getPlayerById(coupleIds.get(0));
+        Player player2 = village.getPlayerById(coupleIds.get(1));
+        if (player1 == null) {
+            throw new BadRequestException("Player %s is not in the village.".formatted(coupleIds.get(0)));
+        }
+        if (player2 == null) {
+            throw new BadRequestException("Player %s is not in the village.".formatted(coupleIds.get(1)));
+        }
+        village.set(KEY_COUPLE_MEMBER_1, player1.getPlayerId());
+        village.set(KEY_COUPLE_MEMBER_2, player2.getPlayerId());
+        village.set(KEY_COUPLE_ALIVE, true);
+        //TODO continue narration
     }
 }
