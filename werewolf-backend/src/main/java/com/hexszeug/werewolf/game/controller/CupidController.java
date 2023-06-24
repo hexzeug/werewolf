@@ -141,15 +141,27 @@ public class CupidController {
     }
 
     private String getPlayerId1(Village village) {
-        return village.get(KEY_COUPLE_MEMBER_1, String.class);
+        try {
+            return village.get(KEY_COUPLE_MEMBER_1, String.class);
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Couple member is not a string.", ex);
+        }
     }
 
     private String getPlayerId2(Village village) {
-        return village.get(KEY_COUPLE_MEMBER_2, String.class);
+        try {
+            return village.get(KEY_COUPLE_MEMBER_2, String.class);
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Couple member is not a string.", ex);
+        }
     }
 
     private Boolean getCoupleAlive(Village village) {
-        return village.get(KEY_COUPLE_ALIVE, Boolean.class);
+        try {
+            return village.get(KEY_COUPLE_ALIVE, Boolean.class);
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Couple alive status is not a boolean.", ex);
+        }
     }
 
     private boolean hasCouple(Village village) {
