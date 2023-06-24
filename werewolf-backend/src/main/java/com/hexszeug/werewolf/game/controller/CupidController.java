@@ -40,20 +40,16 @@ public class CupidController {
      */
     @GetMapping("/couple")
     public List<String> handleGetCouple(Player player, Village village) {
-        String member1 = village.get(KEY_COUPLE_MEMBER_1, String.class);
-        String member2 = village.get(KEY_COUPLE_MEMBER_2, String.class);
-        Boolean coupleAlive = village.get(KEY_COUPLE_ALIVE, Boolean.class);
-        if (member1 == null || member2 == null || coupleAlive == null) {
+        if (!hasCouple(village)) {
             throw new NoCoupleException();
         }
-        if (player.getRole() != Role.CUPID
-                && !player.getPlayerId().equals(member1)
-                && !player.getPlayerId().equals(member2)
-                && coupleAlive
+        if (getCoupleAlive(village)
+                && !isInCouple(player, village)
+                && player.getRole() != Role.CUPID
         ) {
             throw new ForbiddenException("The couple must be dead or you must be either in the couple or the cupid.");
         }
-        return List.of(member1, member2);
+        return List.of(getPlayerId1(village), getPlayerId2(village));
     }
 
     @PostMapping(value = "/couple", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -80,5 +76,41 @@ public class CupidController {
         village.set(KEY_COUPLE_MEMBER_2, player2.getPlayerId());
         village.set(KEY_COUPLE_ALIVE, true);
         //TODO continue narration
+    }
+
+    @GetMapping("/couple/roles")
+    public List<Role> handleGetCoupleRoles(Player player, Village village) {
+        if (!hasCouple(village)) {
+            throw new NoCoupleException();
+        } else if (!isInCouple(player, village)) {
+            throw new ForbiddenException("You must be in the couple.");
+        }
+        return List.of(
+                village.getPlayerById(getPlayerId1(village)).getRole(),
+                village.getPlayerById(getPlayerId2(village)).getRole()
+        );
+    }
+
+    private String getPlayerId1(Village village) {
+        return village.get(KEY_COUPLE_MEMBER_1, String.class);
+    }
+
+    private String getPlayerId2(Village village) {
+        return village.get(KEY_COUPLE_MEMBER_2, String.class);
+    }
+
+    private Boolean getCoupleAlive(Village village) {
+        return village.get(KEY_COUPLE_ALIVE, Boolean.class);
+    }
+
+    private boolean hasCouple(Village village) {
+        return getCoupleAlive(village) != null
+                && getPlayerId1(village) != null
+                && getPlayerId2(village) != null;
+    }
+
+    private boolean isInCouple(Player player, Village village) {
+        return player.getPlayerId().equals(getPlayerId1(village))
+                || player.getPlayerId().equals(getPlayerId2(village));
     }
 }
