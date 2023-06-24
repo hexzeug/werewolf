@@ -7,11 +7,13 @@ import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -52,6 +54,33 @@ public class CupidController {
         return List.of(getPlayerId1(village), getPlayerId2(village));
     }
 
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <ol>
+     *     <li>player is the cupid</li>
+     *     <li>cupid phase is current phase</li>
+     * </ol>
+     * <b>Request:</b>
+     * <pre>
+     * [
+     *     {@link String} (player id)
+     *     {@link String} (player id)
+     * ]
+     * </pre>
+     * <b>Response:</b>
+     * <p>
+     *     {@code 301 CREATED}
+     * </p>
+     * <b>Effects:</b>
+     * <ul>
+     *     <li>sets couple to players from body</li>
+     *     <li>continues narration</li>
+     * </ul>
+     * @throws ForbiddenException if permissions aren't met
+     * @throws BadRequestException if the request body contains more or less than 2 players
+     *                             or the passed player ids do not exist
+     */
     @PostMapping(value = "/couple", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void handlePostCouple(@RequestBody List<String> coupleIds, Player player, Village village) {
@@ -78,16 +107,36 @@ public class CupidController {
         //TODO continue narration
     }
 
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <ul>
+     *     <li>player is in the couple</li>
+     * </ul>
+     * <b>Response:</b>
+     * <pre>
+     * {
+     *     {@code <player id>}: {
+     *         role: {@link Role}
+     *     }
+     *     {@code <player id>}: {
+     *         role: {@link Role}
+     *     }
+     * }
+     * </pre>
+     */
     @GetMapping("/couple/roles")
-    public List<Role> handleGetCoupleRoles(Player player, Village village) {
+    public Map<String, RoleInfo> handleGetCoupleRoles(Player player, Village village) {
         if (!hasCouple(village)) {
             throw new NoCoupleException();
         } else if (!isInCouple(player, village)) {
             throw new ForbiddenException("You must be in the couple.");
         }
-        return List.of(
-                village.getPlayerById(getPlayerId1(village)).getRole(),
-                village.getPlayerById(getPlayerId2(village)).getRole()
+        Player player1 = village.getPlayerById(getPlayerId1(village));
+        Player player2 = village.getPlayerById(getPlayerId2(village));
+        return Map.of(
+                player1.getPlayerId(), new RoleInfo(player1.getRole()),
+                player2.getPlayerId(), new RoleInfo(player2.getRole())
         );
     }
 
@@ -112,5 +161,10 @@ public class CupidController {
     private boolean isInCouple(Player player, Village village) {
         return player.getPlayerId().equals(getPlayerId1(village))
                 || player.getPlayerId().equals(getPlayerId2(village));
+    }
+
+    @Value
+    private static class RoleInfo {
+        Role role;
     }
 }
