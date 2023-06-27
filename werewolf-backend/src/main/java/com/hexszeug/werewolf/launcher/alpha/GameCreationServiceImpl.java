@@ -72,7 +72,8 @@ public class GameCreationServiceImpl implements GameCreationService {
         }
         Village village = new VillageImpl(villageId, phaseOrder, players);
         villageRepository.addVillage(village);
-        SecureRandom secureRandom = new SecureRandom();
+        // always generate the same auth tokens for better debugging
+        SecureRandom secureRandom = new SecureRandom(new byte[]{123});
         log.info("=============");
         log.info(String.format("Printing authentication tokens for %s players:", playerCount));
         log.info("    name: auth token");
@@ -107,20 +108,12 @@ public class GameCreationServiceImpl implements GameCreationService {
     }
 
     private Player createPlayer(Role role, String villageId, Random random) {
-        PlayerImpl player = new PlayerImpl(
+        return new PlayerImpl(
                 generateRandomString(16, random),
                 villageId,
                 PLAYER_NAMES.get(random.nextInt(PLAYER_NAMES.size())),
                 role
         );
-        switch (role) {
-            case SEER -> player.set("seerHistory", new ArrayList<>());
-            case WITCH -> {
-                player.set("healPotion", true);
-                player.set("poisonPotion", true);
-            }
-        }
-        return player;
     }
 
     @SuppressWarnings("SpellCheckingInspection")
