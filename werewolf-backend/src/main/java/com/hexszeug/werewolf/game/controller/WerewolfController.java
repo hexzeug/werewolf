@@ -69,6 +69,7 @@ public class WerewolfController {
      *     ...
      * }
      * </pre>
+     * @throws ForbiddenException if permissions are not fulfilled
      */
     @GetMapping("/votes")
     public Map<String, List<String>> handleGetVotes(Player player, Village village) {
@@ -88,6 +89,29 @@ public class WerewolfController {
         return votes;
     }
 
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <ol>
+     *     <li>player is a werewolf</li>
+     *     <li>werewolves phase is current phase</li>
+     * </ol>
+     * <b>Request:</b>
+     * <pre>
+     * {@link String} (player id)
+     * </pre>
+     * <b>Response</b>
+     * <p>
+     *     {@code 301 CREATED}
+     * </p>
+     * <b>Effects:</b>
+     * <ul>
+     *     <li>publishes {@link WerewolfVoteEvent} to werewolf clients</li>
+     *     <li><i>if all werewolves vote the same person:</i> continues narration</li>
+     * </ul>
+     * @throws ForbiddenException if the permissions are not fulfilled
+     * @throws BadRequestException if passed string is not a valid player id of the village
+     */
     @PutMapping(value = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void handlePutVote(@RequestBody TextNode voteTextNode, Player player, Village village) {
