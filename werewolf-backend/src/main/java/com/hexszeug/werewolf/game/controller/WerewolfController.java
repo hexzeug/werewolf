@@ -1,5 +1,6 @@
 package com.hexszeug.werewolf.game.controller;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
@@ -22,6 +23,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class WerewolfController {
     private static final String KEY_VOTE = "werewolfVote";
+    private static final String KEY_VICTIM = "werewolfVictim";
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -177,6 +179,31 @@ public class WerewolfController {
         ));
     }
 
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <ul>
+     *     <li>player is a werewolf</li>
+     *     <li>player is a witch</li>
+     * </ul>
+     * <b>Response:</b>
+     * <pre>
+     * {@link String} (player id)
+     * </pre>
+     * @throws ForbiddenException if the permissions are not fulfilled
+     */
+    @GetMapping("/victim")
+    public VictimInfo handleGetVictim(Player player, Village village) {
+        if (player.getRole() != Role.WEREWOLF && player.getRole() != Role.WITCH) {
+            throw new ForbiddenException("You must either be a werewolf or a witch.");
+        }
+        try {
+            return new VictimInfo(village.get(KEY_VICTIM, String.class));
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Werewolf victim contains non string.", ex);
+        }
+    }
+
     private Map<Player, List<Player>> getVotes(Village village) {
         Map<Player, List<Player>> votes = new HashMap<>();
         village.getPlayerList().stream()
@@ -215,5 +242,11 @@ public class WerewolfController {
     private static class VoteInfo {
         String voter;
         String vote;
+    }
+
+    @Value
+    private static class VictimInfo {
+        @JsonValue
+        String playerId;
     }
 }
