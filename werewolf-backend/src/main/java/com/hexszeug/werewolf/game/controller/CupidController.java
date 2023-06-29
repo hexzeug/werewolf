@@ -70,7 +70,7 @@ public class CupidController {
      * </pre>
      * <b>Response:</b>
      * <p>
-     *     {@code 301 CREATED}
+     *     {@code 201 CREATED}
      * </p>
      * <b>Effects:</b>
      * <ul>

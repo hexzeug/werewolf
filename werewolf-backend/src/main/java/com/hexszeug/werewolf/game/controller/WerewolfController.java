@@ -102,10 +102,11 @@ public class WerewolfController {
      * </pre>
      * <b>Response</b>
      * <p>
-     *     {@code 301 CREATED}
+     *     {@code 201 CREATED}
      * </p>
      * <b>Effects:</b>
      * <ul>
+     *     <li>stores vote</li>
      *     <li>publishes {@link WerewolfVoteEvent} to werewolf clients</li>
      *     <li><i>if all werewolves vote the same person:</i> continues narration</li>
      * </ul>
@@ -140,6 +141,40 @@ public class WerewolfController {
         ) {
             //TODO continue narration
         }
+    }
+
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <ol>
+     *     <li>player is a werewolf</li>
+     *     <li>werewolves phase is current phase</li>
+     * </ol>
+     * <b>Response</b>
+     * <p>
+     *     {@code 204 NO CONTENT}
+     * </p>
+     * <b>Effects:</b>
+     * <ul>
+     *     <li>deletes vote</li>
+     *     <li>publishes {@link WerewolfVoteEvent} to werewolf clients</li>
+     * </ul>
+     * @throws ForbiddenException if the permissions are not fulfilled
+     */
+    @DeleteMapping("/vote")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleDeleteVote(Player player, Village village) {
+        if (player.getRole() != Role.WEREWOLF) {
+            throw new ForbiddenException("You must be a werewolf.");
+        }
+        if (village.getCurrentPhase() != Phase.WEREWOLVES) {
+            throw new ForbiddenException("The werewolves phase must be the current phase.");
+        }
+        player.delete(KEY_VOTE);
+        eventPublisher.publishEvent(new WerewolfVoteEvent(
+                new VoteInfo(player.getPlayerId(), null),
+                village.getVillageId()
+        ));
     }
 
     private Map<Player, List<Player>> getVotes(Village village) {
