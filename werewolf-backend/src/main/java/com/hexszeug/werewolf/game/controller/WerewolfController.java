@@ -1,20 +1,29 @@
 package com.hexszeug.werewolf.game.controller;
 
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
+import com.hexszeug.werewolf.game.events.connections.ServerSentEvent;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/werewolves")
+@RequiredArgsConstructor
 public class WerewolfController {
     private static final String KEY_VOTE = "werewolfVote";
+
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * @apiNote
@@ -79,6 +88,36 @@ public class WerewolfController {
         return votes;
     }
 
+    @PutMapping(value = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void handlePutVote(@RequestBody TextNode voteTextNode, Player player, Village village) {
+        if (player.getRole() != Role.WEREWOLF) {
+            throw new ForbiddenException("You must be a werewolf.");
+        }
+        if (village.getCurrentPhase() != Phase.WEREWOLVES) {
+            throw new ForbiddenException("The werewolves phase must be the current phase.");
+        }
+        String vote = voteTextNode.asText();
+        if (village.getPlayerById(vote) == null) {
+            throw new BadRequestException("Player %s is not in the village.".formatted(vote));
+        }
+        player.set(KEY_VOTE, vote);
+        eventPublisher.publishEvent(new WerewolfVoteEvent(
+                new VoteInfo(player.getPlayerId(), vote),
+                village.getVillageId()
+        ));
+        if (getVotes(village).size() == 1 &&
+                village.getPlayerList()
+                        .stream()
+                        .noneMatch(p ->
+                                p.getRole() == Role.WEREWOLF &&
+                                        getVote(p, village) == null
+                        )
+        ) {
+            //TODO continue narration
+        }
+    }
+
     private Map<Player, List<Player>> getVotes(Village village) {
         Map<Player, List<Player>> votes = new HashMap<>();
         village.getPlayerList().stream()
@@ -100,5 +139,22 @@ public class WerewolfController {
         } catch (ClassCastException ex) {
             throw new IllegalStateException("Werewolf vote contains non string.", ex);
         }
+    }
+
+    @Value
+    public static class WerewolfVoteEvent implements ServerSentEvent<VoteInfo> {
+        VoteInfo payload;
+        String villageId;
+
+        @Override
+        public boolean isTarget(Player player) {
+            return player.getRole() == Role.WEREWOLF;
+        }
+    }
+
+    @Value
+    private static class VoteInfo {
+        String voter;
+        String vote;
     }
 }
