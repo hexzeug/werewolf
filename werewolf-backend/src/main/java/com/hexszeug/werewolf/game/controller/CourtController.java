@@ -110,6 +110,44 @@ public class CourtController {
         ));
     }
 
+    /**
+     * @apiNote
+     * <b>Permissions:</b>
+     * <ol>
+     *     <li>current phase is accusation</li>
+     *     <li>player is alive</li>
+     * </ol>
+     * <b>Response:</b>
+     * <p>
+     *     {@code 204 NO CONTENT}
+     * </p>
+     * <b>Effects:</b>
+     * <ol>
+     *     <li>deletes own accusation (if not accusing an exception is thrown)</li>
+     *     <li>publishes {@link AccusationEvent}</li>
+     * </ol>
+     * @throws ForbiddenException if the permissions are not fulfilled
+     * @throws BadRequestException if the requesting player does not accuse anyone
+     */
+    @DeleteMapping("/accusation")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleDeleteAccusation(Player player, Village village) {
+        if (village.getCurrentPhase() != Phase.ACCUSATION) {
+            throw new ForbiddenException("The phase must be accusation.");
+        }
+        if (!player.isAlive()) {
+            throw new ForbiddenException("You must be alive.");
+        }
+        if (getAccusation(player) == null) {
+            throw new BadRequestException("You are not accusing anybody.");
+        }
+        player.delete(KEY_ACCUSATION);
+        eventPublisher.publishEvent(new AccusationEvent(
+                new AccusationInfo(player.getPlayerId(), null),
+                village.getVillageId()
+        ));
+    }
+
     private String getAccusation(Player player) {
         try {
             return player.get(KEY_ACCUSATION, String.class);
