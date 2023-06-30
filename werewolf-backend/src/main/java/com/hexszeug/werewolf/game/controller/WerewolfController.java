@@ -23,7 +23,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class WerewolfController {
     private static final String KEY_VOTE = "werewolfVote";
-    private static final String KEY_VICTIM = "werewolfVictim";
+    public static final String KEY_WEREWOLF_VICTIM = "werewolfVictim";
 
     private final ApplicationEventPublisher eventPublisher;
 
@@ -198,7 +198,7 @@ public class WerewolfController {
             throw new ForbiddenException("You must either be a werewolf or a witch.");
         }
         try {
-            return new VictimInfo(village.get(KEY_VICTIM, String.class));
+            return new VictimInfo(village.get(KEY_WEREWOLF_VICTIM, String.class));
         } catch (ClassCastException ex) {
             throw new IllegalStateException("Werewolf victim contains non string.", ex);
         }
