@@ -95,7 +95,7 @@ public class WerewolfController {
      * @apiNote
      * <b>Permissions:</b>
      * <ol>
-     *     <li>player is a werewolf</li>
+     *     <li>player is a living werewolf</li>
      *     <li>werewolves phase is current phase</li>
      * </ol>
      * <b>Request:</b>
@@ -118,19 +118,23 @@ public class WerewolfController {
     @PutMapping(value = "/vote", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void handlePutVote(@RequestBody TextNode voteTextNode, Player player, Village village) {
-        if (player.getRole() != Role.WEREWOLF) {
-            throw new ForbiddenException("You must be a werewolf.");
+        if (player.getRole() != Role.WEREWOLF || !player.isAlive()) {
+            throw new ForbiddenException("You must be a living werewolf.");
         }
         if (village.getCurrentPhase() != Phase.WEREWOLVES) {
             throw new ForbiddenException("The werewolves phase must be the current phase.");
         }
-        String vote = voteTextNode.asText();
-        if (village.getPlayerById(vote) == null) {
-            throw new BadRequestException("Player %s is not in the village.".formatted(vote));
+        String playerId = voteTextNode.asText();
+        Player vote = village.getPlayerById(playerId);
+        if (vote == null) {
+            throw new BadRequestException("Player %s is not in the village.".formatted(playerId));
         }
-        player.set(KEY_VOTE, vote);
+        if (!vote.isAlive()) {
+            throw new BadRequestException("Player %s is already dead.".formatted(playerId));
+        }
+        player.set(KEY_VOTE, playerId);
         eventPublisher.publishEvent(new WerewolfVoteEvent(
-                new VoteInfo(player.getPlayerId(), vote),
+                new VoteInfo(player.getPlayerId(), playerId),
                 village.getVillageId()
         ));
         if (getVotes(village).size() == 1 &&
