@@ -18,9 +18,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class CupidController {
-    private static final String KEY_COUPLE_MEMBER_1 = "coupleMember1";
-    private static final String KEY_COUPLE_MEMBER_2 = "coupleMember2";
-    private static final String KEY_COUPLE_ALIVE = "coupleAlive";
+    public static final String KEY_COUPLE_MEMBER_1 = "coupleMember1";
+    public static final String KEY_COUPLE_MEMBER_2 = "coupleMember2";
 
     /**
      * <b>Permissions:</b>
@@ -101,7 +100,6 @@ public class CupidController {
         }
         village.set(KEY_COUPLE_MEMBER_1, player1.getPlayerId());
         village.set(KEY_COUPLE_MEMBER_2, player2.getPlayerId());
-        village.set(KEY_COUPLE_ALIVE, true);
         //TODO continue narration
     }
 
@@ -154,18 +152,16 @@ public class CupidController {
     }
 
     private Boolean getCoupleAlive(Village village) {
-        try {
-            return village.get(KEY_COUPLE_ALIVE, Boolean.class);
-        } catch (ClassCastException ex) {
-            throw new IllegalStateException("Couple alive status is not a boolean.", ex);
+        Player player1 = village.getPlayerById(getPlayerId1(village));
+        if (player1 == null) {
+            throw new IllegalStateException("Player1 of couple does not exist.");
         }
+        return player1.isAlive();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean hasCouple(Village village) {
-        return getCoupleAlive(village) != null
-                && getPlayerId1(village) != null
-                && getPlayerId2(village) != null;
+        return getPlayerId1(village) != null && getPlayerId2(village) != null;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
