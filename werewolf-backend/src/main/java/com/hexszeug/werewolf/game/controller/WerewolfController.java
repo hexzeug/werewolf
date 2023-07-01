@@ -143,7 +143,7 @@ public class WerewolfController {
                                         getVote(p, village) == null
                         )
         ) {
-            //TODO continue narration
+            //TODO continue narration (and cancel timeout + set victim)
         }
     }
 

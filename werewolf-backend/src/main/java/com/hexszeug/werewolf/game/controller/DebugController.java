@@ -3,6 +3,7 @@ package com.hexszeug.werewolf.game.controller;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.logic.KillingService;
+import com.hexszeug.werewolf.game.logic.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.deathreason.DeathReason;
 import com.hexszeug.werewolf.game.model.village.Village;
@@ -21,6 +22,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class DebugController {
     private final KillingService killingService;
+    private final NarrationService narrationService;
 
     @PutMapping(value = "/phase", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -52,5 +54,11 @@ public class DebugController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void handleKill(Player player, Village village) {
         killingService.kill(player, DeathReason.NIGHT);
+    }
+
+    @PostMapping("/end_phase")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void handleEndPhase(Village village) {
+        narrationService.continueNarration(village, village.getCurrentPhase());
     }
 }
