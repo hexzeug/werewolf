@@ -3,7 +3,8 @@ package com.hexszeug.werewolf.game.controller;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
-import com.hexszeug.werewolf.game.events.connections.ServerSentEvent;
+import com.hexszeug.werewolf.game.events.court.AccusationEvent;
+import com.hexszeug.werewolf.game.events.court.CourtVoteEvent;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
@@ -250,25 +251,13 @@ public class CourtController {
     }
 
     @Value
-    public static class AccusationEvent implements ServerSentEvent<AccusationInfo> {
-        AccusationInfo payload;
-        String villageId;
-    }
-
-    @Value
-    public static class CourtVoteEvent implements ServerSentEvent<VoteInfo> {
-        VoteInfo payload;
-        String villageId;
-    }
-
-    @Value
-    private static class AccusationInfo {
+    public static class AccusationInfo {
         String accuser;
         String accused;
     }
 
     @Value
-    private static class VoteInfo {
+    public static class VoteInfo {
         String voter;
         String vote;
     }

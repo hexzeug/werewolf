@@ -2,7 +2,7 @@ package com.hexszeug.werewolf.game.controller;
 
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
-import com.hexszeug.werewolf.game.events.connections.ServerSentEvent;
+import com.hexszeug.werewolf.game.events.chat.ChatMessageEvent;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
@@ -66,7 +66,7 @@ public class ChatController {
      * <b>Effects:</b>
      * <ol>
      *     <li>add chat message</li>
-     *     <li>publish a {@link ChatEvent}</li>
+     *     <li>publish a {@link ChatMessageEvent}</li>
      * </ol>
      * @throws ForbiddenException if the permissions are not fulfilled
      */
@@ -87,7 +87,7 @@ public class ChatController {
         List<ChatMessage> chat = new ArrayList<>(getChat(village));
         chat.add(message);
         village.set(KEY_CHAT, chat);
-        eventPublisher.publishEvent(new ChatEvent(message, village.getVillageId()));
+        eventPublisher.publishEvent(new ChatMessageEvent(message, village.getVillageId()));
     }
 
     private List<ChatMessage> getChat(Village village) {
@@ -110,13 +110,7 @@ public class ChatController {
     }
 
     @Value
-    public static class ChatEvent implements ServerSentEvent<ChatMessage> {
-        ChatMessage payload;
-        String villageId;
-    }
-
-    @Value
-    private static class ChatMessage {
+    public static class ChatMessage {
         String author;
         String message;
         long timestamp;

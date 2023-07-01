@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
-import com.hexszeug.werewolf.game.events.connections.ServerSentEvent;
+import com.hexszeug.werewolf.game.events.werewolf.WerewolfVoteEvent;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
@@ -232,18 +232,7 @@ public class WerewolfController {
     }
 
     @Value
-    public static class WerewolfVoteEvent implements ServerSentEvent<VoteInfo> {
-        VoteInfo payload;
-        String villageId;
-
-        @Override
-        public boolean isTarget(Player player) {
-            return player.getRole() == Role.WEREWOLF;
-        }
-    }
-
-    @Value
-    private static class VoteInfo {
+    public static class VoteInfo {
         String voter;
         String vote;
     }
