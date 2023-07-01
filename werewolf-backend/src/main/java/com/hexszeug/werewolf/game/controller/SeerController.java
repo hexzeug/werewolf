@@ -1,6 +1,5 @@
 package com.hexszeug.werewolf.game.controller;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
@@ -21,7 +20,6 @@ public class SeerController {
     private static final String KEY_SEER_HISTORY = "seerHistory";
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a seer</li>
@@ -64,7 +62,6 @@ public class SeerController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a seer</li>
@@ -132,11 +129,5 @@ public class SeerController {
     private static class SeenInfo {
         Role role;
         int igtime;
-    }
-
-    @Value
-    private static class PlayerToBeSeenInfo {
-        @JsonValue
-        String playerId;
     }
 }

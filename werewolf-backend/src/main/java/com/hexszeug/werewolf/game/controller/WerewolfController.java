@@ -28,7 +28,6 @@ public class WerewolfController {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ul>
      *     <li>player is a werewolf</li>
@@ -55,7 +54,6 @@ public class WerewolfController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a werewolf</li>
@@ -92,7 +90,6 @@ public class WerewolfController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a living werewolf</li>
@@ -137,6 +134,7 @@ public class WerewolfController {
                 new VoteInfo(player.getPlayerId(), playerId),
                 village.getVillageId()
         ));
+        //noinspection StatementWithEmptyBody
         if (getVotes(village).size() == 1 &&
                 village.getPlayerList()
                         .stream()
@@ -150,7 +148,6 @@ public class WerewolfController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a werewolf</li>
@@ -184,7 +181,6 @@ public class WerewolfController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ul>
      *     <li>player is a werewolf</li>

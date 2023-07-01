@@ -28,7 +28,6 @@ public class CourtController {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ul>
      *     <li>current phase is accusation</li>
@@ -63,7 +62,6 @@ public class CourtController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>current phase is accusation</li>
@@ -113,7 +111,6 @@ public class CourtController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>current phase is accusation</li>
@@ -151,7 +148,6 @@ public class CourtController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ul>
      *     <li>current phase is court</li>
@@ -185,7 +181,6 @@ public class CourtController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>current phase is court</li>

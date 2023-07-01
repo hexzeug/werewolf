@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class HunterController {
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a hunter</li>

@@ -26,7 +26,6 @@ public class ChatController {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <p>
      *     none
@@ -49,7 +48,6 @@ public class ChatController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>the current phase is accusation</li>

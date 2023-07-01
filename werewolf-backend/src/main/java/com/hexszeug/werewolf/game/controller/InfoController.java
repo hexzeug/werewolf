@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class InfoController {
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <p>
      * none
@@ -48,7 +47,6 @@ public class InfoController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <p>
      * none
@@ -69,7 +67,6 @@ public class InfoController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <p>
      * none

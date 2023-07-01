@@ -23,7 +23,6 @@ public class CupidController {
     private static final String KEY_COUPLE_ALIVE = "coupleAlive";
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ul>
      *     <li>couple is dead</li>
@@ -55,7 +54,6 @@ public class CupidController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is the cupid</li>
@@ -108,7 +106,6 @@ public class CupidController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ul>
      *     <li>player is in the couple</li>
@@ -164,12 +161,14 @@ public class CupidController {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean hasCouple(Village village) {
         return getCoupleAlive(village) != null
                 && getPlayerId1(village) != null
                 && getPlayerId2(village) != null;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isInCouple(Player player, Village village) {
         return player.getPlayerId().equals(getPlayerId1(village))
                 || player.getPlayerId().equals(getPlayerId2(village));

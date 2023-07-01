@@ -20,7 +20,6 @@ public class WitchController {
     public static final String KEY_WITCH_POISONED = "witchPoisoned";
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ul>
      *     <li>player is a witch</li>
@@ -41,7 +40,6 @@ public class WitchController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a witch</li>
@@ -83,7 +81,6 @@ public class WitchController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ul>
      *     <li>player is a witch</li>

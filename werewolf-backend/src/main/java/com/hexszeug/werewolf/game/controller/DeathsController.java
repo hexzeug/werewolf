@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class DeathsController {
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <p>
      *     none
