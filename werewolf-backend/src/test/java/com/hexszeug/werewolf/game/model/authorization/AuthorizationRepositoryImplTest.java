@@ -29,7 +29,7 @@ class AuthorizationRepositoryImplTest {
     @BeforeEach
     void prepareMocks() {
         when(villageRepository.getByVillageId(any())).thenReturn(village);
-        when(village.getByPlayerId(any())).thenReturn(player);
+        when(village.getPlayerById(any())).thenReturn(player);
     }
 
     @Test
@@ -37,7 +37,7 @@ class AuthorizationRepositoryImplTest {
         authorizationRepository.addAuthorization("test-token", "test-village", "test-player");
         assertThat(authorizationRepository.getPlayerByAuthToken("test-token")).isEqualTo(player);
         verify(villageRepository).getByVillageId("test-village");
-        verify(village).getByPlayerId("test-player");
+        verify(village).getPlayerById("test-player");
     }
 
     @Test

@@ -67,6 +67,13 @@ public interface Village extends CustomProperties, PlayerRepository {
     List<PhaseHistoryElement> getPhaseHistory();
 
     /**
+     * Can be used to access the current phase.
+     * Must return the phase property of the last {@code PhaseHistoryElement} returned by {@link #getPhaseHistory()}.
+     * @return the current phase
+     */
+    Phase getCurrentPhase();
+
+    /**
      * Adds a new phase history element to the village's phase history.
      *
      * @param phaseHistoryElement the phase history element to be added

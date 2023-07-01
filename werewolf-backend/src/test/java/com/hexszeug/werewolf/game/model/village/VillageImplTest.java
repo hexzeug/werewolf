@@ -92,9 +92,9 @@ class VillageImplTest {
                 Collections.emptyList(),
                 List.of(player1, player2)
         );
-        assertThat(village.getByPlayerId("test-player-1")).isEqualTo(player1);
-        assertThat(village.getByPlayerId("test-player-2")).isEqualTo(player2);
-        assertThat(village.getByPlayerId("does-not-exist")).isNull();
+        assertThat(village.getPlayerById("test-player-1")).isEqualTo(player1);
+        assertThat(village.getPlayerById("test-player-2")).isEqualTo(player2);
+        assertThat(village.getPlayerById("does-not-exist")).isNull();
         assertThat(village.getPlayerList()).containsExactly(player1, player2);
     }
 
