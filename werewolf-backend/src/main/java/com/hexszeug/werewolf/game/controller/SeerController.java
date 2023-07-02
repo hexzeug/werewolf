@@ -3,7 +3,7 @@ package com.hexszeug.werewolf.game.controller;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
-import com.hexszeug.werewolf.game.logic.NarrationService;
+import com.hexszeug.werewolf.game.logic.services.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;

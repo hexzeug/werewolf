@@ -1,4 +1,4 @@
-package com.hexszeug.werewolf.game.logic;
+package com.hexszeug.werewolf.game.logic.services;
 
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.deathreason.DeathReason;

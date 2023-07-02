@@ -1,6 +1,7 @@
 package com.hexszeug.werewolf.game.logic;
 
 import com.hexszeug.werewolf.game.events.connections.ConnectedEvent;
+import com.hexszeug.werewolf.game.logic.services.NarrationService;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.VillageRepository;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class GameStartMaster {
+public class GameStarter {
     private final VillageRepository villageRepository;
     private final NarrationService narrationService;
 

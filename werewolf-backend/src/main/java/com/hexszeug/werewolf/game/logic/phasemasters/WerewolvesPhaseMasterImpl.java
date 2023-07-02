@@ -1,7 +1,8 @@
-package com.hexszeug.werewolf.game.logic;
+package com.hexszeug.werewolf.game.logic.phasemasters;
 
 import com.hexszeug.werewolf.game.controller.WerewolfController;
 import com.hexszeug.werewolf.game.events.phase.PhaseEvent;
+import com.hexszeug.werewolf.game.logic.services.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
@@ -18,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @RequiredArgsConstructor
-public class WerewolvesPhaseMaster {
+public class WerewolvesPhaseMasterImpl implements WerewolvesPhaseMaster {
     private static final long TIMEOUT_WEREWOLVES_SECONDS = 20;
 
     private final TaskScheduler taskScheduler;
@@ -44,6 +45,7 @@ public class WerewolvesPhaseMaster {
         );
     }
 
+    @Override
     public void skipTimer(Village village) {
         if (!tasks.containsKey(village)) {
             throw new IllegalStateException("The village has no running werewolf timer.");

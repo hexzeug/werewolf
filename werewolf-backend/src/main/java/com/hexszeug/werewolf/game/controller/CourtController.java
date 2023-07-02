@@ -5,7 +5,7 @@ import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
 import com.hexszeug.werewolf.game.events.court.AccusationEvent;
 import com.hexszeug.werewolf.game.events.court.CourtVoteEvent;
-import com.hexszeug.werewolf.game.logic.CourtPhaseMaster;
+import com.hexszeug.werewolf.game.logic.phasemasters.CourtPhaseMaster;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;

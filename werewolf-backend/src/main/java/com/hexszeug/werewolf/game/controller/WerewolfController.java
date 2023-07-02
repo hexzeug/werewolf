@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
 import com.hexszeug.werewolf.game.events.werewolf.WerewolfVoteEvent;
-import com.hexszeug.werewolf.game.logic.WerewolvesPhaseMaster;
+import com.hexszeug.werewolf.game.logic.phasemasters.WerewolvesPhaseMaster;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;

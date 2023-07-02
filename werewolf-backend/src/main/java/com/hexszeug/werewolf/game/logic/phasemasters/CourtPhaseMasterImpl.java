@@ -1,7 +1,9 @@
-package com.hexszeug.werewolf.game.logic;
+package com.hexszeug.werewolf.game.logic.phasemasters;
 
 import com.hexszeug.werewolf.game.controller.CourtController;
 import com.hexszeug.werewolf.game.events.phase.PhaseEvent;
+import com.hexszeug.werewolf.game.logic.services.KillingService;
+import com.hexszeug.werewolf.game.logic.services.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.deathreason.DeathReason;
 import com.hexszeug.werewolf.game.model.village.Village;
@@ -18,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @RequiredArgsConstructor
-public class CourtPhaseMaster {
+public class CourtPhaseMasterImpl implements CourtPhaseMaster {
     private static final long TIMEOUT_ACCUSATION_SECONDS = 60;
     private static final long TIMEOUT_COURT_SECONDS = 30;
 
@@ -47,6 +49,7 @@ public class CourtPhaseMaster {
         }
     }
 
+    @Override
     public void skipCourtTimer(Village village) {
         if (!courtTasks.containsKey(village)) {
             throw new IllegalStateException("The village has no running court timer.");
