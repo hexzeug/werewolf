@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @RequiredArgsConstructor
-public class CourtPhaseMasterImpl implements CourtPhaseMaster {
+public class AccusationAndCourtPhaseMasterImpl implements CourtPhaseMaster {
     private static final long TIMEOUT_ACCUSATION_SECONDS = 60;
     private static final long TIMEOUT_COURT_SECONDS = 30;
 
