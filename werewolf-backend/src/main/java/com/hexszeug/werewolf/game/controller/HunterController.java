@@ -3,17 +3,24 @@ package com.hexszeug.werewolf.game.controller;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
+import com.hexszeug.werewolf.game.logic.KillingService;
+import com.hexszeug.werewolf.game.logic.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
+import com.hexszeug.werewolf.game.model.player.deathreason.DeathReason;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class HunterController {
+    private final KillingService killingService;
+    private final NarrationService narrationService;
 
     /**
      * <b>Permissions:</b>
@@ -54,7 +61,7 @@ public class HunterController {
         if (!target.isAlive()) {
             throw new BadRequestException("Player %s is already dead.".formatted(playerId));
         }
-        //TODO kill player
-        //TODO continue narration
+        killingService.kill(target, DeathReason.SHOT);
+        narrationService.continueNarration(village, Phase.HUNTER);
     }
 }

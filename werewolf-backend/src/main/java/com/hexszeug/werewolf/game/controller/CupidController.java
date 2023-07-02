@@ -3,10 +3,12 @@ package com.hexszeug.werewolf.game.controller;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
 import com.hexszeug.werewolf.game.controller.exceptions.NoCoupleException;
+import com.hexszeug.werewolf.game.logic.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,9 +19,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class CupidController {
     public static final String KEY_COUPLE_MEMBER_1 = "coupleMember1";
     public static final String KEY_COUPLE_MEMBER_2 = "coupleMember2";
+
+    private final NarrationService narrationService;
 
     /**
      * <b>Permissions:</b>
@@ -100,7 +105,7 @@ public class CupidController {
         }
         village.set(KEY_COUPLE_MEMBER_1, player1.getPlayerId());
         village.set(KEY_COUPLE_MEMBER_2, player2.getPlayerId());
-        //TODO continue narration
+        narrationService.continueNarration(village, Phase.CUPID);
     }
 
     /**
