@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @RequiredArgsConstructor
 public class WerewolvesPhaseMaster {
-    private static final int TIMEOUT_WEREWOLVES_SECONDS = 20;
+    private static final long TIMEOUT_WEREWOLVES_SECONDS = 20;
 
     private final TaskScheduler taskScheduler;
     private final NarrationService narrationService;
@@ -38,7 +38,7 @@ public class WerewolvesPhaseMaster {
         tasks.put(
                 village,
                 taskScheduler.schedule(
-                        () -> executeWerewolfTimer(village),
+                        () -> werewolfTimerTask(village),
                         Instant.now().plusSeconds(TIMEOUT_WEREWOLVES_SECONDS)
                 )
         );
@@ -50,15 +50,15 @@ public class WerewolvesPhaseMaster {
         }
         ScheduledFuture<?> task = tasks.get(village);
         if (task.isDone() || task.isCancelled()) {
-            throw new IllegalStateException("The village task was not properly cleared up.");
+            throw new IllegalStateException("The werewolf timer task was not properly cleared up.");
         }
         task.cancel(false);
         if (task.isCancelled()) {
-            executeWerewolfTimer(village);
+            werewolfTimerTask(village);
         }
     }
 
-    private void executeWerewolfTimer(Village village) {
+    private void werewolfTimerTask(Village village) {
         tasks.remove(village);
         findAndSetVictim(village);
         narrationService.continueNarration(village, Phase.WEREWOLVES);

@@ -1,5 +1,6 @@
 package com.hexszeug.werewolf.game.logic;
 
+import com.hexszeug.werewolf.game.controller.CourtController;
 import com.hexszeug.werewolf.game.controller.CupidController;
 import com.hexszeug.werewolf.game.controller.WerewolfController;
 import com.hexszeug.werewolf.game.controller.WitchController;
@@ -77,13 +78,14 @@ public class NarrationServiceImpl implements NarrationService {
             case CUPID -> !hasCouple(village) && roleAlive(Role.CUPID, village);
             case SEER -> roleAlive(Role.SEER, village);
             case WITCH_HEAL, WITCH_POISON -> roleAlive(Role.WITCH, village);
-            case WEREWOLVES, ACCUSATION, COURT -> true;
             case HUNTER -> {
                 int igtime = village.getIGTime();
                 yield village.getPlayerList().stream().anyMatch(player ->
                         player.getRole() == Role.HUNTER && !player.isAlive() && player.getDeathIGTime() == igtime
                 );
             }
+            case WEREWOLVES, ACCUSATION -> true;
+            case COURT -> village.getPlayerList().stream().anyMatch(player -> getAccusation(player) != null);
         };
     }
 
@@ -100,6 +102,14 @@ public class NarrationServiceImpl implements NarrationService {
             return village.getPlayerById(village.get(WitchController.KEY_WITCH_POISONED, String.class));
         } catch (ClassCastException ex) {
             throw new IllegalStateException("Witch poisoned contains non string.", ex);
+        }
+    }
+
+    private String getAccusation(Player player) {
+        try {
+            return player.get(CourtController.KEY_ACCUSATION, String.class);
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Accusation contains non string.", ex);
         }
     }
 
