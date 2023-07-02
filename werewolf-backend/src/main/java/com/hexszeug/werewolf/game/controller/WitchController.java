@@ -155,6 +155,9 @@ public class WitchController {
             if (!poisoned.isAlive()) {
                 throw new BadRequestException("The targeted player %s is already dead.".formatted(playerId));
             }
+            if (poisoned.getPlayerId().equals(getVictim(village))) {
+                throw new BadRequestException("The targeted player %s is the werewolf victim.".formatted(playerId));
+            }
             village.set(KEY_WITCH_POISONED, playerId);
             player.set(KEY_DID_POISON, true);
         }
@@ -176,6 +179,14 @@ public class WitchController {
             return heal != null && heal;
         } catch (ClassCastException ex) {
             throw new IllegalStateException("Witch did poison contains non boolean.", ex);
+        }
+    }
+
+    private String getVictim(Village village) {
+        try {
+            return village.get(WerewolfController.KEY_WEREWOLF_VICTIM, String.class);
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Werewolf victim contains non string.", ex);
         }
     }
 }

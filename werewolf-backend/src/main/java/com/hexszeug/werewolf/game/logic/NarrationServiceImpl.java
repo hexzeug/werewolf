@@ -1,9 +1,6 @@
 package com.hexszeug.werewolf.game.logic;
 
-import com.hexszeug.werewolf.game.controller.CourtController;
-import com.hexszeug.werewolf.game.controller.CupidController;
-import com.hexszeug.werewolf.game.controller.WerewolfController;
-import com.hexszeug.werewolf.game.controller.WitchController;
+import com.hexszeug.werewolf.game.controller.*;
 import com.hexszeug.werewolf.game.events.phase.PhaseEvent;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.deathreason.DeathReason;
@@ -11,6 +8,7 @@ import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
 import com.hexszeug.werewolf.game.model.village.phase.PhaseHistoryElementImpl;
+import com.hexszeug.werewolf.game.model.village.teams.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -64,6 +62,11 @@ public class NarrationServiceImpl implements NarrationService {
                         killingService.kill(Set.of(poisoned, victim), DeathReason.NIGHT);
                     }
                 }
+                if (meetsRequirements(Phase.GAME_END, village)) {
+                    nextPhase = Phase.GAME_END;
+                    i = -2;
+                    break;
+                }
             } while (!meetsRequirements(nextPhase, village));
             village.setPhaseOrderIndex(i);
             village.incrementIGTime();
@@ -86,6 +89,7 @@ public class NarrationServiceImpl implements NarrationService {
             }
             case WEREWOLVES, ACCUSATION -> true;
             case COURT -> village.getPlayerList().stream().anyMatch(player -> getAccusation(player) != null);
+            case GAME_END -> getWinner(village) != null;
         };
     }
 
@@ -125,6 +129,14 @@ public class NarrationServiceImpl implements NarrationService {
             return village.get(CupidController.KEY_COUPLE_MEMBER_1, String.class) != null;
         } catch (ClassCastException ex) {
             throw new IllegalStateException("Couple member 1 contains non string.", ex);
+        }
+    }
+
+    private Team getWinner(Village village) {
+        try {
+            return village.get(InfoController.KEY_WINNER, Team.class);
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Winner contains non Team enum.", ex);
         }
     }
 }

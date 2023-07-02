@@ -229,7 +229,7 @@ public class CourtController {
                 new VoteInfo(player.getPlayerId(), playerId),
                 village.getVillageId()
         ));
-        if (village.getPlayerList().stream().noneMatch(p -> getVote(p) == null)) {
+        if (village.getPlayerList().stream().filter(Player::isAlive).noneMatch(p -> getVote(p) == null)) {
             phaseMaster.skipCourtTimer(village);
         }
     }

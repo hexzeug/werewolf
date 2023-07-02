@@ -2,7 +2,6 @@ package com.hexszeug.werewolf.game.controller;
 
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
-import com.hexszeug.werewolf.game.controller.exceptions.NoCoupleException;
 import com.hexszeug.werewolf.game.logic.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
@@ -39,14 +38,15 @@ public class CupidController {
      *     {@link String} (player id)
      *     {@link String} (player id)
      * ]
+     * or
+     * {@code null} (if no couple exists)
      * </pre>
-     * @throws NoCoupleException if no couple exists
      * @throws ForbiddenException if the requester is not permitted
      */
     @GetMapping("/couple")
     public List<String> handleGetCouple(Player player, Village village) {
         if (!hasCouple(village)) {
-            throw new NoCoupleException();
+            return null;
         }
         if (getCoupleAlive(village)
                 && !isInCouple(player, village)
@@ -123,12 +123,15 @@ public class CupidController {
      *         role: {@link Role}
      *     }
      * }
+     * or
+     * {@code null} (if no couple exists)
      * </pre>
+     * @throws ForbiddenException if the permissions are not fulfilled
      */
     @GetMapping("/couple/roles")
     public Map<String, RoleInfo> handleGetCoupleRoles(Player player, Village village) {
         if (!hasCouple(village)) {
-            throw new NoCoupleException();
+            return null;
         } else if (!isInCouple(player, village)) {
             throw new ForbiddenException("You must be in the couple.");
         }
