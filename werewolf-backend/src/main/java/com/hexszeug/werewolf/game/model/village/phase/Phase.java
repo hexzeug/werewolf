@@ -7,7 +7,7 @@ import com.hexszeug.werewolf.utils.SerializeToLowercaseEnum;
  */
 public enum Phase implements SerializeToLowercaseEnum {
     /**
-     * The initial phase when the game starts.
+     * The initial phase where the clients join.
      */
     GAME_START,
 
@@ -50,4 +50,9 @@ public enum Phase implements SerializeToLowercaseEnum {
      * The phase where the court decides the fate of an accused player.
      */
     COURT,
+
+    /**
+     * The end phase where the clients return to the launcher.
+     */
+    GAME_END,
 }

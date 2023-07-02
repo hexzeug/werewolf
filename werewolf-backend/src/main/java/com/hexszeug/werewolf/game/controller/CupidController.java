@@ -2,11 +2,12 @@ package com.hexszeug.werewolf.game.controller;
 
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
-import com.hexszeug.werewolf.game.controller.exceptions.NoCoupleException;
+import com.hexszeug.werewolf.game.logic.services.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,10 +18,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class CupidController {
-    private static final String KEY_COUPLE_MEMBER_1 = "coupleMember1";
-    private static final String KEY_COUPLE_MEMBER_2 = "coupleMember2";
-    private static final String KEY_COUPLE_ALIVE = "coupleAlive";
+    public static final String KEY_COUPLE_MEMBER_1 = "coupleMember1";
+    public static final String KEY_COUPLE_MEMBER_2 = "coupleMember2";
+
+    private final NarrationService narrationService;
 
     /**
      * <b>Permissions:</b>
@@ -35,14 +38,15 @@ public class CupidController {
      *     {@link String} (player id)
      *     {@link String} (player id)
      * ]
+     * or
+     * {@code null} (if no couple exists)
      * </pre>
-     * @throws NoCoupleException if no couple exists
      * @throws ForbiddenException if the requester is not permitted
      */
     @GetMapping("/couple")
     public List<String> handleGetCouple(Player player, Village village) {
         if (!hasCouple(village)) {
-            throw new NoCoupleException();
+            return null;
         }
         if (getCoupleAlive(village)
                 && !isInCouple(player, village)
@@ -101,8 +105,7 @@ public class CupidController {
         }
         village.set(KEY_COUPLE_MEMBER_1, player1.getPlayerId());
         village.set(KEY_COUPLE_MEMBER_2, player2.getPlayerId());
-        village.set(KEY_COUPLE_ALIVE, true);
-        //TODO continue narration
+        narrationService.continueNarration(village, Phase.CUPID);
     }
 
     /**
@@ -120,12 +123,15 @@ public class CupidController {
      *         role: {@link Role}
      *     }
      * }
+     * or
+     * {@code null} (if no couple exists)
      * </pre>
+     * @throws ForbiddenException if the permissions are not fulfilled
      */
     @GetMapping("/couple/roles")
     public Map<String, RoleInfo> handleGetCoupleRoles(Player player, Village village) {
         if (!hasCouple(village)) {
-            throw new NoCoupleException();
+            return null;
         } else if (!isInCouple(player, village)) {
             throw new ForbiddenException("You must be in the couple.");
         }
@@ -154,18 +160,16 @@ public class CupidController {
     }
 
     private Boolean getCoupleAlive(Village village) {
-        try {
-            return village.get(KEY_COUPLE_ALIVE, Boolean.class);
-        } catch (ClassCastException ex) {
-            throw new IllegalStateException("Couple alive status is not a boolean.", ex);
+        Player player1 = village.getPlayerById(getPlayerId1(village));
+        if (player1 == null) {
+            throw new IllegalStateException("Player1 of couple does not exist.");
         }
+        return player1.isAlive();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean hasCouple(Village village) {
-        return getCoupleAlive(village) != null
-                && getPlayerId1(village) != null
-                && getPlayerId2(village) != null;
+        return getPlayerId1(village) != null && getPlayerId2(village) != null;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

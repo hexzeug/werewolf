@@ -3,10 +3,12 @@ package com.hexszeug.werewolf.game.controller;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
+import com.hexszeug.werewolf.game.logic.services.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +18,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class SeerController {
     private static final String KEY_SEER_HISTORY = "seerHistory";
+
+    private final NarrationService narrationService;
 
     /**
      * <b>Permissions:</b>
@@ -99,7 +104,7 @@ public class SeerController {
         Map<String, Integer> seerHistory = new HashMap<>(getSeerHistory(player));
         seerHistory.put(playerId, village.getIGTime());
         player.set(KEY_SEER_HISTORY, seerHistory);
-        //TODO continue narration
+        narrationService.continueNarration(village, Phase.SEER);
     }
 
     private Map<String, Integer> getSeerHistory(Player player) {

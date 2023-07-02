@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
 import com.hexszeug.werewolf.game.events.werewolf.WerewolfVoteEvent;
+import com.hexszeug.werewolf.game.logic.phasemasters.WerewolvesPhaseMaster;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
@@ -22,10 +23,11 @@ import java.util.*;
 @RequestMapping("/api/werewolves")
 @RequiredArgsConstructor
 public class WerewolfController {
-    private static final String KEY_VOTE = "werewolfVote";
+    public static final String KEY_VOTE = "werewolfVote";
     public static final String KEY_WEREWOLF_VICTIM = "werewolfVictim";
 
     private final ApplicationEventPublisher eventPublisher;
+    private final WerewolvesPhaseMaster phaseMaster;
 
     /**
      * <b>Permissions:</b>
@@ -134,16 +136,16 @@ public class WerewolfController {
                 new VoteInfo(player.getPlayerId(), playerId),
                 village.getVillageId()
         ));
-        //noinspection StatementWithEmptyBody
         if (getVotes(village).size() == 1 &&
                 village.getPlayerList()
                         .stream()
                         .noneMatch(p ->
                                 p.getRole() == Role.WEREWOLF &&
+                                        p.isAlive() &&
                                         getVote(p, village) == null
                         )
         ) {
-            //TODO continue narration
+            phaseMaster.skipTimer(village);
         }
     }
 

@@ -4,20 +4,25 @@ import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
 import com.hexszeug.werewolf.game.controller.exceptions.BadRequestException;
 import com.hexszeug.werewolf.game.controller.exceptions.ForbiddenException;
+import com.hexszeug.werewolf.game.logic.services.NarrationService;
 import com.hexszeug.werewolf.game.model.player.Player;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/witch")
+@RequiredArgsConstructor
 public class WitchController {
     private static final String KEY_DID_HEAL = "witchDidHeal";
     private static final String KEY_DID_POISON = "witchDidPoison";
     public static final String KEY_WITCH_POISONED = "witchPoisoned";
+
+    private final NarrationService narrationService;
 
     /**
      * <b>Permissions:</b>
@@ -77,7 +82,7 @@ public class WitchController {
             village.delete(WerewolfController.KEY_WEREWOLF_VICTIM);
             player.set(KEY_DID_HEAL, true);
         }
-        //TODO continue narration
+        narrationService.continueNarration(village, Phase.WITCH_HEAL);
     }
 
     /**
@@ -101,7 +106,6 @@ public class WitchController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a witch</li>
@@ -150,10 +154,13 @@ public class WitchController {
             if (!poisoned.isAlive()) {
                 throw new BadRequestException("The targeted player %s is already dead.".formatted(playerId));
             }
+            if (poisoned.getPlayerId().equals(getVictim(village))) {
+                throw new BadRequestException("The targeted player %s is the werewolf victim.".formatted(playerId));
+            }
             village.set(KEY_WITCH_POISONED, playerId);
             player.set(KEY_DID_POISON, true);
         }
-        //TODO continue narration
+        narrationService.continueNarration(village, Phase.WITCH_POISON);
     }
 
     private boolean didHeal(Player player) {
@@ -171,6 +178,14 @@ public class WitchController {
             return heal != null && heal;
         } catch (ClassCastException ex) {
             throw new IllegalStateException("Witch did poison contains non boolean.", ex);
+        }
+    }
+
+    private String getVictim(Village village) {
+        try {
+            return village.get(WerewolfController.KEY_WEREWOLF_VICTIM, String.class);
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Werewolf victim contains non string.", ex);
         }
     }
 }

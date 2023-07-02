@@ -5,7 +5,9 @@ import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
 import com.hexszeug.werewolf.game.model.village.phase.PhaseHistoryElement;
+import com.hexszeug.werewolf.game.model.village.teams.Team;
 import lombok.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,11 +18,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class InfoController {
+    public static final String KEY_WINNER = "winner";
+
     /**
      * <b>Permissions:</b>
      * <p>
      * none
-     * </p><p>
+     * </p>
      * <b>Response:</b>
      * <pre>
      * {
@@ -30,7 +34,6 @@ public class InfoController {
      *     igtime: {@code int} (current in-game time)
      * }
      * </pre>
-     * </p>
      */
     @GetMapping("/narrator")
     public NarrationInfo handleNarrator(Village village) {
@@ -50,7 +53,7 @@ public class InfoController {
      * <b>Permissions:</b>
      * <p>
      * none
-     * </p><p>
+     * </p>
      * <b>Response:</b>
      * <pre>
      * {
@@ -59,7 +62,6 @@ public class InfoController {
      *     }
      * }
      * </pre>
-     * </p>
      */
     @GetMapping("/me")
     public Map<String, PrivatePlayerInfo> handleMe(Player player) {
@@ -70,7 +72,7 @@ public class InfoController {
      * <b>Permissions:</b>
      * <p>
      * none
-     * </p><p>
+     * </p>
      * <b>Response:</b>
      * <pre>
      * {
@@ -86,7 +88,6 @@ public class InfoController {
      *     }
      * }
      * </pre>
-     * </p>
      * */
     @GetMapping("/players")
     public PlayersInfo handlePlayers(Player player, Village village) {
@@ -104,6 +105,31 @@ public class InfoController {
                                 p -> new PublicPlayerInfo(p.getName())
                         ))
         );
+    }
+
+    /**
+     * <b>Permissions:</b>
+     * <p>
+     * none
+     * </p>
+     * <b>Response:</b>
+     * <pre>
+     * {@link Team}
+     * or
+     * {@code null} (if the game is still running)
+     * </pre>
+     * */
+    @GetMapping(value = "/winner", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Team handleWinner(Village village) {
+        return getWinner(village);
+    }
+
+    private Team getWinner(Village village) {
+        try {
+            return village.get(KEY_WINNER, Team.class);
+        } catch (ClassCastException ex) {
+            throw new IllegalStateException("Winner contains non Team enum.", ex);
+        }
     }
 
     @Value
