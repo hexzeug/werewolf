@@ -106,7 +106,6 @@ public class WitchController {
     }
 
     /**
-     * @apiNote
      * <b>Permissions:</b>
      * <ol>
      *     <li>player is a witch</li>

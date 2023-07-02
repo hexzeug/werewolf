@@ -24,7 +24,7 @@ public class InfoController {
      * <b>Permissions:</b>
      * <p>
      * none
-     * </p><p>
+     * </p>
      * <b>Response:</b>
      * <pre>
      * {
@@ -34,7 +34,6 @@ public class InfoController {
      *     igtime: {@code int} (current in-game time)
      * }
      * </pre>
-     * </p>
      */
     @GetMapping("/narrator")
     public NarrationInfo handleNarrator(Village village) {
@@ -54,7 +53,7 @@ public class InfoController {
      * <b>Permissions:</b>
      * <p>
      * none
-     * </p><p>
+     * </p>
      * <b>Response:</b>
      * <pre>
      * {
@@ -63,7 +62,6 @@ public class InfoController {
      *     }
      * }
      * </pre>
-     * </p>
      */
     @GetMapping("/me")
     public Map<String, PrivatePlayerInfo> handleMe(Player player) {
@@ -74,7 +72,7 @@ public class InfoController {
      * <b>Permissions:</b>
      * <p>
      * none
-     * </p><p>
+     * </p>
      * <b>Response:</b>
      * <pre>
      * {
@@ -90,7 +88,6 @@ public class InfoController {
      *     }
      * }
      * </pre>
-     * </p>
      * */
     @GetMapping("/players")
     public PlayersInfo handlePlayers(Player player, Village village) {
