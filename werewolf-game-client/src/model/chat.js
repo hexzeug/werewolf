@@ -20,10 +20,15 @@ const sendMessage = (text) => {
 
 // Mutation
 
-export const receiveMessage = (message) => {
-  store.messages = produce(store.messages, (messages) => {
-    messages.push(message);
-  });
+export const receiveMessage = (message) =>
+  setMessages(
+    produce(store.messages, (messages) => {
+      messages.push(message);
+    })
+  );
+
+export const setMessages = (messages) => {
+  store.messages = messages;
   hooks.forEach((hook) => hook(store.messages));
 };
 

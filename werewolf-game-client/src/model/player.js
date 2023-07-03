@@ -33,9 +33,7 @@ export const setPlayerOrder = (playerOrder) => {
 };
 
 export const updatePlayers = (fn) =>
-  setPlayers(
-    ...produceWithPatches(store.players, (playerMap) => fn(playerMap))
-  );
+  setPlayers(...produceWithPatches(store.players, fn));
 
 export const setPlayers = (players, patches = undefined) => {
   const playersChanged = new Set();

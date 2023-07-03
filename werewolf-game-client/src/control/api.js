@@ -17,6 +17,7 @@ const request = async (url, method, body, options) => {
     resBody = await res.text();
   }
   return {
+    url,
     ok,
     status,
     headers,
@@ -37,6 +38,14 @@ const api = {
   delete: (url, options = {}) => {
     return request(url, 'DELTE', null, options);
   },
+};
+
+export const bodyIfOk = async (requestPromise) => {
+  const { url, body, ok, status } = await requestPromise;
+  if (!ok) {
+    throw new Error(`Request to ${url} failed with status code ${status}.`);
+  }
+  return body;
 };
 
 export default api;

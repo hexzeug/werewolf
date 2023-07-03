@@ -35,7 +35,7 @@ public class ChatController {
      * [
      *     {
      *         author: {@link String} (player id)
-     *         message: {@link String}
+     *         text: {@link String}
      *         timestamp: {@code long}
      *     }
      *     ...
@@ -110,7 +110,7 @@ public class ChatController {
     @Value
     public static class ChatMessage {
         String author;
-        String message;
+        String text;
         long timestamp;
     }
 }
