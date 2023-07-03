@@ -12,3 +12,7 @@ In order to allow for major changes, there are no more precise descriptions.
 ### Current Snapshot of Game Client UI
 
 ![Game Client UI Example (DE)](<game-client-ui-example(de).png>)
+
+### Screenshot of Debugging Setup
+
+![Screenshot of Debugging Setup (DE)](<screenshot-debugging(de).png>)
