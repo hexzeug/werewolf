@@ -4,6 +4,7 @@ import './i18n';
 import './index.css';
 import App from './view/App';
 import { enablePatches } from 'immer';
+import { loadGame } from './control/logic';
 
 // for debugging
 if (window.location.hash.length > 10) {
@@ -19,3 +20,5 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+loadGame();
