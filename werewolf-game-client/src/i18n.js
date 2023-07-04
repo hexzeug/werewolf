@@ -17,7 +17,20 @@ i18n.use(initReactI18next).init({
     de: {
       translation: {
         'document.title': 'Werwolf Game Client',
+        'narrator.generic.sunrise': 'Das Dorf erwacht.',
         'narrator.generic.sunset': 'Das Dorf schläft ein.',
+        'narrator.death.night':
+          '{{player.name}} ist gestorben. Er war ein(e) $t(roles.{{player.role}}).',
+        'narrator.death.executed':
+          '{{player.name}} wurde hingerichtet. Er war ein(e) $t(roles.{{player.role}}).',
+        'narrator.death.shot':
+          '{{player.name}} wurde erschossen. Er war ein(e) $t(roles.{{player.role}}).',
+        'narrator.death.heartbreak':
+          '{{player.name}} ist an Liebeskummer gestorben. Er war ein(e) $t(roles.{{player.role}}).',
+        'narrator.death.own.night': 'Du bist gestorben.',
+        'narrator.death.own.executed': 'Du wurdest hingerichtet.',
+        'narrator.death.own.shot': 'Du wurderst erschossen.',
+        'narrator.death.own.heartbreak': 'Du bist an Liebeskummer gestorben.',
         'narrator.werewolves.awake': 'Die Werwölfe erwachen.',
         'roles.cupid': 'Armor',
         'roles.hunter': 'Jäger',
