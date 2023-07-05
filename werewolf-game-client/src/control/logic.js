@@ -14,6 +14,7 @@ import { narrate } from '../model/narrator';
 import { conditionalAsyncFunction, isDay } from '../utils';
 import { endCupid, startCupid } from './phaseHandlers/cupid';
 import { endGameStart, startGameEnd } from './phaseHandlers/gameStartEnd';
+import { endSeer, startSeer } from './phaseHandlers/seer';
 
 export const cache = {
   get players() {
@@ -144,11 +145,13 @@ const transformMidGameData = (
 const phaseEndHandler = {
   game_start: endGameStart,
   cupid: endCupid,
+  seer: endSeer,
 };
 
 const phaseStartHandler = {
   game_end: startGameEnd,
   cupid: startCupid,
+  seer: startSeer,
 };
 
 const handlePhaseEnd = async (phase) => {

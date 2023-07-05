@@ -5,7 +5,7 @@ import { sleep } from '../utils';
 // Constants
 const FADE_OUT_MS = 500;
 const FADE_IN_MS = 1000;
-const COOLDOWN_MS = 2500;
+const COOLDOWN_MS = 4000;
 
 // Storage
 

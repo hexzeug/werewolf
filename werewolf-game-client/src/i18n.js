@@ -26,6 +26,11 @@ i18n.use(initReactI18next).init({
         'narrator.couple.awake': 'Das verliebte Paar erwacht.',
         'narrator.couple.action': 'Sie gucken sich in die Augen.',
         'narrator.couple.asleep': 'Und schlafen wieder ein.',
+        'narrator.seer.awake': 'Die Seherin erwacht.',
+        'narrator.seer.action':
+          'Sie sucht eine Person aus, deren wahre Identität sie sehen möchte.',
+        'narrator.seer.done': 'Sie hat jemanden ausgesucht.',
+        'narrator.seer.asleep': 'Sie schläft wieder ein.',
         'narrator.death.night':
           '{{player.name}} ist gestorben. Er war ein(e) $t(roles.{{player.role}}).',
         'narrator.death.executed':
