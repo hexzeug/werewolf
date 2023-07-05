@@ -11,14 +11,9 @@ import {
 import api, { bodyIfOk } from './api';
 import { addEventListener } from './eventReceiver';
 import { narrate } from '../model/narrator';
+import { conditionalAsyncFunction, isDay } from '../utils';
 
 export const cache = {};
-
-const isDay = (phase) => {
-  return ['accusation', 'court', 'hunter', 'game_start', 'game_end'].includes(
-    phase
-  );
-};
 
 const mutex = new Mutex();
 
@@ -83,11 +78,6 @@ export const loadGame = async () => {
     setPlayerOrder(playerOrder);
   });
   // await narrationStateStarts(narrator.phase)
-};
-
-const conditionalAsyncFunction = async (condition, fn, ...args) => {
-  if (!condition) return;
-  return await fn(...args);
 };
 
 const loadMidGameData = async ({ loadingOwnId, loadingSelf }) => {
