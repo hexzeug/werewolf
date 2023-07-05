@@ -31,6 +31,10 @@ i18n.use(initReactI18next).init({
           'Sie sucht eine Person aus, deren wahre Identität sie sehen möchte.',
         'narrator.seer.done': 'Sie hat jemanden ausgesucht.',
         'narrator.seer.asleep': 'Sie schläft wieder ein.',
+        'narrator.werewolves.awake': 'Die Werwölfe erwachen.',
+        'narrator.werewolves.action': 'Sie suchen sich ein Opfer aus.',
+        'narrator.werewolves.done': 'Sie haben ihr Opfer gefunden.',
+        'narrator.werewolves.asleep': 'Die Werwölfe schlafen wieder ein.',
         'narrator.death.night':
           '{{player.name}} ist gestorben. Er war ein(e) $t(roles.{{player.role}}).',
         'narrator.death.executed':
@@ -43,7 +47,6 @@ i18n.use(initReactI18next).init({
         'narrator.death.own.executed': 'Du wurdest hingerichtet.',
         'narrator.death.own.shot': 'Du wurderst erschossen.',
         'narrator.death.own.heartbreak': 'Du bist an Liebeskummer gestorben.',
-        'narrator.werewolves.awake': 'Die Werwölfe erwachen.',
         'narrator.winner': 'Die {{winner}} haben gewonnen.',
         'roles.cupid': 'Armor',
         'roles.hunter': 'Jäger',

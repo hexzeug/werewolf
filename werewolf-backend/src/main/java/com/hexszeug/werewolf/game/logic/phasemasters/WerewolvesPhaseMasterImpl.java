@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @RequiredArgsConstructor
 public class WerewolvesPhaseMasterImpl implements WerewolvesPhaseMaster {
-    private static final long TIMEOUT_WEREWOLVES_SECONDS = 20;
+    private static final long TIMEOUT_WEREWOLVES_SECONDS = 40;
 
     private final TaskScheduler taskScheduler;
     private final NarrationService narrationService;

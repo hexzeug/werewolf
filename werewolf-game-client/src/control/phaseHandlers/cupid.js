@@ -1,5 +1,6 @@
 import { narrate } from '../../model/narrator';
 import { updateEachPlayer, updatePlayers } from '../../model/player';
+import { conditionalAsyncFunction, roleIs } from '../../utils';
 import api, { bodyIfOk } from '../api';
 import { cache } from '../logic';
 
@@ -28,9 +29,11 @@ const coupleFactory = () => {
 
 export const startCupid = async () => {
   await narrate('narrator.cupid.awake');
+  if (roleIs('cupid')) {
+    updatePlayers((players) => (players[cache.ownId].status = 'awake'));
+  }
   await narrate('narrator.cupid.action');
-  if (cache.me.role !== 'cupid') return;
-  updatePlayers((players) => (players[cache.ownId].status = 'awake'));
+  if (!roleIs('cupid')) return;
   const { clickHandler, couplePromise } = coupleFactory();
   updateEachPlayer((player) => {
     if (player.status === 'dead') return;
@@ -46,7 +49,7 @@ export const startCupid = async () => {
 
 export const endCupid = async () => {
   const loadingCouple = api.get('/couple');
-  if (cache.me.role === 'cupid') {
+  if (roleIs('cupid')) {
     updateEachPlayer((player) => {
       if (player.marked) {
         player.marked = false;
@@ -55,19 +58,16 @@ export const endCupid = async () => {
     });
   }
   await narrate('narrator.cupid.asleep');
-  if (cache.me.role === 'cupid') {
+  if (roleIs('cupid')) {
     updatePlayers((players) => (players[cache.ownId].status = 'sleeping'));
   }
   await narrate('narrator.couple.awake');
   const { ok: canReadCouple, body: couple } = await loadingCouple;
   const inCouple = canReadCouple && couple.includes(cache.ownId);
+  const loadingCoupleRoles = conditionalAsyncFunction(inCouple, () =>
+    bodyIfOk(api.get('/couple/roles'))
+  );
   if (inCouple) {
-    bodyIfOk(api.get('/couple/roles')).then((roles) => {
-      updatePlayers((players) => {
-        players[couple[0]].role = roles[couple[0]].role;
-        players[couple[1]].role = roles[couple[1]].role;
-      });
-    });
     updatePlayers((players) => {
       players[couple[0]].status = players[couple[1]].status = 'awake';
       players[couple[0]].inLove = players[couple[1]].inLove = true;
@@ -75,9 +75,15 @@ export const endCupid = async () => {
   }
   await narrate('narrator.couple.action');
   if (inCouple) {
+    const roles = await loadingCoupleRoles;
     updatePlayers((players) => {
-      players[couple[0]].status = players[couple[1]].status = 'sleeping';
+      players[couple[0]].role = roles[couple[0]].role;
+      players[couple[1]].role = roles[couple[1]].role;
     });
   }
   await narrate('narrator.couple.asleep');
+  if (!inCouple) return;
+  updatePlayers((players) => {
+    players[couple[0]].status = players[couple[1]].status = 'sleeping';
+  });
 };

@@ -15,6 +15,7 @@ import { conditionalAsyncFunction, isDay } from '../utils';
 import { endCupid, startCupid } from './phaseHandlers/cupid';
 import { endGameStart, startGameEnd } from './phaseHandlers/gameStartEnd';
 import { endSeer, startSeer } from './phaseHandlers/seer';
+import { endWerewolves, startWerewolves } from './phaseHandlers/werewolves';
 
 export const cache = {
   get players() {
@@ -146,12 +147,14 @@ const phaseEndHandler = {
   game_start: endGameStart,
   cupid: endCupid,
   seer: endSeer,
+  werewolves: endWerewolves,
 };
 
 const phaseStartHandler = {
   game_end: startGameEnd,
   cupid: startCupid,
   seer: startSeer,
+  werewolves: startWerewolves,
 };
 
 const handlePhaseEnd = async (phase) => {
