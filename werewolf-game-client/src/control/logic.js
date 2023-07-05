@@ -12,7 +12,7 @@ import api, { bodyIfOk } from './api';
 import { addEventListener } from './eventReceiver';
 import { narrate } from '../model/narrator';
 
-const cache = {};
+export const cache = {};
 
 const isDay = (phase) => {
   return ['accusation', 'court', 'hunter', 'game_start', 'game_end'].includes(
@@ -136,12 +136,26 @@ const transformMidGameData = (
   }
 };
 
+const phaseEndHandler = {};
+
+const phaseStartHandler = {};
+
+export const registerPhaseEndHandler = (phase, handler) =>
+  (phaseEndHandler[phase] = handler);
+export const registerPhaseStartHandler = (phase, handler) =>
+  (phaseStartHandler[phase] = handler);
+const handlePhaseEnd = async (phase) => {
+  if (phaseEndHandler[phase]) await phaseEndHandler[phase]();
+};
+const handlePhaseStart = async (phase) => {
+  if (phaseStartHandler[phase]) await phaseStartHandler[phase]();
+};
+
 const handlePhaseEvent = async (phase) => {
-  console.warn('recieved phase', phase);
   await mutex.runExclusive(async () => {
+    console.log(`server-side phase start of ${phase}`);
     const oldPhase = cache.phase;
-    // await narrationStateEnds(oldPhase);
-    await narrate(`Phase end: ${oldPhase}`);
+    await handlePhaseEnd(oldPhase);
     cache.igtime++;
     if (!isDay(oldPhase) && isDay(phase)) {
       // todo set visual day
@@ -158,9 +172,9 @@ const handlePhaseEvent = async (phase) => {
         if (player.status !== 'dead') player.status = 'sleeping';
       });
     }
+    console.log(`client-side phase start of ${phase}`);
     cache.phase = phase;
-    // await narrationStateStarts(phase)
-    await narrate(`Phase start: ${phase}`);
+    handlePhaseStart(phase);
   });
 };
 
