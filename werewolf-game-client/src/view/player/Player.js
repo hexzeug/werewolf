@@ -3,6 +3,7 @@ import { usePlayer } from '../../model/player';
 import { ReactComponent as Heart } from './heart.svg';
 import './Player.css';
 import Spinner from '../spinner/Spinner';
+import { useCallback } from 'react';
 
 const Player = ({ playerId }) => {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ const Player = ({ playerId }) => {
     disabled,
     onClick,
   } = player ?? {};
+  const domOnClick = useCallback(() => onClick(playerId), [onClick, playerId]);
   const isDead = status === 'dead';
   const isButton = (onClick || disabled) && !isDead;
   const bodyContent = (
@@ -45,7 +47,7 @@ const Player = ({ playerId }) => {
         <button
           className="Player__body button"
           disabled={disabled}
-          onClick={onClick}
+          onClick={onClick && domOnClick}
           data-dead={isDead || null}
         >
           {bodyContent}

@@ -19,6 +19,13 @@ i18n.use(initReactI18next).init({
         'document.title': 'Werwolf Game Client',
         'narrator.generic.sunrise': 'Das Dorf erwacht.',
         'narrator.generic.sunset': 'Das Dorf schläft ein.',
+        'narrator.cupid.awake': 'Der Armor erwacht.',
+        'narrator.cupid.action':
+          'Er sucht sich zwei Spieler aus, die sich verlieben werden.',
+        'narrator.cupid.asleep': 'Und schläft wieder ein.',
+        'narrator.couple.awake': 'Das verliebte Paar erwacht.',
+        'narrator.couple.action': 'Sie gucken sich in die Augen.',
+        'narrator.couple.asleep': 'Und schlafen wieder ein.',
         'narrator.death.night':
           '{{player.name}} ist gestorben. Er war ein(e) $t(roles.{{player.role}}).',
         'narrator.death.executed':

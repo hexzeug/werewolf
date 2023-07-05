@@ -1,8 +1,8 @@
 import { Mutex } from 'async-mutex';
 import { receiveMessage, setMessages } from '../model/chat';
 import {
-  getPlayer,
   getPlayerOrder,
+  getPlayers,
   setPlayerOrder,
   setPlayers,
   updateEachPlayer,
@@ -12,9 +12,23 @@ import api, { bodyIfOk } from './api';
 import { addEventListener } from './eventReceiver';
 import { narrate } from '../model/narrator';
 import { conditionalAsyncFunction, isDay } from '../utils';
+import { endCupid, startCupid } from './phaseHandlers/cupid';
 import { endGameStart, startGameEnd } from './phaseHandlers/gameStartEnd';
 
-export const cache = {};
+export const cache = {
+  get players() {
+    return getPlayers();
+  },
+  get me() {
+    return getPlayers()[getPlayerOrder()[0]];
+  },
+  get playerOrder() {
+    return getPlayerOrder();
+  },
+  get ownId() {
+    return getPlayerOrder()[0];
+  },
+};
 
 const mutex = new Mutex();
 
@@ -78,7 +92,7 @@ export const loadGame = async () => {
     setPlayers(players);
     setPlayerOrder(playerOrder);
   });
-  // await narrationStateStarts(narrator.phase)
+  await handlePhaseStart(cache.phase);
 };
 
 const loadMidGameData = async ({ loadingOwnId, loadingSelf }) => {
@@ -129,10 +143,12 @@ const transformMidGameData = (
 
 const phaseEndHandler = {
   game_start: endGameStart,
+  cupid: endCupid,
 };
 
 const phaseStartHandler = {
   game_end: startGameEnd,
+  cupid: startCupid,
 };
 
 const handlePhaseEnd = async (phase) => {
@@ -150,7 +166,7 @@ const handlePhaseEvent = async (phase) => {
     cache.igtime++;
     if (!isDay(oldPhase) && isDay(phase)) {
       // todo set visual day
-      updateEachPlayer((_id, player) => {
+      updateEachPlayer((player) => {
         if (player.status !== 'dead') player.status = 'awake';
       });
       await narrate('narrator.generic.sunrise');
@@ -159,13 +175,13 @@ const handlePhaseEvent = async (phase) => {
     } else if (isDay(oldPhase) && !isDay(phase)) {
       await narrate('narrator.generic.sunset');
       // todo set visual night
-      updateEachPlayer((_id, player) => {
+      updateEachPlayer((player) => {
         if (player.status !== 'dead') player.status = 'sleeping';
       });
     }
     console.log(`client-side phase start of ${phase}`);
     cache.phase = phase;
-    handlePhaseStart(phase);
+    await handlePhaseStart(phase);
   });
 };
 
@@ -180,11 +196,11 @@ export const animateDeaths = async () => {
   }
   if (normalDeaths.length + heartbreakDeaths.length === 0) return 0;
   for (const id of normalDeaths) {
-    if (id === getPlayerOrder()[0]) {
+    if (id === cache.ownId) {
       await narrate(`narrator.death.own.${deaths[id].reason}`);
     } else {
       await narrate(`narrator.death.${deaths[id].reason}`, {
-        player: { ...getPlayer(id), role: deaths[id].role },
+        player: { ...cache.players[id], role: deaths[id].role },
       });
     }
     updatePlayers(({ [id]: player }) => {
@@ -195,11 +211,11 @@ export const animateDeaths = async () => {
   if (heartbreakDeaths.length === 0) return normalDeaths.length;
   const id = heartbreakDeaths[0];
   const couple = await bodyIfOk(api.get('/couple'));
-  if (id === getPlayerOrder()[0]) {
+  if (id === cache.ownId) {
     await narrate('narrator.death.own.heartbreak');
   } else {
     await narrate('narrator.death.heartbreak', {
-      player: { ...getPlayer(id), role: deaths[id].role },
+      player: { ...cache.players[id], role: deaths[id].role },
     });
   }
   updatePlayers((players) => {

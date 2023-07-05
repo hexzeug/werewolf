@@ -22,7 +22,6 @@ const store = {
 };
 
 export const getPlayers = () => store.players;
-export const getPlayer = (id) => store.players[id];
 export const getPlayerOrder = () => store.playerOrder;
 
 // Mutation
@@ -39,13 +38,17 @@ export const setPlayerOrder = (playerOrder) => {
 export const updateEachPlayer = (fn) => {
   updatePlayers((players) => {
     for (const id in players) {
-      fn(id, players[id]);
+      fn(players[id]);
     }
   });
 };
 
 export const updatePlayers = (fn) =>
-  setPlayers(...produceWithPatches(store.players, (players) => fn(players)));
+  setPlayers(
+    ...produceWithPatches(store.players, (players) => {
+      fn(players);
+    })
+  );
 
 export const setPlayers = (players, patches = undefined) => {
   const playersChanged = new Set();
