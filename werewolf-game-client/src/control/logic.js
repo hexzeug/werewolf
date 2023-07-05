@@ -12,6 +12,7 @@ import api, { bodyIfOk } from './api';
 import { addEventListener } from './eventReceiver';
 import { narrate } from '../model/narrator';
 import { conditionalAsyncFunction, isDay } from '../utils';
+import { endGameStart, startGameEnd } from './phaseHandlers/gameStartEnd';
 
 export const cache = {};
 
@@ -126,14 +127,14 @@ const transformMidGameData = (
   }
 };
 
-const phaseEndHandler = {};
+const phaseEndHandler = {
+  game_start: endGameStart,
+};
 
-const phaseStartHandler = {};
+const phaseStartHandler = {
+  game_end: startGameEnd,
+};
 
-export const registerPhaseEndHandler = (phase, handler) =>
-  (phaseEndHandler[phase] = handler);
-export const registerPhaseStartHandler = (phase, handler) =>
-  (phaseStartHandler[phase] = handler);
 const handlePhaseEnd = async (phase) => {
   if (phaseEndHandler[phase]) await phaseEndHandler[phase]();
 };

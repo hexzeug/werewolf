@@ -32,6 +32,7 @@ i18n.use(initReactI18next).init({
         'narrator.death.own.shot': 'Du wurderst erschossen.',
         'narrator.death.own.heartbreak': 'Du bist an Liebeskummer gestorben.',
         'narrator.werewolves.awake': 'Die Werwölfe erwachen.',
+        'narrator.winner': 'Die {{winner}} haben gewonnen.',
         'roles.cupid': 'Armor',
         'roles.hunter': 'Jäger',
         'roles.seer': 'Seherin',
