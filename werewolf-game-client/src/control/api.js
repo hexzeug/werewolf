@@ -36,7 +36,7 @@ const api = {
     return request(url, 'PUT', body, options);
   },
   delete: (url, options = {}) => {
-    return request(url, 'DELTE', undefined, options);
+    return request(url, 'DELETE', undefined, options);
   },
 };
 

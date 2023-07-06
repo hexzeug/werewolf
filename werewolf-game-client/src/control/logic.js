@@ -184,12 +184,13 @@ const handlePhaseEvent = async (phase) => {
     await handlePhaseEnd(oldPhase);
     cache.igtime++;
     if (!isDay(oldPhase) && isDay(phase)) {
+      const loadingDeaths = bodyIfOk(api.get('/deaths'));
+      await narrate('narrator.generic.sunrise');
       // todo set visual day
       updateEachPlayer((player) => {
         if (player.status !== 'dead') player.status = 'awake';
       });
-      await narrate('narrator.generic.sunrise');
-      const deaths = await animateDeaths();
+      const deaths = await animateDeaths(loadingDeaths);
       if (deaths > 0) cache.igtime++;
     } else if (isDay(oldPhase) && !isDay(phase)) {
       await narrate('narrator.generic.sunset');
@@ -204,8 +205,8 @@ const handlePhaseEvent = async (phase) => {
   });
 };
 
-export const animateDeaths = async () => {
-  const deaths = await bodyIfOk(api.get('/deaths'));
+export const animateDeaths = async (loadingDeaths) => {
+  const deaths = await loadingDeaths;
   const normalDeaths = [];
   const heartbreakDeaths = [];
   for (const id in deaths) {
@@ -228,18 +229,21 @@ export const animateDeaths = async () => {
     });
   }
   if (heartbreakDeaths.length === 0) return normalDeaths.length;
-  const id = heartbreakDeaths[0];
+  const heartbrokenId = heartbreakDeaths[0];
   const couple = await bodyIfOk(api.get('/couple'));
-  if (id === cache.ownId) {
+  if (heartbrokenId === cache.ownId) {
     await narrate('narrator.death.own.heartbreak');
   } else {
     await narrate('narrator.death.heartbreak', {
-      player: { ...cache.players[id], role: deaths[id].role },
+      player: {
+        ...cache.players[heartbrokenId],
+        role: deaths[heartbrokenId].role,
+      },
     });
   }
   updatePlayers((players) => {
-    players[id].status = 'dead';
-    players[id].role = deaths[id].role;
+    players[heartbrokenId].status = 'dead';
+    players[heartbrokenId].role = deaths[heartbrokenId].role;
     players[couple[0]].inLove = true;
     players[couple[1]].inLove = true;
   });

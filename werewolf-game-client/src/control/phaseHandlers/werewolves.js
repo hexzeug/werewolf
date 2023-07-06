@@ -44,6 +44,7 @@ const handleClick = (id) => {
 };
 
 const handleVoteEvent = ({ voter, vote }) => {
+  console.log('werewolf vote: ', { voter, vote });
   if (voter === cache.ownId) return;
   updateVoteDisplay({ voter, vote });
 };

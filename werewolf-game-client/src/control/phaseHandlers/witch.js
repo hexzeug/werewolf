@@ -105,7 +105,8 @@ export const endWitchPoison = async () => {
   await narrate('narrator.witch.done.poison');
   if (roleIs('witch')) {
     updatePlayers((players) => {
-      players[internalCache.poisoned].marked = false;
+      if (internalCache.poisoned)
+        players[internalCache.poisoned].marked = false;
       players[cache.ownId].status = 'sleeping';
     });
   }

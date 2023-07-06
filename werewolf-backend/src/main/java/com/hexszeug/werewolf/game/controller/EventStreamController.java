@@ -16,11 +16,6 @@ import java.util.List;
 public class EventStreamController {
     private final ConnectionService connectionService;
 
-    @GetMapping("/event-stream")
-    public void handle() {
-        throw new NotAcceptableStatusException(List.of(MediaType.TEXT_EVENT_STREAM));
-    }
-
     @GetMapping(value = "/event-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter handle(Player player) {
         return connectionService.connect(player);
