@@ -1,6 +1,6 @@
 const request = async (url, method, body, options) => {
   const res = await fetch('/api' + url, {
-    ...(body && { body: JSON.stringify(body) }),
+    ...(body !== undefined && { body: JSON.stringify(body) }),
     method,
     ...options,
     headers: {
@@ -27,7 +27,7 @@ const request = async (url, method, body, options) => {
 
 const api = {
   get: (url, options = {}) => {
-    return request(url, 'GET', null, options);
+    return request(url, 'GET', undefined, options);
   },
   post: (url, body, options = {}) => {
     return request(url, 'POST', body, options);
@@ -36,7 +36,7 @@ const api = {
     return request(url, 'PUT', body, options);
   },
   delete: (url, options = {}) => {
-    return request(url, 'DELTE', null, options);
+    return request(url, 'DELTE', undefined, options);
   },
 };
 

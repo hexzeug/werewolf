@@ -16,6 +16,12 @@ import { endCupid, startCupid } from './phaseHandlers/cupid';
 import { endGameStart, startGameEnd } from './phaseHandlers/gameStartEnd';
 import { endSeer, startSeer } from './phaseHandlers/seer';
 import { endWerewolves, startWerewolves } from './phaseHandlers/werewolves';
+import {
+  endWitchHeal,
+  endWitchPoison,
+  startWitchHeal,
+  startWitchPoison,
+} from './phaseHandlers/witch';
 
 export const cache = {
   get players() {
@@ -143,25 +149,32 @@ const transformMidGameData = (
   }
 };
 
-const phaseEndHandler = {
-  game_start: endGameStart,
-  cupid: endCupid,
-  seer: endSeer,
-  werewolves: endWerewolves,
-};
-
 const phaseStartHandler = {
   game_end: startGameEnd,
   cupid: startCupid,
   seer: startSeer,
   werewolves: startWerewolves,
+  witch_heal: startWitchHeal,
+  witch_poison: startWitchPoison,
+};
+
+const phaseEndHandler = {
+  game_start: endGameStart,
+  cupid: endCupid,
+  seer: endSeer,
+  werewolves: endWerewolves,
+  witch_heal: endWitchHeal,
+  witch_poison: endWitchPoison,
+};
+
+const handlePhaseStart = async (phase) => {
+  if (phaseStartHandler[phase]) await phaseStartHandler[phase]();
+  else console.warn(`No handler for phase start of ${phase} found.`);
 };
 
 const handlePhaseEnd = async (phase) => {
   if (phaseEndHandler[phase]) await phaseEndHandler[phase]();
-};
-const handlePhaseStart = async (phase) => {
-  if (phaseStartHandler[phase]) await phaseStartHandler[phase]();
+  else console.warn(`No handler for phase end of ${phase} found.`);
 };
 
 const handlePhaseEvent = async (phase) => {

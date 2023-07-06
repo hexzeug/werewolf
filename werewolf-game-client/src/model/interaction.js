@@ -13,6 +13,7 @@ interaction: {
     {
       text: String, (translate key)
       data?: Object, (translate interpolation data)
+      action: Function,
     }
   ],
   chat?: boolean,
@@ -34,6 +35,7 @@ export const updateInteraction = (fn) => {
 
 export const setInteraction = (interaction) => {
   store.interaction = interaction;
+  hooks.forEach((hook) => hook());
 };
 
 // Subscription
