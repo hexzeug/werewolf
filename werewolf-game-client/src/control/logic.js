@@ -22,6 +22,7 @@ import {
   startWitchHeal,
   startWitchPoison,
 } from './phaseHandlers/witch';
+import { endHunter, startHunter } from './phaseHandlers/hunter';
 
 export const cache = {
   get players() {
@@ -156,6 +157,7 @@ const phaseStartHandler = {
   werewolves: startWerewolves,
   witch_heal: startWitchHeal,
   witch_poison: startWitchPoison,
+  hunter: startHunter,
 };
 
 const phaseEndHandler = {
@@ -165,6 +167,7 @@ const phaseEndHandler = {
   werewolves: endWerewolves,
   witch_heal: endWitchHeal,
   witch_poison: endWitchPoison,
+  hunter: endHunter,
 };
 
 const handlePhaseStart = async (phase) => {

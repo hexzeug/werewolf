@@ -43,6 +43,9 @@ i18n.use(initReactI18next).init({
           'Sie überlegt nun, ob sie jemanden vergiften möchte.',
         'narrator.witch.done.poison': 'Sie hat sich entschieden.',
         'narrator.witch.asleep': 'Die Hexe schläft wieder ein.',
+        'narrator.hunter.action':
+          'Da {{player.name}} Jäger war, erschießt er jemanden.',
+        'narrator.hunter.done': 'Er hat geschossen.',
         'narrator.death.night':
           '{{player.name}} ist gestorben. Er war ein(e) $t(roles.{{player.role}}).',
         'narrator.death.executed':
