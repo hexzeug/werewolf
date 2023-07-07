@@ -4,6 +4,7 @@ import { ReactComponent as Heart } from './heart.svg';
 import './Player.css';
 import Spinner from '../spinner/Spinner';
 import { useCallback } from 'react';
+import { cache } from '../../control/logic';
 
 const Player = ({ playerId }) => {
   const { t } = useTranslation();
@@ -62,8 +63,10 @@ const Player = ({ playerId }) => {
 };
 
 const PlayerTag = ({ playerId }) => {
-  const player = usePlayer(playerId);
-  return <span className="Player__tag">{player?.name}</span>;
+  const { t } = useTranslation();
+  let { name } = usePlayer(playerId);
+  if (playerId === cache.ownId) name = t('player.tags.you');
+  return <span className="Player__tag">{name}</span>;
 };
 
 const PlayerSnore = () => {

@@ -1,5 +1,6 @@
 import { produce } from 'immer';
 import { useSyncExternalStore } from 'react';
+import api from '../control/api';
 
 // Storage
 
@@ -13,9 +14,8 @@ const store = {
   messages: [],
 };
 
-// debug / development
 const sendMessage = (text) => {
-  receiveMessage({ text, author: 'abc1' });
+  api.post('/chat', text);
 };
 
 // Mutation

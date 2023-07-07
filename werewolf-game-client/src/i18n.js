@@ -46,6 +46,15 @@ i18n.use(initReactI18next).init({
         'narrator.hunter.action':
           'Da {{player.name}} Jäger war, erschießt er jemanden.',
         'narrator.hunter.done': 'Er hat geschossen.',
+        'narrator.accusation.action':
+          'Das Gericht ist eröffnet. Jeder kann jemanden anklagen, ein Werwolf zu sein.',
+        'narrator.accusation.done':
+          'Die Anklagephase ist beendet. Es werden keine Anklagen mehr entgegen genommen.',
+        'narrator.accusation.no_accusations':
+          'Da es keine Anklagen gibt, schießt das Gericht.',
+        'narrator.court.action':
+          'Das Dorf wird nun abstimmen, welcher Angeklagte hingerichtet werden soll.',
+        'narrator.court.done': 'Das Dorf hat entschieden.',
         'narrator.death.night':
           '{{player.name}} ist gestorben. Er war ein(e) $t(roles.{{player.role}}).',
         'narrator.death.executed':
@@ -75,6 +84,7 @@ i18n.use(initReactI18next).init({
         'roles.witch': 'Hexe',
         'player.alt.inLove': 'verliebt',
         'player.snoreSymbol3Char': 'zzz',
+        'player.tags.you': 'Du',
         'chat.input.placeholder': 'Hier schreiben...',
         'chat.input.send': 'Senden',
       },

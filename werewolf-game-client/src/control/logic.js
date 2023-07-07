@@ -23,6 +23,12 @@ import {
   startWitchPoison,
 } from './phaseHandlers/witch';
 import { endHunter, startHunter } from './phaseHandlers/hunter';
+import {
+  endAccusation,
+  endCourt,
+  startAccusation,
+  startCourt,
+} from './phaseHandlers/accusationCourt';
 
 export const cache = {
   get players() {
@@ -44,7 +50,7 @@ const mutex = new Mutex();
 export const loadGame = async () => {
   await mutex.runExclusive(async () => {
     addEventListener('phaseevent', handlePhaseEvent);
-    addEventListener('chatevent', receiveMessage);
+    addEventListener('chatmessageevent', receiveMessage);
 
     //loading
     const loadingNarration = bodyIfOk(
@@ -158,6 +164,8 @@ const phaseStartHandler = {
   witch_heal: startWitchHeal,
   witch_poison: startWitchPoison,
   hunter: startHunter,
+  accusation: startAccusation,
+  court: startCourt,
 };
 
 const phaseEndHandler = {
@@ -168,6 +176,8 @@ const phaseEndHandler = {
   witch_heal: endWitchHeal,
   witch_poison: endWitchPoison,
   hunter: endHunter,
+  accusation: endAccusation,
+  court: endCourt,
 };
 
 const handlePhaseStart = async (phase) => {

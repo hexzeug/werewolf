@@ -73,7 +73,9 @@ public class AccusationAndCourtPhaseMasterImpl implements CourtPhaseMaster {
         Map<Player, Integer> votes = new HashMap<>();
         village.getPlayerList().forEach(player -> {
             Player vote = getVote(player, village);
-            votes.compute(vote, (__, count) -> count == null ? 1 : count + 1);
+            if (vote != null) {
+                votes.compute(vote, (__, count) -> count == null ? 1 : count + 1);
+            }
             player.delete(CourtController.KEY_ACCUSATION);
             player.delete(CourtController.KEY_VOTE);
         });

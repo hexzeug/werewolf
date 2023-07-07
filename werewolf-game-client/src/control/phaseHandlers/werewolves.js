@@ -44,7 +44,6 @@ const handleClick = (id) => {
 };
 
 const handleVoteEvent = ({ voter, vote }) => {
-  console.log('werewolf vote: ', { voter, vote });
   if (voter === cache.ownId) return;
   updateVoteDisplay({ voter, vote });
 };
@@ -70,7 +69,6 @@ export const startWerewolves = async () => {
   if (!roleIs('werewolf')) return;
   internalCache.votes = {};
   const votes = await loadingVotes;
-  console.log(votes);
   updatePlayers((players) => {
     for (const id in votes) {
       players[id].marked = true;
