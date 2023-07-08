@@ -91,11 +91,9 @@ public class AccusationAndCourtPhaseMasterImpl implements CourtPhaseMaster {
                     targets.add(player);
                 }
             });
-            targets
-                    .stream()
-                    .skip(new Random().nextInt(targets.size()))
-                    .findFirst()
-                    .ifPresent(target -> killingService.kill(target, DeathReason.EXECUTED));
+            if (targets.size() != 1) {
+                killingService.kill(targets.iterator().next(), DeathReason.EXECUTED);
+            }
         }
         narrationService.continueNarration(village, Phase.COURT);
     }
