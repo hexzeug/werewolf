@@ -29,6 +29,7 @@ import {
   startAccusation,
   startCourt,
 } from './phaseHandlers/accusationCourt';
+import { setDaytime } from '../model/daytime';
 
 export const cache = {
   get players() {
@@ -105,7 +106,7 @@ export const loadGame = async () => {
 
     // set data
     await loadingAndSettingChat;
-    // todo set visual daytime
+    setDaytime(isDay(currentPhase) ? 'day' : 'night');
     setPlayers(players);
     setPlayerOrder(playerOrder);
   });
@@ -201,7 +202,7 @@ const handlePhaseEvent = async (phase) => {
     if (!isDay(oldPhase) && isDay(phase)) {
       const loadingDeaths = bodyIfOk(api.get('/deaths'));
       await narrate('narrator.generic.sunrise');
-      // todo set visual day
+      setDaytime('day');
       updateEachPlayer((player) => {
         if (player.status !== 'dead') player.status = 'awake';
       });
@@ -209,7 +210,7 @@ const handlePhaseEvent = async (phase) => {
       if (deaths > 0) cache.igtime++;
     } else if (isDay(oldPhase) && !isDay(phase)) {
       await narrate('narrator.generic.sunset');
-      // todo set visual night
+      setDaytime('night');
       updateEachPlayer((player) => {
         if (player.status !== 'dead') player.status = 'sleeping';
       });

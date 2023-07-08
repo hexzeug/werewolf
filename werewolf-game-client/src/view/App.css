@@ -3,3 +3,11 @@
   grid-template-rows: 1fr min-content 3fr min-content;
   height: 100svh;
 }
+
+.App[data-daytime='night'] {
+  background-color: #bbbbbb;
+}
+
+.App[data-daytime='awake'] {
+  background-color: #e2e2e2;
+}

@@ -1,3 +1,4 @@
+import { useDaytime } from '../model/daytime';
 import './App.css';
 import Interaction from './interaction/Interaction';
 import Narrator from './narrator/Narrator';
@@ -5,8 +6,9 @@ import OwnPlayer from './ownplayer/OwnPlayer';
 import PlayerList from './playerlist/PlayerList';
 
 const App = () => {
+  const daytime = useDaytime();
   return (
-    <div className="App">
+    <div className="App" data-daytime={daytime}>
       <div className="App__element">
         <Narrator />
       </div>
