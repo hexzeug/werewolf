@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class NarrationServiceImpl implements NarrationService {
             } while (!meetsRequirements(nextPhase, village));
             village.setPhaseOrderIndex(i);
             village.incrementIGTime();
-            village.pushPhaseHistoryElement(new PhaseHistoryElementImpl(nextPhase, System.currentTimeMillis()));
+            village.pushPhaseHistoryElement(new PhaseHistoryElementImpl(nextPhase, Instant.now().toEpochMilli()));
             eventPublisher.publishEvent(new PhaseEvent(village));
         }
     }
