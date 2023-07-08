@@ -73,7 +73,9 @@ public class AccusationAndCourtPhaseMasterImpl implements CourtPhaseMaster {
         Map<Player, Integer> votes = new HashMap<>();
         village.getPlayerList().forEach(player -> {
             Player vote = getVote(player, village);
-            votes.compute(vote, (__, count) -> count == null ? 1 : count + 1);
+            if (vote != null) {
+                votes.compute(vote, (__, count) -> count == null ? 1 : count + 1);
+            }
             player.delete(CourtController.KEY_ACCUSATION);
             player.delete(CourtController.KEY_VOTE);
         });
@@ -89,11 +91,9 @@ public class AccusationAndCourtPhaseMasterImpl implements CourtPhaseMaster {
                     targets.add(player);
                 }
             });
-            targets
-                    .stream()
-                    .skip(new Random().nextInt(targets.size()))
-                    .findFirst()
-                    .ifPresent(target -> killingService.kill(target, DeathReason.EXECUTED));
+            if (targets.size() != 1) {
+                killingService.kill(targets.iterator().next(), DeathReason.EXECUTED);
+            }
         }
         narrationService.continueNarration(village, Phase.COURT);
     }

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 const TIMEOUT_MS = 100;
 
-const Chat = () => {
+const Chat = ({ readOnly }) => {
   const { t } = useTranslation();
   const [messages, sendMessage] = useChat();
   // isScrolledToBottom is true if
@@ -135,20 +135,24 @@ const Chat = () => {
           />
         )}
       </div>
-      <hr />
-      <form className="Chat__form" onSubmit={handleSubmit}>
-        <input
-          className="Chat__input"
-          type="text"
-          value={inputMsg}
-          onChange={handleInputChange}
-          placeholder={t('chat.input.placeholder')}
-          autoComplete="off"
-        />
-        <button type="submit" className="Chat__submit button">
-          {t('chat.input.send')}
-        </button>
-      </form>
+      {!readOnly && (
+        <>
+          <hr />
+          <form className="Chat__form" onSubmit={handleSubmit}>
+            <input
+              className="Chat__input"
+              type="text"
+              value={inputMsg}
+              onChange={handleInputChange}
+              placeholder={t('chat.input.placeholder')}
+              autoComplete="off"
+            />
+            <button type="submit" className="Chat__submit button">
+              {t('chat.input.send')}
+            </button>
+          </form>
+        </>
+      )}
     </div>
   );
 };

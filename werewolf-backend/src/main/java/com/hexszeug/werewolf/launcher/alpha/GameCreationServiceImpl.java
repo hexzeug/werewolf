@@ -5,6 +5,7 @@ import com.hexszeug.werewolf.game.model.player.PlayerImpl;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.VillageImpl;
+import com.hexszeug.werewolf.game.model.village.VillageRepository;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -42,17 +43,10 @@ public class GameCreationServiceImpl implements GameCreationService {
 
     private final MutableAuthorizationRepository authorizationRepository;
     private final MutableVillageRepository villageRepository;
+    private final VillageRepository readableVillageRepository;
 
     @Override
     public void createGame(int playerCount) {
-        if (authorizationRepository == null) {
-            log.warn("AuthorizationRepositoryImpl is not in application context. Skipping game creation.");
-            return;
-        }
-        if (villageRepository == null) {
-            log.warn("VillageRepositoryImpl is not in application context. Skipping game creation.");
-            return;
-        }
         if (playerCount < PLAYERS_MIN || playerCount > PLAYERS_MAX) {
             throw new IllegalArgumentException(String.format(
                     "playerCount must lie between %s and %s.",
@@ -64,11 +58,27 @@ public class GameCreationServiceImpl implements GameCreationService {
         List<Phase> phaseOrder = generatePhaseOrder(roles);
 
         Random random = new Random();
+        List<String> names = new ArrayList<>(PLAYER_NAMES);
         Collections.shuffle(roles, random);
-        String villageId = generateRandomString(12, random);
+        Collections.shuffle(names, random);
+        String villageId;
+        do {
+            villageId = generateRandomString(12, random);
+        } while (readableVillageRepository.getByVillageId(villageId) != null);
         List<Player> players = new ArrayList<>(playerCount);
+        Set<String> usedPlayerIds = new HashSet<>();
         for (int i = 0; i < playerCount; i++) {
-            players.add(createPlayer(roles.get(i), villageId, random));
+            String playerId;
+            do {
+                playerId = generateRandomString(16, random);
+            } while (usedPlayerIds.contains(playerId));
+            usedPlayerIds.add(playerId);
+            players.add(new PlayerImpl(
+                    playerId,
+                    villageId,
+                    names.get(i),
+                    roles.get(i)
+            ));
         }
         Village village = new VillageImpl(villageId, phaseOrder, players);
         villageRepository.addVillage(village);
@@ -105,15 +115,6 @@ public class GameCreationServiceImpl implements GameCreationService {
         phases.add(Phase.COURT);
         if (roles.contains(Role.HUNTER)) phases.add(Phase.HUNTER);
         return phases;
-    }
-
-    private Player createPlayer(Role role, String villageId, Random random) {
-        return new PlayerImpl(
-                generateRandomString(16, random),
-                villageId,
-                PLAYER_NAMES.get(random.nextInt(PLAYER_NAMES.size())),
-                role
-        );
     }
 
     @SuppressWarnings("SpellCheckingInspection")

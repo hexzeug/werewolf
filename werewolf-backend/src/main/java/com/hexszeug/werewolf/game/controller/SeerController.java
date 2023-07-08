@@ -91,7 +91,6 @@ public class SeerController {
     @PostMapping(value = "/seer", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void handlePost(@RequestBody TextNode playerIdTextNode, Player player, Village village) {
         String playerId = playerIdTextNode.asText();
-        System.out.println(playerId);
         if (player.getRole() != Role.SEER) {
             throw new ForbiddenException("You must be seer.");
         }

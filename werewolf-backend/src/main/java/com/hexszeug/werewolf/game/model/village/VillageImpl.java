@@ -6,6 +6,7 @@ import com.hexszeug.werewolf.game.model.village.phase.PhaseHistoryElement;
 import com.hexszeug.werewolf.game.model.village.phase.PhaseHistoryElementImpl;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.*;
 
 @Data
@@ -27,7 +28,7 @@ public class VillageImpl implements Village {
         this.villageId = villageId;
         this.phaseOrder = phaseOrder;
         this.phaseHistory =
-                new ArrayList<>(List.of(new PhaseHistoryElementImpl(Phase.GAME_START, System.currentTimeMillis())));
+                new ArrayList<>(List.of(new PhaseHistoryElementImpl(Phase.GAME_START, Instant.now().toEpochMilli())));
         this.playerList = List.copyOf(players);
     }
 

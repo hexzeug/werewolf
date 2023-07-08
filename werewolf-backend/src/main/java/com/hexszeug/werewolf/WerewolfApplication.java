@@ -22,6 +22,6 @@ public class WerewolfApplication {
 	@EventListener(ApplicationReadyEvent.class)
 	@Async
 	private void createAlphaGame() {
-		alphaGameCreationService.createGame(5);
+		alphaGameCreationService.createGame(6);
 	}
 }

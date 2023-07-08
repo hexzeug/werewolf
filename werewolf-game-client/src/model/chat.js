@@ -1,5 +1,6 @@
 import { produce } from 'immer';
 import { useSyncExternalStore } from 'react';
+import api from '../control/api';
 
 // Storage
 
@@ -13,17 +14,21 @@ const store = {
   messages: [],
 };
 
-// debug / development
 const sendMessage = (text) => {
-  receiveMessage({ text, author: 'abc1' });
+  api.post('/chat', text);
 };
 
 // Mutation
 
-export const receiveMessage = (message) => {
-  store.messages = produce(store.messages, (messages) => {
-    messages.push(message);
-  });
+export const receiveMessage = (message) =>
+  setMessages(
+    produce(store.messages, (messages) => {
+      messages.push(message);
+    })
+  );
+
+export const setMessages = (messages) => {
+  store.messages = messages;
   hooks.forEach((hook) => hook(store.messages));
 };
 

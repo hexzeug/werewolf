@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 const Narrator = () => {
   const { t } = useTranslation();
-  const [narration, ref] = useNarrator(0.5, 1);
+  const [narration, ref] = useNarrator(0.5, 1, 3);
   return (
     <div className="Narrator">
       <h1 className="Narrator__text" ref={ref}>

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ChatController {
      * [
      *     {
      *         author: {@link String} (player id)
-     *         message: {@link String}
+     *         text: {@link String}
      *         timestamp: {@code long}
      *     }
      *     ...
@@ -80,7 +81,7 @@ public class ChatController {
         ChatMessage message = new ChatMessage(
                 player.getPlayerId(),
                 messageTextNode.asText(),
-                System.currentTimeMillis()
+                Instant.now().toEpochMilli()
         );
         List<ChatMessage> chat = new ArrayList<>(getChat(village));
         chat.add(message);
@@ -110,7 +111,7 @@ public class ChatController {
     @Value
     public static class ChatMessage {
         String author;
-        String message;
+        String text;
         long timestamp;
     }
 }
