@@ -54,7 +54,9 @@ i18n.use(initReactI18next).init({
           'Da es keine Anklagen gibt, schießt das Gericht.',
         'narrator.court.action':
           'Das Dorf wird nun abstimmen, welcher Angeklagte hingerichtet werden soll.',
-        'narrator.court.done': 'Das Dorf hat entschieden.',
+        'narrator.court.done': 'Das Gericht hat geschlossen.',
+        'narrator.court.no_decision':
+          'Das Dorf war sich nicht einig, deswegen wird niemand hingerichtet.',
         'narrator.death.night':
           '{{player.name}} ist gestorben. Er war ein(e) $t(roles.{{player.role}}).',
         'narrator.death.executed':
@@ -67,11 +69,14 @@ i18n.use(initReactI18next).init({
         'narrator.death.own.executed': 'Du wurdest hingerichtet.',
         'narrator.death.own.shot': 'Du wurderst erschossen.',
         'narrator.death.own.heartbreak': 'Du bist an Liebeskummer gestorben.',
-        'narrator.winner': 'Die {{winner}} haben gewonnen.',
+        'narrator.winner.werewolves': 'Die Werwölfe haben gewonnen.',
+        'narrator.winner.villagers': 'Die Dorfbewohner haben gewonnen.',
+        'narrator.winner.couple': 'Das verliebte Paar hat gewonnen.',
         'witch.question.heal': 'Willst du das Opfer heilen?',
         'witch.question.poison':
           'Willst du noch jemand anderen töten? Wenn ja wähle ihn aus.',
         'witch.info.no_heal': 'Du hast deinen Heiltrank schon aufgebraucht.',
+        'witch.info.no_victim': 'Es gab kein Opfer.',
         'witch.info.no_poison': 'Du hast deinen Gifttrank schon aufgebraucht.',
         'witch.answer.yes': 'Ja',
         'witch.answer.no': 'Nein',

@@ -17,6 +17,7 @@ interaction: {
     }
   ],
   chat?: boolean,
+  chatReadOnly?: boolean,
 }
 */
 const store = {

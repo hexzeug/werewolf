@@ -62,13 +62,15 @@ export const loadGame = async () => {
 
     // conditional loading
     const loadingMidGameData = loadingNarration.then(({ currentPhase }) =>
-      conditionalAsyncFunction(currentPhase !== 'game_start', loadMidGameData, {
-        loadingOwnId,
-        loadingSelf,
-      })
+      conditionalAsyncFunction(currentPhase !== 'game_start', () =>
+        loadMidGameData({
+          loadingOwnId,
+          loadingSelf,
+        })
+      )
     );
     const loadingAndSettingChat = loadingNarration.then(({ currentPhase }) =>
-      conditionalAsyncFunction(currentPhase === 'accusation', () =>
+      conditionalAsyncFunction(currentPhase !== 'game_start', () =>
         bodyIfOk(api.get('/chat')).then(setMessages)
       )
     );
@@ -107,7 +109,7 @@ export const loadGame = async () => {
     setPlayers(players);
     setPlayerOrder(playerOrder);
   });
-  await handlePhaseStart(cache.phase);
+  if (cache.phase !== 'game_start') await handlePhaseStart(cache.phase);
 };
 
 const loadMidGameData = async ({ loadingOwnId, loadingSelf }) => {

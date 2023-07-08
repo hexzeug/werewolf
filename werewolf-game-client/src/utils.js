@@ -2,9 +2,9 @@ import { cache } from './control/logic';
 
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const conditionalAsyncFunction = async (condition, fn, ...args) => {
+export const conditionalAsyncFunction = async (condition, fn) => {
   if (!condition) return;
-  return await fn(...args);
+  return await fn();
 };
 
 export const isDay = (phase) => {

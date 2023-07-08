@@ -20,7 +20,7 @@ export const startWitchHeal = async () => {
   }
   await narrate('narrator.witch.info');
   internalCache.victim = await loadingVictim;
-  if (roleIs('witch')) {
+  if (roleIs('witch') && internalCache.victim) {
     updatePlayers((players) => (players[internalCache.victim].marked = true));
   }
   await narrate('narrator.witch.action.heal');
@@ -29,14 +29,18 @@ export const startWitchHeal = async () => {
   let setAnswer;
   const answerPromise = new Promise((resolve) => (setAnswer = resolve));
   updateInteraction((interaction) => {
-    if (healPotion) {
+    if (healPotion && internalCache.victim) {
       interaction.question = { text: 'witch.question.heal' };
       interaction.options = [
         { text: 'witch.answer.yes', action: () => setAnswer(true) },
         { text: 'witch.answer.no', action: () => setAnswer(false) },
       ];
     } else {
-      interaction.question = { text: 'witch.info.no_heal' };
+      interaction.question = {
+        text: internalCache.victim
+          ? 'witch.info.no_heal'
+          : 'witch.info.no_victim',
+      };
       interaction.options = [
         { text: 'witch.answer.continue', action: () => setAnswer(false) },
       ];
@@ -48,7 +52,9 @@ export const startWitchHeal = async () => {
     delete interaction.question;
     delete interaction.options;
   });
-  updatePlayers((players) => (players[internalCache.victim].marked = false));
+  if (internalCache.victim) {
+    updatePlayers((players) => (players[internalCache.victim].marked = false));
+  }
 };
 
 export const endWitchHeal = async () => {
@@ -74,9 +80,11 @@ export const startWitchPoison = async () => {
       interaction.options = [
         { text: 'witch.answer.no', action: () => setAnswer(null) },
       ];
-      updatePlayers(
-        (players) => (players[internalCache.victim].disabled = true)
-      );
+      if (internalCache.victim) {
+        updatePlayers(
+          (players) => (players[internalCache.victim].disabled = true)
+        );
+      }
       updateEachPlayer((player) => {
         if (player.status === 'dead' || player.disabled) return;
         player.onClick = handlePlayerClick;

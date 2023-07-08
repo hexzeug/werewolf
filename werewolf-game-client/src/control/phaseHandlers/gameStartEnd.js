@@ -5,5 +5,5 @@ export const endGameStart = async () => {};
 
 export const startGameEnd = async () => {
   const winner = await bodyIfOk(api.get('/winner'));
-  await narrate('narrator.winner', { winner });
+  await narrate(`narrator.winner.${winner}`);
 };

@@ -56,7 +56,10 @@ export const startAccusation = async () => {
   accusations.forEach((accusation) => {
     displayAccusation(accusation);
   });
-  updateInteraction((interaction) => (interaction.chat = true));
+  updateInteraction((interaction) => {
+    interaction.chat = true;
+    interaction.chatReadOnly = cache.me.status === 'dead';
+  });
   if (cache.me.status === 'dead') return;
   updateEachPlayer((player) => {
     if (player.status === 'dead') return;
@@ -72,7 +75,9 @@ export const endAccusation = async () => {
     player.playerTags = [];
     player.marked = player.disabled = false;
   });
-  updateInteraction((interaction) => (interaction.chat = false));
+  updateInteraction(
+    (interaction) => (interaction.chat = interaction.chatReadOnly = false)
+  );
   if (Object.keys(internalCache.accusations).length > 0) {
     await narrate('narrator.accusation.done');
   } else {
@@ -118,24 +123,22 @@ export const startCourt = async () => {
 
   if (cache.me.status === 'dead') return;
 
-  let setVote;
-  const votePromise = new Promise((resolve) => (setVote = resolve));
+  const handleClick = (id) => {
+    api.post('/vote', id);
+    displayVote({ voter: cache.ownId, vote: id });
+    updateEachPlayer((player) => {
+      if (player.status === 'dead') return;
+      delete player.onClick;
+      player.disabled = false;
+    });
+  };
   updateEachPlayer((player) => {
     if (player.status === 'dead') return;
     if (player.accused) {
-      player.onClick = setVote;
+      player.onClick = handleClick;
     } else {
       player.disabled = true;
     }
-  });
-
-  const vote = await votePromise;
-  api.post('/vote', vote);
-  displayVote({ voter: cache.ownId, vote: vote });
-  updateEachPlayer((player) => {
-    if (player.status === 'dead') return;
-    delete player.onClick;
-    player.disabled = false;
   });
 };
 
@@ -143,9 +146,14 @@ export const endCourt = async () => {
   const loadingDeaths = bodyIfOk(api.get('/deaths'));
   updateEachPlayer((player) => {
     if (player.status === 'dead') return;
-    player.accused = player.marked = false;
+    delete player.onClick;
+    player.accused = player.marked = player.disabled = false;
     player.playerTags = [];
   });
-  await narrate('narrator.court.done');
-  await animateDeaths(loadingDeaths);
+  const deaths = await animateDeaths(loadingDeaths);
+  if (deaths > 0) {
+    await narrate('narrator.court.done');
+  } else {
+    await narrate('narrator.court.no_decision');
+  }
 };
