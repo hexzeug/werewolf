@@ -6,8 +6,9 @@
 .OwnPlayer > .Player {
   height: 120px;
   border-bottom-color: transparent;
+  transform-origin: bottom;
 }
 
 .OwnPlayer > .Player[data-marked] {
-  transform: none;
+  transform: scale(1.2, 1.2);
 }
