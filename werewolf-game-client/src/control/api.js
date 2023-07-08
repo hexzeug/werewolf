@@ -12,8 +12,7 @@ const request = async (url, method, body, options) => {
   let resBody;
   try {
     resBody = await res.clone().json();
-  } catch (ex) {
-    if (!(ex instanceof SyntaxError)) throw ex;
+  } catch {
     resBody = await res.text();
   }
   return {
