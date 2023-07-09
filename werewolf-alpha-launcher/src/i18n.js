@@ -11,6 +11,10 @@ await i18n.use(initReactI18next).init({
     de: {
       translation: {
         'document.title': 'Werwolf Alpha Launcher',
+        'room.title': 'Neuer Raum',
+        'room.cta': 'Gib deinen Namen ein!',
+        'room.form.name.label': 'Name',
+        'room.form.name.placeholder': 'Spielername',
       },
     },
   },

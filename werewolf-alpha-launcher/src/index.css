@@ -1,13 +1,45 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* CSS reset */
+@import 'normalize.css';
+
+*,
+*:where(::before, ::after) {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:where(img, picture, svg, video) {
+  display: block;
+  max-width: 100%;
+}
+
+:where(input, textarea, button, select) {
+  font: inherit;
+  color: inherit;
+}
+
+/* Global styles */
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+.button {
+  user-select: none;
+  border: solid 1px currentColor;
+  background-color: white;
+}
+
+.button:not(:disabled) {
+  cursor: pointer;
+}
+
+.button:hover:not(:disabled) {
+  background-color: #f9f9f9;
+}
+
+.button:active:not(:disabled) {
+  background-color: #eeeeee;
+}
+
+.button:disabled {
+  color: #8e8e8e;
 }
