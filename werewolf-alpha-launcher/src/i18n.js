@@ -11,6 +11,16 @@ await i18n.use(initReactI18next).init({
     de: {
       translation: {
         'document.title': 'Werwolf Alpha Launcher',
+        'home.form.players.placeholder': 'Spieleranzahl',
+        'home.form.send.value': 'Spiel erstellen',
+        'home.form.help.error': 'Gib eine Zahl zwischen 2 und 18 ein',
+        'home.game.title': 'Dein Spiel wurde erstellt.',
+        'home.game.info':
+          'Jeder Spieler joint mit einem Link. Teile jedem deiner Mitspieler einen dieser Links.',
+        'home.game.link': 'Klicke hier, nachdem du alle Links geteilt hast',
+        'home.game.you': 'Du',
+        'home.game.player': 'Spieler',
+        'home.game.copy': 'Kopieren',
         'room.title': 'Neuer Raum',
         'room.cta': 'Gib deinen Namen ein!',
         'room.form.name.label': 'Name',

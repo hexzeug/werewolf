@@ -1,6 +1,5 @@
 import HomeApp from './home/HomeApp';
 import RoomApp from './room/RoomApp';
-import './App.css';
 import { useTranslation } from 'react-i18next';
 
 function App({ inRoom }) {
@@ -8,10 +7,19 @@ function App({ inRoom }) {
 
   return (
     <div className="App">
-      <header className="AppHeader">
-        <h1>{t('document.title')}</h1>
+      <header className="level section">
+        <div className="level-item">
+          <h1 className="title is-1">{t('document.title')}</h1>
+        </div>
       </header>
-      <body className="AppBody">{inRoom ? <RoomApp /> : <HomeApp />}</body>
+      {inRoom ? <RoomApp /> : <HomeApp />}
+      <footer className="footer">
+        <div className="content has-text-centered">
+          <p>
+            Werewolf by <a href="https://github.com/hexszeug">@hexszeug</a>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
