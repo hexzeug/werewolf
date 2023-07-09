@@ -1,10 +1,12 @@
 package com.hexszeug.werewolf.launcher.alpha;
 
+import com.hexszeug.werewolf.game.model.authorization.AuthorizationRepository;
+
 /**
  * The {@code MutableAuthorizationRepository} interface represents a repository's interface for adding and removing
  * authorizations.
  */
-public interface MutableAuthorizationRepository {
+public interface MutableAuthorizationRepository extends AuthorizationRepository {
 
     /**
      * Adds an authorization entry to the repository.

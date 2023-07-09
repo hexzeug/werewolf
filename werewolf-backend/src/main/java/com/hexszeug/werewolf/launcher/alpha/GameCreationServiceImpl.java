@@ -5,7 +5,6 @@ import com.hexszeug.werewolf.game.model.player.PlayerImpl;
 import com.hexszeug.werewolf.game.model.player.role.Role;
 import com.hexszeug.werewolf.game.model.village.Village;
 import com.hexszeug.werewolf.game.model.village.VillageImpl;
-import com.hexszeug.werewolf.game.model.village.VillageRepository;
 import com.hexszeug.werewolf.game.model.village.phase.Phase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,7 +17,7 @@ import java.util.*;
 @Log4j2
 @Service
 public class GameCreationServiceImpl implements GameCreationService {
-    private static final int PLAYERS_MIN = 1;
+    private static final int PLAYERS_MIN = 2;
     private static final int PLAYERS_MAX = 18;
     private static final List<Role> DEFAULT_ROLES = List.of(
             Role.WEREWOLF,
@@ -43,62 +42,86 @@ public class GameCreationServiceImpl implements GameCreationService {
 
     private final MutableAuthorizationRepository authorizationRepository;
     private final MutableVillageRepository villageRepository;
-    private final VillageRepository readableVillageRepository;
 
     @Override
     public void createGame(int playerCount) {
         if (playerCount < PLAYERS_MIN || playerCount > PLAYERS_MAX) {
-            throw new IllegalArgumentException(String.format(
-                    "playerCount must lie between %s and %s.",
-                    PLAYERS_MIN,
-                    PLAYERS_MAX
-            ));
+            throw new IllegalArgumentException(
+                    "player count must lie between %s and %s.".formatted(PLAYERS_MIN, PLAYERS_MAX)
+            );
         }
+
+        List<String> names = new ArrayList<>(PLAYER_NAMES);
+        Collections.shuffle(names, new Random());
+
+        // always generate the same auth tokens for better debugging
+        SecureRandom secureRandom = new SecureRandom(new byte[]{123});
+
+        List<UserIdentity> userIdentities = new ArrayList<>(playerCount);
+        log.info("=============");
+        log.info(String.format("Printing authentication tokens for %s players:", playerCount));
+        log.info("    name: auth token");
+        for (int i = 0; i < playerCount; i++) {
+            UserIdentity userIdentity = new UserIdentity(secureRandom, names.get(i));
+            userIdentities.add(userIdentity);
+            log.info("    %s: %s".formatted(userIdentity.getName(), userIdentity.getAuthToken()));
+        }
+        log.info("=============");
+
+        createGame(userIdentities);
+    }
+    @Override
+    public void createGame(List<UserIdentity> userIdentities) {
+        int playerCount = userIdentities.size();
+        if (playerCount < PLAYERS_MIN || playerCount > PLAYERS_MAX) {
+            throw new IllegalArgumentException(
+                    "player count must lie between %s and %s.".formatted(PLAYERS_MIN, PLAYERS_MAX)
+            );
+        }
+
+        // roles
+        Random random = new Random();
         List<Role> roles = new ArrayList<>(DEFAULT_ROLES.subList(0, playerCount));
+        Collections.shuffle(roles, random);
+
+        // phase order
         List<Phase> phaseOrder = generatePhaseOrder(roles);
 
-        Random random = new Random();
-        List<String> names = new ArrayList<>(PLAYER_NAMES);
-        Collections.shuffle(roles, random);
-        Collections.shuffle(names, random);
+        // village id
         String villageId;
         do {
-            villageId = generateRandomString(12, random);
-        } while (readableVillageRepository.getByVillageId(villageId) != null);
+            villageId = UserIdentity.generateRandomString(12, random);
+        } while (villageRepository.getByVillageId(villageId) != null);
+
+        // players
         List<Player> players = new ArrayList<>(playerCount);
         Set<String> usedPlayerIds = new HashSet<>();
         for (int i = 0; i < playerCount; i++) {
             String playerId;
             do {
-                playerId = generateRandomString(16, random);
+                playerId = UserIdentity.generateRandomString(16, random);
             } while (usedPlayerIds.contains(playerId));
             usedPlayerIds.add(playerId);
             players.add(new PlayerImpl(
                     playerId,
                     villageId,
-                    names.get(i),
+                    userIdentities.get(i).getName(),
                     roles.get(i)
             ));
         }
+
+        // village
         Village village = new VillageImpl(villageId, phaseOrder, players);
         villageRepository.addVillage(village);
-        // always generate the same auth tokens for better debugging
-        SecureRandom secureRandom = new SecureRandom(new byte[]{123});
-        log.info("=============");
-        log.info(String.format("Printing authentication tokens for %s players:", playerCount));
-        log.info("    name: auth token");
-        for (Player player : players) {
-            String authToken = generateRandomString(128, secureRandom);
-            authorizationRepository.addAuthorization(authToken, villageId, player.getPlayerId());
-            log.info(String.format("    %s: %s", player.getName(), authToken));
-        }
-        log.info("=============");
-    }
 
-    private String generateRandomString(int length, Random random) {
-        byte[] randomBytes = new byte[length / 4 * 3];
-        random.nextBytes(randomBytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+        // authorization
+        for (int i = 0; i < playerCount; i++) {
+            authorizationRepository.addAuthorization(
+                    userIdentities.get(i).getAuthToken(),
+                    villageId,
+                    players.get(i).getPlayerId()
+            );
+        }
     }
 
     private List<Phase> generatePhaseOrder(List<Role> roles) {

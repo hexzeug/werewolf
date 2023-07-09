@@ -91,7 +91,7 @@ public class AccusationAndCourtPhaseMasterImpl implements CourtPhaseMaster {
                     targets.add(player);
                 }
             });
-            if (targets.size() != 1) {
+            if (targets.size() == 1) {
                 killingService.kill(targets.iterator().next(), DeathReason.EXECUTED);
             }
         }
