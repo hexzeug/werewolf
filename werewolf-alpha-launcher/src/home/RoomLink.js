@@ -7,7 +7,7 @@ const base_link = window.location.origin + base_url + 'room?wat=';
 const RoomLink = ({ index, token }) => {
   const { t } = useTranslation();
   const input = useRef(null);
-  const [tooltip, setTooltip] = useState('');
+  const [tooltip, setTooltip] = useState(null);
 
   const handleClick = async () => {
     input.current.select();
@@ -40,7 +40,7 @@ const RoomLink = ({ index, token }) => {
           className="button is-small has-tooltip-arrow"
           onClick={handleClick}
           data-tooltip={tooltip ? t(tooltip) : null}
-          onMouseLeave={() => setTooltip('')}
+          onMouseLeave={() => setTooltip(null)}
         >
           {t('home.game.copy')}
         </button>
