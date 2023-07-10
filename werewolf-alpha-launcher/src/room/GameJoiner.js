@@ -56,7 +56,7 @@ function GameJoiner({ token }) {
           <div className="field has-addons">
             <div className="control is-expanded">
               <input
-                className={`input ${help !== null ? 'is-danger' : ''}`}
+                className={`input is-large ${help !== null ? 'is-danger' : ''}`}
                 type="text"
                 value={name}
                 onChange={handleChange}
@@ -66,7 +66,7 @@ function GameJoiner({ token }) {
             </div>
             <div className="control">
               <button
-                className="button has-tooltip-arrow has-tooltip-active"
+                className="button is-large has-tooltip-arrow has-tooltip-active"
                 type="submit"
                 disabled={help !== null}
                 data-tooltip={tooltip ? t(tooltip) : null}

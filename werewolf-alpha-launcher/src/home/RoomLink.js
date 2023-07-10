@@ -23,7 +23,7 @@ const RoomLink = ({ index, token }) => {
     <div className="field has-addons" key={token}>
       <div className="control">
         <button className="button is-static is-small">
-          {t('home.game.player')} {index + 1}
+          {t('home.link.player')} {index + 1}
         </button>
       </div>
       <div className="control is-expanded">
@@ -42,7 +42,7 @@ const RoomLink = ({ index, token }) => {
           data-tooltip={tooltip ? t(tooltip) : null}
           onMouseLeave={() => setTooltip(null)}
         >
-          {t('home.game.copy')}
+          {t('home.link.copy')}
         </button>
       </div>
     </div>
