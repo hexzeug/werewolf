@@ -14,6 +14,8 @@ await i18n.use(initReactI18next).init({
         'home.form.players.placeholder': 'Spieleranzahl',
         'home.form.send.value': 'Spiel erstellen',
         'home.form.help.error': 'Gib eine Zahl zwischen 2 und 18 ein',
+        'home.link.tooltip.copied': 'Kopiert',
+        'home.link.tooltip.cannot_copy': 'Konnte nicht kopiert werden',
         'home.game.title': 'Dein Spiel wurde erstellt.',
         'home.game.info':
           'Jeder Spieler joint mit einem Link. Teile jedem deiner Mitspieler einen dieser Links.',

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './i18n';
 import 'bulma/css/bulma.css';
+import '@creativebulma/bulma-tooltip/dist/bulma-tooltip.min.css';
 import App from './App';
 import { base_url, inRoom } from './api';
 

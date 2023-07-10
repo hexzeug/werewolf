@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api, { base_url } from '../api';
+import RoomLink from './RoomLink';
 
 function HomeApp() {
   const { t } = useTranslation();
@@ -85,26 +86,7 @@ function HomeApp() {
               </div>
               <div className="block">
                 {tokens.slice(1).map((token, index) => (
-                  <div className="field has-addons" key={token}>
-                    <div className="control">
-                      <button className="button is-static is-small">
-                        {t('home.game.player')} {index + 1}
-                      </button>
-                    </div>
-                    <div className="control is-expanded">
-                      <input
-                        className="input is-small"
-                        type="text"
-                        value={base_link + token}
-                        readOnly
-                      />
-                    </div>
-                    <div className="control">
-                      <button className="button is-small">
-                        {t('home.game.copy')}
-                      </button>
-                    </div>
-                  </div>
+                  <RoomLink key={token} index={index} token={token} />
                 ))}
               </div>
               <div className="block">
