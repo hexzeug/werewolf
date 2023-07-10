@@ -4,25 +4,27 @@ import './i18n';
 import 'bulma/css/bulma.css';
 import '@creativebulma/bulma-tooltip/dist/bulma-tooltip.min.css';
 import App from './App';
-import { base_url, inRoom, setWat } from './api';
+import api, { base_url, inRoom, redirect_url, setWat } from './api';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const path = window.location.pathname;
-let wat;
+const { ok, body } = await api.get('/running');
+if (ok && body === true) {
+  window.location.pathname = redirect_url;
+}
 if (inRoom) {
   const params = new URLSearchParams(window.location.search);
   if (params.has('wat')) {
-    wat = params.get('wat');
-    setWat(wat);
-    window.history.replaceState('hide-wat', null, path);
-  } else if (window.history.state !== 'hide-wat') {
+    setWat(params.get('wat'));
+    window.history.replaceState(null, null, path);
+  } else if (!ok) {
     window.location.pathname = base_url;
   }
 }
 
 root.render(
   <React.StrictMode>
-    <App inRoom={inRoom} wat={wat} />
+    <App inRoom={inRoom} />
   </React.StrictMode>
 );

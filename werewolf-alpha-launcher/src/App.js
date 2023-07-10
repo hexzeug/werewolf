@@ -2,7 +2,7 @@ import HomeApp from './home/HomeApp';
 import RoomApp from './room/RoomApp';
 import { useTranslation } from 'react-i18next';
 
-function App({ inRoom, wat }) {
+function App({ inRoom }) {
   const { t } = useTranslation();
 
   return (
@@ -14,7 +14,7 @@ function App({ inRoom, wat }) {
           </a>
         </div>
       </header>
-      {inRoom ? <RoomApp wat={wat} /> : <HomeApp />}
+      {inRoom ? <RoomApp /> : <HomeApp />}
       <footer className="footer">
         <div className="content has-text-centered">
           <p>

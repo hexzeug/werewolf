@@ -1,17 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import api, { base_url, setWat } from '../api';
+import api, { startPolling } from '../api';
 
-const redirect_url = window.location.origin + base_url + 'play/';
-
-const startPolling = () => {
-  setInterval(async () => {
-    const { ok, body } = await api.get('/running');
-    if (ok && body === true) window.location = redirect_url;
-  }, 500);
-};
-
-function GameJoiner({ token }) {
+function GameJoiner() {
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [help, setHelp] = useState(null);
@@ -39,10 +30,6 @@ function GameJoiner({ token }) {
       setTooltip('room.join.tooltip.error');
     }
   };
-
-  useEffect(() => {
-    setWat(token);
-  }, [token]);
 
   return (
     <div className="block">

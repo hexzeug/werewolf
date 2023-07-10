@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import api from '../api';
+import api, { setWat } from '../api';
 import { useTranslation } from 'react-i18next';
 
 const GameCreator = ({ setTokens }) => {
@@ -28,6 +28,7 @@ const GameCreator = ({ setTokens }) => {
     setStatus('loading');
     const { ok, body: tokens } = await api.post(`/game?players=${input}`);
     if (ok) {
+      setWat(tokens[0]);
       setTokens(tokens);
     } else {
       setStatus('valid');

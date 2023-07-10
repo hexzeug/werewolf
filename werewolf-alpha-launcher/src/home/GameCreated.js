@@ -10,8 +10,8 @@ const GameCreated = ({ tokens }) => {
       <div className="block has-text-centered">
         <h1 className="title">{t('home.game.title')}</h1>
       </div>
-      <div className="columns">
-        <div className="column">
+      <div className="columns is-centered">
+        <div className="column is-half">
           <div className="block">
             <p>{t('home.game.info.others')}</p>
             <p>{t('home.game.info.disclaimer')}</p>
@@ -21,8 +21,6 @@ const GameCreated = ({ tokens }) => {
               <RoomLink key={token} index={index} token={token} />
             ))}
           </div>
-        </div>
-        <div className="column">
           <div className="block">
             <p>{t('home.game.info.self')}</p>
           </div>

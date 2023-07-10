@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import GameJoiner from './GameJoiner';
 
-function RoomApp({ wat }) {
+function RoomApp() {
   const { t } = useTranslation();
 
   return (
@@ -17,7 +17,7 @@ function RoomApp({ wat }) {
                 </div>
               </div>
               <div className="block">
-                <GameJoiner token={wat} />
+                <GameJoiner />
               </div>
             </div>
           </div>

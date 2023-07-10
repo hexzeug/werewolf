@@ -10,6 +10,15 @@ export const setWat = (wat) => {
   document.cookie = `wat=${wat}; path=${base_url}`;
 };
 
+export const redirect_url = base_url + 'play/';
+
+export const startPolling = () => {
+  setInterval(async () => {
+    const { ok, body } = await api.get('/running');
+    if (ok && body === true) window.location.pathname = redirect_url;
+  }, 500);
+};
+
 const request = async (url, method) => {
   const res = await fetch(base_url + 'api/alpha/launcher' + url, { method });
   const { ok, status } = res;
