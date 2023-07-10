@@ -1,28 +1,33 @@
 import { useTranslation } from 'react-i18next';
 import RoomLink from './RoomLink';
+import GameJoiner from '../room/GameJoiner';
 
 const GameCreated = ({ tokens }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="columns is-centered">
-      <div className="column is-half">
-        <div className="block">
-          <h1 className="title has-text-centered">{t('home.game.title')}</h1>
-          <p>{t('home.game.info')}</p>
+    <div className="container">
+      <div className="block has-text-centered">
+        <h1 className="title">{t('home.game.title')}</h1>
+      </div>
+      <div className="columns">
+        <div className="column">
+          <div className="block">
+            <p>{t('home.game.info.others')}</p>
+            <p>{t('home.game.info.disclaimer')}</p>
+          </div>
+          <div className="block">
+            {tokens.slice(1).map((token, index) => (
+              <RoomLink key={token} index={index} token={token} />
+            ))}
+          </div>
         </div>
-        <div className="block">
-          {tokens.slice(1).map((token, index) => (
-            <RoomLink key={token} index={index} token={token} />
-          ))}
-        </div>
-        <div className="block">
-          <div className="field">
-            <div className="control">
-              <a className="button is-fullwidth" href={tokens[0]}>
-                {t('home.game.link')}
-              </a>
-            </div>
+        <div className="column">
+          <div className="block">
+            <p>{t('home.game.info.self')}</p>
+          </div>
+          <div className="block">
+            <GameJoiner token={tokens[0]} />
           </div>
         </div>
       </div>

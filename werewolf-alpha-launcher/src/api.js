@@ -6,6 +6,10 @@ export const base_url = inRoom
   ? path
   : path + '/';
 
+export const setWat = (wat) => {
+  document.cookie = `wat=${wat}; path=${base_url}`;
+};
+
 const request = async (url, method) => {
   const res = await fetch(base_url + 'api/alpha/launcher' + url, { method });
   const { ok, status } = res;
