@@ -9,7 +9,9 @@ function App({ inRoom }) {
     <div className="App">
       <header className="level section">
         <div className="level-item">
-          <h1 className="title is-1">{t('document.title')}</h1>
+          <a href="/" className="title is-1">
+            {t('document.title')}
+          </a>
         </div>
       </header>
       {inRoom ? <RoomApp /> : <HomeApp />}

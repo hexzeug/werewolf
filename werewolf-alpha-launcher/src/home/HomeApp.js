@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import RoomLink from './RoomLink';
 import GameCreator from './GameCreator';
+import GameCreated from './GameCreated';
 
 function HomeApp() {
   const { t } = useTranslation();
@@ -11,32 +11,7 @@ function HomeApp() {
     <main>
       <section className="section">
         {!tokens && <GameCreator setTokens={setTokens} />}
-        {tokens && (
-          <div className="columns is-centered">
-            <div className="column is-half">
-              <div className="block">
-                <h1 className="title has-text-centered">
-                  {t('home.game.title')}
-                </h1>
-                <p>{t('home.game.info')}</p>
-              </div>
-              <div className="block">
-                {tokens.slice(1).map((token, index) => (
-                  <RoomLink key={token} index={index} token={token} />
-                ))}
-              </div>
-              <div className="block">
-                <div className="field">
-                  <div className="control">
-                    <a className="button is-fullwidth" href={tokens[0]}>
-                      {t('home.game.link')}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {tokens && <GameCreated tokens={tokens} />}
       </section>
       <section className="section">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure aperiam
