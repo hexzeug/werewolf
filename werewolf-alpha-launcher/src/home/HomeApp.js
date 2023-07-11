@@ -44,8 +44,12 @@ function HomeApp() {
       </section>
       <section className="section">
         <div className="container">
-          <h1 className="title">Feedback</h1>
-          <Feedback />
+          <div className="content">
+            <h1>Feedback</h1>
+            <p>{t('home.feedback.info')}</p>
+            <p>{t('home.feedback.disclaimer')}</p>
+            <Feedback />
+          </div>
         </div>
       </section>
     </main>

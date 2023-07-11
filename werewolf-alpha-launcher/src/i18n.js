@@ -25,6 +25,10 @@ await i18n.use(initReactI18next).init({
         'home.link.tooltip.cannot_copy': 'Konnte nicht kopiert werden',
         'home.link.player': 'Spieler',
         'home.link.copy': 'Kopieren',
+        'home.feedback.info':
+          'Wenn du Ideen oder Verbesserungsvorschäge hast, einen Bug gefunden hast, oder einfach nur etwas zum Spiel sagen möchtest, würde ich mich freuen, wenn du mir dies anonym in diesem Feedback-Feld zurückmeldest.',
+        'home.feedback.disclaimer':
+          'P.S. Das die Grafik schlecht ist, ist schon klar. Die Alpha Version hat noch keine "richtige" Grafik und das designen einer Grafik ist schon geplant. Du kannst aber natürlich trotzdem gerne Ideen zur Grafik äußern.',
         'home.feedback.send': 'Senden',
         'home.feedback.placeholder': 'Schreibe hier...',
         'home.feedback.sent': 'Wurde gesendet',
