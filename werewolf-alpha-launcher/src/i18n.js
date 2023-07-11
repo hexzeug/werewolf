@@ -25,6 +25,10 @@ await i18n.use(initReactI18next).init({
         'home.link.tooltip.cannot_copy': 'Konnte nicht kopiert werden',
         'home.link.player': 'Spieler',
         'home.link.copy': 'Kopieren',
+        'home.feedback.send': 'Senden',
+        'home.feedback.placeholder': 'Schreibe hier...',
+        'home.feedback.sent': 'Wurde gesendet',
+        'home.feedback.no_empty': 'Das Eingabefeld ist leer',
         'room.title': 'Neuer Raum',
         'room.info':
           'Du wurdest zu einem Spiel eingeladen. Gib einen Namen an und warte dann bis alle Spieler bereit sind. Das Spiel startet automatisch.',

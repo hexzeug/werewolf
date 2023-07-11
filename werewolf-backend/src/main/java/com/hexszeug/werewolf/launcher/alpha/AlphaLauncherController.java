@@ -39,6 +39,9 @@ public class AlphaLauncherController {
         gameManager.setName(authToken, name);
     }
 
+    /**
+     * enable feedback by adding command line attribute {@code --feedback=true}
+     */
     @PostMapping(value = "/feedback", consumes = MediaType.TEXT_PLAIN_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void handlePostFeedback(@RequestBody String feedback, ServletRequest request) throws IOException {

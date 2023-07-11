@@ -19,8 +19,16 @@ export const startPolling = () => {
   }, 500);
 };
 
-const request = async (url, method) => {
-  const res = await fetch(base_url + 'api/alpha/launcher' + url, { method });
+const request = async (url, method, body) => {
+  const res = await fetch(
+    base_url + 'api/alpha/launcher' + url,
+    body
+      ? {
+          method,
+          body,
+        }
+      : { method }
+  );
   const { ok, status } = res;
   try {
     return { body: await res.clone().json(), ok, status };
@@ -30,8 +38,8 @@ const request = async (url, method) => {
 };
 
 const api = {
-  get: (url) => request(url, 'GET'),
-  post: (url) => request(url, 'POST'),
+  get: (url) => request(url, 'GET', null),
+  post: (url, body) => request(url, 'POST', body),
 };
 
 export default api;
