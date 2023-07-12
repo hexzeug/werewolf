@@ -9,7 +9,7 @@ function App({ inRoom }) {
     <div className="App">
       <header className="level section">
         <div className="level-item">
-          <a href="/" className="title is-1">
+          <a href="/" className="title is-2">
             {t('document.title')}
           </a>
         </div>
@@ -20,6 +20,7 @@ function App({ inRoom }) {
           <p>
             Werewolf by <a href="https://github.com/hexszeug">@hexszeug</a>
           </p>
+          <p>&copy; 2023 Siemen Zielke</p>
         </div>
       </footer>
     </div>
