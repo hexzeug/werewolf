@@ -66,6 +66,7 @@ await i18n.use(initReactI18next).init({
         'narrator.winner.werewolves': 'Die Werwölfe haben gewonnen.',
         'narrator.winner.villagers': 'Die Dorfbewohner haben gewonnen.',
         'narrator.winner.couple': 'Das verliebte Paar hat gewonnen.',
+        'narrator.winner.none': 'Alle sind gestorben. Niemand hat gewonnen.',
         'witch.question.heal': 'Willst du das Opfer heilen?',
         'witch.question.poison':
           'Willst du noch jemand anderen töten? Wenn ja wähle ihn aus.',
