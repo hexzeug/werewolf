@@ -1,6 +1,7 @@
 # Werewolf
 
 Turn-based web multiplayer role-playing game
+Play the current version on [hexzeug.com](https://hexzeug.com/werewolf/).
 
 ## Development stage
 
