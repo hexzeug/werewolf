@@ -65,13 +65,13 @@ public class GameManager {
         gameCreationService.createGame(room.getUserIdentities());
     }
 
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(fixedRate = 1000 * 60 * 60)
     public void cleanUp() {
         Iterator<Room> iterator = roomCache.iterator();
         while (iterator.hasNext()) {
             Room room = iterator.next();
             long lifetime = Duration.between(room.getCreated(), Instant.now()).toMinutes();
-            if (!room.isRunning() && lifetime < 1 || room.isRunning() && lifetime < 1) continue;
+            if (!room.isRunning() && lifetime < 30 || room.isRunning() && lifetime < 60) continue;
             if (room.isRunning()) deleteGame(room);
             room.getUserIdentities().forEach(userIdentity -> authMap.remove(userIdentity.getAuthToken()));
             iterator.remove();
