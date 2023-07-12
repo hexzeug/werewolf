@@ -1,6 +1,6 @@
-import { base_url } from './api';
+import { base_url, api_url } from './api';
 
-const eventSource = new EventSource(base_url + '/event-stream');
+const eventSource = new EventSource(api_url + '/event-stream');
 
 eventSource.onopen = () => {
   console.log(`SSE: Connection to ${eventSource.url} opened.`);
@@ -22,6 +22,7 @@ eventSource.onerror = (event) => {
       break;
     case EventSource.CLOSED:
       console.error(`SSE: Connection to ${eventSource.url} failed.`);
+      window.location.pathname = base_url;
       break;
     default:
       break;
