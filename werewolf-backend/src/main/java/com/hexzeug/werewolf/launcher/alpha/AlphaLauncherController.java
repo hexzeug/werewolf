@@ -39,13 +39,14 @@ public class AlphaLauncherController {
     }
 
     /**
-     * enable feedback by adding command line attribute {@code --feedback=true}
+     * enable feedback by adding command line attribute {@code --feedback=<path>}
      */
     @PostMapping(value = "/feedback", consumes = MediaType.TEXT_PLAIN_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void handlePostFeedback(@RequestBody String feedback, ServletRequest request) throws IOException {
-        if (!environment.getProperty("feedback", Boolean.TYPE, false)) return;
-        try (FileOutputStream fileOutputStream = new FileOutputStream("feedback.txt", true)) {
+        String file = environment.getProperty("feedback");
+        if (file == null) return;
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file, true)) {
             fileOutputStream.write(
                     "%1$td.%1$tm.%1$tY %1$tT: (%2$s)\n%3$s\n\n\n".formatted(
                             new Date(),
