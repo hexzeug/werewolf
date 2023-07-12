@@ -1,6 +1,5 @@
 package com.hexzeug.werewolf.game.logic.services;
 
-import com.hexszeug.werewolf.game.controller.*;
 import com.hexzeug.werewolf.game.controller.*;
 import com.hexzeug.werewolf.game.events.phase.PhaseEvent;
 import com.hexzeug.werewolf.game.model.player.Player;
