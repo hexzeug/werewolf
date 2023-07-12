@@ -20,7 +20,7 @@ function HomeApp() {
             <h1>{t('home.about')}</h1>
             <p>
               Dies ist die Alpha von Werewolf, einem zugbasiertem online
-              multiplayer Game. <br />
+              Multiplayer-Game. <br />
               Ich bin Schüler und habe diese Version in etwa 3 Monaten neben der
               Schule alleine entwickelt.
             </p>
@@ -32,7 +32,7 @@ function HomeApp() {
               noch der eine oder andere größere Bug im Spiel verstecken, und es
               gibt noch keine Stats, Accounts, o.ä. <br />
               Es gibt auch noch keine ausführliche Anleitung, das Spiel ist aber
-              sehr intuitiv spielbar, vorallem wenn man die Werwölfe von
+              sehr intuitiv spielbar, vor allem wenn man die Werwölfe von
               Düsterwald kennt.
             </p>
             <p>Viel Spaß beim Spielen!</p>
