@@ -17,35 +17,32 @@ function HomeApp() {
       <section className="section">
         <div className="container">
           <div className="content">
-            <h1>About</h1>
+            <h1>{t('home.about')}</h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure
-              aperiam qui, quas aspernatur fuga alias, voluptatibus totam
-              adipisci ex cum harum error, in omnis est a. Explicabo sint
-              consequatur, id numquam quos sequi distinctio quo possimus amet,
-              reprehenderit, eius quisquam dolorem nostrum ullam vel aliquam
-              illo tempore molestiae? Tenetur, commodi assumenda? Inventore
-              tempore ipsum reiciendis fugiat totam possimus! Minus rem minima,
-              reiciendis aspernatur explicabo unde voluptates modi provident
-              impedit harum doloremque quis. In eius, culpa aperiam soluta
-              repudiandae commodi officia doloremque debitis veritatis amet,
-              cupiditate maiores possimus exercitationem impedit odit suscipit
-              cumque dignissimos. Voluptatibus eum id deleniti tempore
-              perspiciatis aliquid nisi labore consequuntur fugiat repellendus
-              molestiae in odio nobis dolorem minus, neque, excepturi ipsa
-              molestias soluta officiis. Repudiandae similique dignissimos ipsa
-              provident ipsam, quaerat, soluta sunt recusandae laboriosam sit,
-              praesentium perferendis vitae deserunt eaque error ab eveniet
-              aliquid. Nihil autem veniam assumenda possimus accusamus
-              cupiditate culpa maiores. Atque, optio provident.
+              Dies ist die Alpha von Werewolf, einem zugbasiertem online
+              multiplayer Game. <br />
+              Ich bin Schüler und habe diese Version in etwa 3 Monaten neben der
+              Schule alleine entwickelt.
             </p>
+            <p>
+              Das Spiel befindet sich noch sehr früh in der Entwicklung,
+              trotzdem kann man es jetzt schon testen. Die bisherige Entwichlung
+              hat sich hauptsächlich auf die Spielelogik konzentriert. Design
+              war erst einmal zweitrangig. Außerdem können sich natürlich auch
+              noch der eine oder andere größere Bug im Spiel verstecken, und es
+              gibt noch keine Stats, Accounts, o.ä. <br />
+              Es gibt auch noch keine ausführliche Anleitung, das Spiel ist aber
+              sehr intuitiv spielbar, vorallem wenn man die Werwölfe von
+              Düsterwald kennt.
+            </p>
+            <p>Viel Spaß beim Spielen!</p>
           </div>
         </div>
       </section>
       <section className="section">
         <div className="container">
           <div className="content">
-            <h1>Feedback</h1>
+            <h1>{t('home.feedback')}</h1>
             <p>{t('home.feedback.info')}</p>
             <p>{t('home.feedback.disclaimer')}</p>
             <Feedback />

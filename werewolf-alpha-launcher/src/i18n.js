@@ -25,6 +25,8 @@ await i18n.use(initReactI18next).init({
         'home.link.tooltip.cannot_copy': 'Konnte nicht kopiert werden',
         'home.link.player': 'Spieler',
         'home.link.copy': 'Kopieren',
+        'home.about': 'Über',
+        'home.feedback': 'Feedback',
         'home.feedback.info':
           'Wenn du Ideen oder Verbesserungsvorschäge hast, einen Bug gefunden hast, oder einfach nur etwas zum Spiel sagen möchtest, würde ich mich freuen, wenn du mir dies anonym in diesem Feedback-Feld zurückmeldest.',
         'home.feedback.disclaimer':
