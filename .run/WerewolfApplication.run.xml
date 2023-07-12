@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="WerewolfApplication" type="Application" factoryName="Application" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="com.hexszeug.werewolf.WerewolfApplication" />
+    <option name="MAIN_CLASS_NAME" value="com.hexzeug.werewolf.WerewolfApplication" />
     <module name="werewolf.werewolf-backend.main" />
     <extension name="coverage">
       <pattern>

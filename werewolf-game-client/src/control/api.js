@@ -1,5 +1,9 @@
+// absolute path without the optional suffix 'play' or 'play/'
+const base_url =
+  window.location.pathname.match(/^(.*?)(?:play\/?)?$/)[1] + 'api';
+
 const request = async (url, method, body, options) => {
-  const res = await fetch('/api' + url, {
+  const res = await fetch(base_url + url, {
     ...(body !== undefined && { body: JSON.stringify(body) }),
     method,
     ...options,
