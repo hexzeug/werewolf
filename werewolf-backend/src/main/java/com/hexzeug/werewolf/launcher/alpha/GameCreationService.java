@@ -1,5 +1,7 @@
 package com.hexzeug.werewolf.launcher.alpha;
 
+import com.hexzeug.werewolf.game.model.village.Village;
+
 import java.util.List;
 
 /**
@@ -22,5 +24,5 @@ public interface GameCreationService {
      * @param userIdentities the user identities
      * @throws IllegalArgumentException if there are less than 2 or more than 18 user identities.
      */
-    void createGame(List<UserIdentity> userIdentities);
+    Village createGame(List<UserIdentity> userIdentities);
 }

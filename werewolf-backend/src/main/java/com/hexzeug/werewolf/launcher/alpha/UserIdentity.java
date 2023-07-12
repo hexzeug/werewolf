@@ -1,12 +1,15 @@
 package com.hexzeug.werewolf.launcher.alpha;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Base64;
 import java.util.Random;
 
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserIdentity {
+    @EqualsAndHashCode.Include
     private final String authToken;
     private String name;
     private Room room;

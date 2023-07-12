@@ -1,7 +1,10 @@
 package com.hexzeug.werewolf.launcher.alpha;
 
+import com.hexzeug.werewolf.game.events.phase.PhaseEvent;
 import com.hexzeug.werewolf.game.model.village.Village;
+import com.hexzeug.werewolf.game.model.village.phase.Phase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -62,7 +65,8 @@ public class GameManager {
         userIdentity.setName(name);
         if (room.getUserIdentities().stream().anyMatch(ui -> ui.getName() == null)) return;
         room.setRunning(true);
-        gameCreationService.createGame(room.getUserIdentities());
+        Village village = gameCreationService.createGame(room.getUserIdentities());
+        room.setVillage(village);
     }
 
     @Scheduled(fixedRate = 1000 * 60 * 60)
@@ -79,14 +83,19 @@ public class GameManager {
     }
 
     private void deleteGame(Room room) {
-        Village village = villageRepository.getByVillageId(
-                authorizationRepository.getPlayerByAuthToken(
-                        room.getUserIdentities().get(0).getAuthToken()
-                ).getVillageId()
-        );
+        Village village = room.getVillage();
         room.getUserIdentities().forEach(
                 userIdentity -> authorizationRepository.removeAuthorization(userIdentity.getAuthToken())
         );
         villageRepository.removeVillage(village);
+    }
+
+    @EventListener
+    public void handleGameEnd(PhaseEvent event) {
+        if (event.getPhase() != Phase.GAME_END) return;
+        Optional<Room> roomOptional = roomCache.stream().filter(r -> r.getVillage() == event.getVillage()).findFirst();
+        if (roomOptional.isEmpty()) return;
+        Room room = roomOptional.get();
+        authMap.entrySet().removeIf(stringUserIdentityEntry -> stringUserIdentityEntry.getValue().getRoom() == room);
     }
 }
