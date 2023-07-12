@@ -47,6 +47,8 @@ const Chat = ({ readOnly }) => {
   // Nevertheless we need to recalculate if we are at the bottom, as
   // the user might have scrolled up again before the timeout finished.
   const scrollTimeout = useRef(null);
+  // clears scroll timeout when component is unmounted
+  useEffect(() => () => clearTimeout(scrollTimeout.current), []);
   const resetScrollTimeout = useCallback(() => {
     if (scrollTimeout.current) {
       clearTimeout(scrollTimeout.current);
