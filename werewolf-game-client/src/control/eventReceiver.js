@@ -22,9 +22,6 @@ eventSource.onerror = (event) => {
       break;
     case EventSource.CLOSED:
       console.error(`SSE: Connection to ${eventSource.url} failed.`);
-      if (process.env.NODE_ENV !== 'development') {
-        alert('Connection to server-sent event service failed.');
-      }
       break;
     default:
       break;
