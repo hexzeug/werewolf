@@ -1,5 +1,5 @@
 // absolute path without the optional suffix 'play' or 'play/'
-const base_url =
+export const base_url =
   window.location.pathname.match(/^(.*?)(?:play\/?)?$/)[1] + 'api';
 
 const request = async (url, method, body, options) => {

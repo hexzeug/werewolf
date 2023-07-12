@@ -1,4 +1,6 @@
-const eventSource = new EventSource('/api/event-stream');
+import { base_url } from './api';
+
+const eventSource = new EventSource(base_url + '/event-stream');
 
 eventSource.onopen = () => {
   console.log(`SSE: Connection to ${eventSource.url} opened.`);
