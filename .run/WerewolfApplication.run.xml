@@ -4,7 +4,7 @@
     <module name="werewolf.werewolf-backend.main" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.hexszeug.werewolf.*" />
+        <option name="PATTERN" value="com.hexzeug.werewolf.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RequiredArgsConstructor
-@RestControllerAdvice("com.hexszeug.werewolf.game.controller")
+@RestControllerAdvice("com.hexzeug.werewolf.game.controller")
 public class AuthorizationProvider {
     private final AuthorizationRepository authorizationRepository;
     private final VillageRepository villageRepository;

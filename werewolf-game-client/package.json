@@ -1,6 +1,6 @@
 {
   "name": "werewolf-game-client",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "0.0.1",
   "homepage": ".",
   "private": true,
   "dependencies": {

@@ -71,7 +71,7 @@ public class GameCreationServiceImpl implements GameCreationService {
         createGame(userIdentities);
     }
     @Override
-    public void createGame(List<UserIdentity> userIdentities) {
+    public Village createGame(List<UserIdentity> userIdentities) {
         int playerCount = userIdentities.size();
         if (playerCount < PLAYERS_MIN || playerCount > PLAYERS_MAX) {
             throw new IllegalArgumentException(
@@ -122,6 +122,8 @@ public class GameCreationServiceImpl implements GameCreationService {
                     players.get(i).getPlayerId()
             );
         }
+
+        return village;
     }
 
     private List<Phase> generatePhaseOrder(List<Role> roles) {
